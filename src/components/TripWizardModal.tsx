@@ -95,13 +95,13 @@ ${formData.specialRequests ? `- *Special Requests:* ${formData.specialRequests}`
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/70 backdrop-blur-md overflow-hidden"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="bg-white rounded-[32px] w-full max-w-2xl relative overflow-hidden shadow-2xl animate-in my-8 border border-black/5">
-        <div className="p-6 sm:p-8 max-h-[90vh] overflow-y-auto font-manrope">
+      <div className="bg-white w-full max-w-2xl h-[92vh] sm:h-auto max-h-[92vh] sm:max-h-[90vh] flex flex-col rounded-t-[28px] sm:rounded-[32px] shadow-2xl overflow-hidden animate-in border-t sm:border border-black/10 font-manrope relative">
+        <div className="p-4 sm:p-8 overflow-y-auto flex-1 font-manrope scroll-smooth">
           
           {/* Top Bar */}
           <div className="flex justify-between items-center mb-6">
