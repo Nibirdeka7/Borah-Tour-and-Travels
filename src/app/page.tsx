@@ -457,7 +457,7 @@ export default function Home() {
       setSubmitting(false);
       setSuccess(true);
 
-      const phoneNumber = "919876543210";
+      const phoneNumber = "918822837774";
       const customMessage = `Hi Borah Tours & Travel, I have submitted a customized trip enquiry:
 - Name: ${fullName}
 - Contact: ${contactInfo}
@@ -991,7 +991,13 @@ export default function Home() {
           {/* Responsive Layout: Mobile Horizontal Carousel / Desktop Grid */}
           <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
             {filteredPackages.map((pkg) => {
-              const waLink = `https://wa.me/919876543210?text=Hi%20Borah%20Tours%20%26%20Travel%2C%20I'm%20interested%20in%20"${pkg.title}"%20(${pkg.duration}).%20Please%20share%20details.`;
+              const waMessage = `Hi Borah Tours & Travel! I want to book the private tour package:
+- *Package:* ${pkg.title}
+- *Duration:* ${pkg.duration}
+- *Price:* ${pkg.price} / Pax
+
+Please share available dates and booking details!`;
+              const waLink = `https://wa.me/918822837774?text=${encodeURIComponent(waMessage)}`;
 
               return (
                 <article
@@ -1088,7 +1094,7 @@ export default function Home() {
                 </button>
 
                 <a
-                  href="https://wa.me/919876543210?text=Hi%20Borah%20Tours%20%26%20Travel%2C%20I%20want%20to%20discuss%20a%20customized%20Meghalaya%20trip."
+                  href="https://wa.me/918822837774?text=Hi%20Borah%20Tours%20%26%20Travel%2C%20I%20want%20to%20discuss%20a%20customized%20Meghalaya%20%26%20Assam%20trip."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 rounded-full border-2 border-white text-white font-bold text-xs sm:text-sm hover:bg-white hover:text-[#1e4630] transition-colors flex items-center justify-center gap-2 decoration-none cursor-pointer"

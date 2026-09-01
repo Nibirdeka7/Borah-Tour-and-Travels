@@ -27,13 +27,13 @@ export default function Footer() {
             <ul className="space-y-2 font-body-md text-on-surface-variant list-none pl-0">
               <li className="flex items-center gap-2">
                 <Phone size={16} className="text-primary shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-primary transition-colors text-inherit decoration-none">
-                  +91 98765 43210
+                <a href="tel:+918822837774" className="hover:text-primary transition-colors text-inherit decoration-none">
+                  +91 88228 37774
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <MessageSquare size={16} className="text-primary shrink-0" />
-                <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors text-inherit decoration-none">
+                <a href="https://wa.me/918822837774?text=Hi%20Borah%20Tours%20%26%20Travel%2C%20I%20want%20to%20enquire%20about%20a%20tour%20package." target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors text-inherit decoration-none">
                   WhatsApp Support
                 </a>
               </li>

@@ -8,7 +8,7 @@ interface MobileBottomNavProps {
 }
 
 export default function MobileBottomNav({ onOpenWizard }: MobileBottomNavProps) {
-  const phoneNumber = "919876543210";
+  const phoneNumber = "918822837774";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
     "Hi Borah Tours & Travel, I would like to plan a tour to Northeast India. Please share details."
   )}`;
