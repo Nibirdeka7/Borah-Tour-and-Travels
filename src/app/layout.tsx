@@ -29,26 +29,27 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Borah Tours & Travels | Customized Meghalaya, Assam & Arunachal Tours",
-  description: "Plan your dream trip to Northeast India with Borah Tours & Travels. We specialize in customized Meghalaya tour packages, Assam sightseeing, and Arunachal Pradesh itineraries with Guwahati airport pickups.",
+  title: "Borah Tours & Travel | Customized Meghalaya, Assam & Arunachal Tours",
+  description: "Plan your dream trip to Northeast India with Borah Tours & Travel. We specialize in customized Meghalaya tour packages, Assam sightseeing, and Arunachal Pradesh itineraries with Guwahati airport pickups.",
   keywords: [
     "Meghalaya tour from Guwahati",
     "Cherrapunji taxi tour",
     "Meghalaya 5 day tour",
-    "Borah Tours and Travels",
+    "Borah Tours and Travel",
+    "borahtoursandtravel",
     "Assam tour package",
     "Arunachal Pradesh Tawang tour"
   ],
-  authors: [{ name: "Borah Tours & Travels" }],
+  authors: [{ name: "Borah Tours & Travel" }],
   openGraph: {
-    title: "Borah Tours & Travels - Authentically North East",
+    title: "Borah Tours & Travel - Authentically North East",
     description: "Handcrafted Meghalaya, Assam & Arunachal private tours with local drivers, homestays, and airport transfers.",
     type: "website",
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Borah Tours & Travels | Northeast India Customized Tours",
+    title: "Borah Tours & Travel | Northeast India Customized Tours",
     description: "Handcrafted Meghalaya & Assam trips with Guwahati airport pickup.",
   },
 };

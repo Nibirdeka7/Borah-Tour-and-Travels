@@ -9,12 +9,12 @@ interface WhatsAppButtonProps {
 
 export default function WhatsAppButton({
   phoneNumber = "+919876543210",
-  message = "Hi Borah Tours & Travels, I would like to plan a tour to Northeast India. Please share some custom packages."
+  message = "Hi Borah Tours & Travel, I would like to plan a tour to Northeast India. Please share some custom packages."
 }: WhatsAppButtonProps) {
   const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(message)}`;
 
   return (
-    <div className="whatsapp-widget">
+    <div className="whatsapp-widget hidden sm:block">
       <div className="whatsapp-tooltip">Chat with us on WhatsApp</div>
       <a
         href={whatsappUrl}

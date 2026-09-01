@@ -75,8 +75,8 @@ export default function Header() {
           <div className="w-8 h-8 rounded-full bg-[#c6f022] flex items-center justify-center text-[#1e4630] font-bold text-sm">
             <TreePine size={18} />
           </div>
-          <span className="font-headline-md text-xl tracking-tight text-white font-semibold">
-            borah<span className="text-[#c6f022] font-normal">tours</span>
+          <span className="font-headline-md text-lg sm:text-xl tracking-tight text-white font-semibold">
+            borah<span className="text-[#c6f022] font-normal">tours &amp; travel</span>
           </span>
         </a>
 

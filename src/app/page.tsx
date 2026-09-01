@@ -23,16 +23,100 @@ import {
   Sparkles,
   Star,
   ShieldCheck,
-  ChevronRight
+  ChevronRight,
+  ExternalLink
 } from "lucide-react";
 
 import WhatsAppButton from "@/components/WhatsAppButton";
 import TripWizardModal from "@/components/TripWizardModal";
 import PhoneLeadSection from "@/components/PhoneLeadSection";
 import PackageDetailModal, { PackageData } from "@/components/PackageDetailModal";
+import MobileBottomNav from "@/components/MobileBottomNav";
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("all");
+
+  // Hero Video Playlist State (playing 3 videos sequentially inside the mask)
+  const heroVideos = [
+    { src: "/heroVid.mp4", rotate: false },
+    { src: "/cherapunji.mp4", rotate: true },
+    { src: "/heroBGVideo.mp4", rotate: false },
+  ];
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  const handleHeroVideoEnd = () => {
+    setCurrentVideoIndex((prev) => (prev + 1) % heroVideos.length);
+  };
+
+  // Google Map Route Locations State
+  const mapLocations = [
+    {
+      id: "circuit",
+      name: "Full Circuit Loop",
+      query: "Guwahati to Shillong to Cherrapunji to Dawki to Mawlynnong to Kaziranga",
+      embedUrl: "https://maps.google.com/maps?q=Guwahati+to+Shillong+to+Cherrapunji+to+Dawki+to+Mawlynnong+to+Kaziranga&t=&z=8&ie=UTF8&iwloc=&output=embed",
+      distance: "~280-450 km Loop",
+      travelTime: "4 to 7 Days Circuit",
+      description: "Our signature tour loop starting from Guwahati Airport across Meghalaya & Assam."
+    },
+    {
+      id: "guwahati",
+      name: "Guwahati",
+      query: "Guwahati, Assam",
+      embedUrl: "https://maps.google.com/maps?q=Guwahati,Assam&t=&z=12&ie=UTF8&iwloc=&output=embed",
+      distance: "Pickup Hub (0 km)",
+      travelTime: "Start / Airport Pickup",
+      description: "Gateway to Northeast India, Kamakhya Temple & Brahmaputra river sunset."
+    },
+    {
+      id: "shillong",
+      name: "Shillong",
+      query: "Shillong, Meghalaya",
+      embedUrl: "https://maps.google.com/maps?q=Shillong,Meghalaya&t=&z=12&ie=UTF8&iwloc=&output=embed",
+      distance: "98 km from Guwahati",
+      travelTime: "2.5 Hours Scenic Drive",
+      description: "'Scotland of the East' with pine forests, Umiam Lake, and local Khasi cafes."
+    },
+    {
+      id: "cherrapunji",
+      name: "Cherrapunji",
+      query: "Cherrapunji, Meghalaya",
+      embedUrl: "https://maps.google.com/maps?q=Cherrapunji,Meghalaya&t=&z=12&ie=UTF8&iwloc=&output=embed",
+      distance: "54 km from Shillong",
+      travelTime: "1.5 Hours Mountain Drive",
+      description: "Land of waterfalls, Nohkalikai Falls, double-decker living root bridges & caves."
+    },
+    {
+      id: "dawki",
+      name: "Dawki",
+      query: "Dawki, Meghalaya",
+      embedUrl: "https://maps.google.com/maps?q=Dawki,Meghalaya&t=&z=13&ie=UTF8&iwloc=&output=embed",
+      distance: "85 km from Cherrapunji",
+      travelTime: "2.5 Hours Drive",
+      description: "Famous for the crystal-clear Umngot river boating & Bangladesh border."
+    },
+    {
+      id: "mawlynnong",
+      name: "Mawlynnong",
+      query: "Mawlynnong, Meghalaya",
+      embedUrl: "https://maps.google.com/maps?q=Mawlynnong,Meghalaya&t=&z=14&ie=UTF8&iwloc=&output=embed",
+      distance: "30 km from Dawki",
+      travelTime: "1 Hour Drive",
+      description: "Asia's cleanest village, featuring living root bridge & skywalk view points."
+    },
+    {
+      id: "kaziranga",
+      name: "Kaziranga",
+      query: "Kaziranga National Park, Assam",
+      embedUrl: "https://maps.google.com/maps?q=Kaziranga+National+Park,Assam&t=&z=11&ie=UTF8&iwloc=&output=embed",
+      distance: "193 km from Guwahati",
+      travelTime: "4.5 Hours Highway Drive",
+      description: "UNESCO World Heritage site home to One-horned Rhinos & Wildlife Safaris."
+    }
+  ];
+
+  const [activeMapId, setActiveMapId] = useState("circuit");
+  const selectedMap = mapLocations.find((m) => m.id === activeMapId) || mapLocations[0];
 
   // Modal States
   const [isWizardOpen, setIsWizardOpen] = useState(false);
@@ -374,7 +458,7 @@ export default function Home() {
       setSuccess(true);
 
       const phoneNumber = "919876543210";
-      const customMessage = `Hi Borah Tours & Travels, I have submitted a customized trip enquiry:
+      const customMessage = `Hi Borah Tours & Travel, I have submitted a customized trip enquiry:
 - Name: ${fullName}
 - Contact: ${contactInfo}
 - Tentative Dates: ${travelDates || "Flexible"}
@@ -404,7 +488,8 @@ export default function Home() {
     <div className="flex flex-col w-full relative font-manrope">
 
       {/* 1. Hero Section - Styled from guide/3.txt & guide/6.txt */}
-      <section id="home" className="relative min-h-[800px] pt-28 pb-16 bg-[#f7f8f4] overflow-hidden">
+      {/* 1. Hero Section */}
+      <section id="home" className="relative pt-16 sm:pt-28 pb-8 sm:pb-16 bg-[#f7f8f4] overflow-hidden px-4 sm:px-6 lg:px-8">
         <div 
           className="absolute inset-0 pointer-events-none opacity-20"
           style={{
@@ -413,21 +498,24 @@ export default function Home() {
           }}
         ></div>
 
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-8">
-            <div className="lg:col-span-8 flex flex-col pt-2">
-           
-              <h1 className="text-4xl md:text-6xl font-display-lg text-[#1c1716] font-medium tracking-[-1.5px] leading-[1.12]">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start mb-4 sm:mb-6">
+            <div className="lg:col-span-8 flex flex-col pt-1 sm:pt-2">
+              {/* <div className="inline-flex items-center gap-1.5 bg-[#1e4630]/10 text-[#1e4630] px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-bold mb-3 border border-[#1e4630]/15 self-start">
+                <Sparkles size={13} className="text-[#1e4630]" />
+                <span>Private Guwahati Airport Pickups</span>
+              </div> */}
+              <h1 className="text-3xl sm:text-5xl md:text-5xl font-display-lg text-[#1c1716] font-semibold tracking-tight leading-[1.15] mb-2.5">
                 A new way to live with Nature
               </h1>
-              <p className="text-base md:text-lg text-[#1c1716]/80 font-normal leading-[1.55] max-w-2xl">
-                We redesigned how travelers connect with nature, explore hidden waterfalls, and experience local Khasi & Assamese culture—all in one customized private tour service with Guwahati airport pickup.
+              <p className="text-xs sm:text-base md:text-lg text-[#1c1716]/80 font-normal leading-relaxed max-w-2xl">
+                We redesigned how travelers connect with nature, explore hidden waterfalls, and experience local Khasi &amp; Assamese culture—all in one customized private tour service.
               </p>
             </div>
           </div>
 
           {/* SVG Masked Hero Visual Container */}
-          <div className="relative w-full rounded-3xl overflow-hidden group ">
+          <div className="relative w-full md:-mt-20 rounded-2xl sm:rounded-3xl overflow-hidden group ">
             <div
               className="relative w-full overflow-hidden"
               style={{
@@ -443,24 +531,56 @@ export default function Home() {
               }}
             >
               <video
+                key={heroVideos[currentVideoIndex].src}
                 autoPlay
-                loop
                 muted
                 playsInline
-                className="w-full h-full object-cover"
+                onEnded={handleHeroVideoEnd}
+                className={`absolute object-cover transition-all duration-700 ease-in-out ${
+                  heroVideos[currentVideoIndex].rotate
+                    ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90"
+                    : "top-0 left-0 w-full h-full"
+                }`}
+                style={
+                  heroVideos[currentVideoIndex].rotate
+                    ? {
+                        width: "calc(100% * 667 / 1213)",
+                        height: "calc(100% * 1213 / 667)",
+                      }
+                    : {}
+                }
               >
-                <source src="/heroVid.mp4" type="video/mp4" />
+                <source src={heroVideos[currentVideoIndex].src} type="video/mp4" />
               </video>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+
+              {/* Mobile-Optimized Story-Style Video Playlist Indicators */}
+              <div className="absolute top-3 left-4 right-4 sm:top-4 sm:left-6 sm:right-6 flex items-center gap-2 z-20">
+                {heroVideos.map((vid, idx) => (
+                  <button
+                    key={vid.src}
+                    onClick={() => setCurrentVideoIndex(idx)}
+                    aria-label={`Switch to video ${idx + 1}`}
+                    className="flex-1 py-2.5 -my-2.5 focus:outline-none cursor-pointer group"
+                  >
+                    <div
+                      className={`h-1 sm:h-1.5 rounded-full transition-all duration-500 ${
+                        currentVideoIndex === idx
+                          ? "bg-[#c6f022] shadow-[0_0_10px_rgba(198,240,34,0.8)]"
+                          : "bg-white/35 group-hover:bg-white/60"
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Floating Small White CTA Card (Bottom Left) */}
-            <div className="absolute bottom-6 left-6 bg-white p-5 rounded-3xl shadow-2xl max-w-[260px] sm:max-w-[290px] z-20 border border-black/5 animate-in">
+            {/* Desktop Floating CTA Card (Bottom Left) */}
+            <div className="hidden sm:block absolute bottom-6 left-6 bg-white p-5 rounded-3xl shadow-2xl max-w-[290px] z-20 border border-black/5">
               <span className="text-[11px] font-semibold text-[#1e4630] uppercase tracking-wider block mb-1.5">
                 250+ Happy Travelers Joined
               </span>
               
-              {/* Avatar Group */}
               <div className="flex items-center -space-x-2 mb-3">
                 <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Explorer" />
                 <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Explorer" />
@@ -479,8 +599,8 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Floating Action Buttons / Quick Badges (Bottom Right) */}
-            <div className="absolute bottom-6 right-6 flex items-center gap-3 z-20">
+            {/* Desktop Floating Explore Button (Bottom Right) */}
+            <div className="hidden sm:flex absolute bottom-6 right-6 items-center gap-3 z-20">
               <a
                 href="#packages"
                 className="btn-hover bg-[#c6f022] text-[#1e4630] text-xs font-bold px-6 py-3 rounded-2xl shadow-lg decoration-none flex items-center gap-2"
@@ -490,64 +610,85 @@ export default function Home() {
               </a>
             </div>
           </div>
+
+          {/* Mobile Hero Action Buttons (Clean & High Converting Below Video) */}
+          <div className="flex sm:hidden flex-col gap-2.5 mt-4">
+            <div className="grid grid-cols-2 gap-2.5">
+              <button
+                onClick={() => openWizard()}
+                className="btn-hover bg-[#1e4630] text-[#c6f022] text-xs font-bold py-3 px-3 rounded-xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                {/* <Sparkles size={14} /> */}
+                <span>Custom Plan</span>
+              </button>
+
+              <a
+                href="#packages"
+                className="btn-hover bg-[#c6f022] text-[#1e4630] text-xs font-bold py-3 px-3 rounded-xl shadow-md decoration-none flex items-center justify-center gap-1.5 text-center"
+              >
+                <span>Browse Trips</span>
+                <ArrowRight size={14} />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 2. Stats Counter Section - Adapted from guide/3.txt `le` component */}
-      <section className="w-full py-16 bg-[#ffffff] border-y border-gray-100 font-manrope">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-[90px] items-start justify-center relative w-full max-w-[1200px] mx-auto px-6">
+      {/* 2. Stats Counter Section */}
+      <section className="w-full py-10 sm:py-16 bg-[#ffffff] border-y border-gray-100 font-manrope">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8 lg:gap-[90px] items-start justify-center relative w-full max-w-[1200px] mx-auto px-4 sm:px-6">
           
-          <div className="flex flex-col gap-3 items-center lg:items-start text-center lg:text-left">
-            <p className="font-medium leading-[1.12] text-[#1c1716] text-[40px] md:text-[48px] tracking-[-1.44px]">
+          <div className="bg-[#f7f8f4] sm:bg-transparent p-3.5 sm:p-0 rounded-2xl sm:rounded-none flex flex-col gap-1 sm:gap-3 items-center lg:items-start text-center lg:text-left border border-gray-100 sm:border-none">
+            <p className="font-bold leading-none text-[#1c1716] text-[28px] sm:text-[40px] md:text-[48px] tracking-tight">
               98%
             </p>
-            <div className="flex flex-col gap-1 text-[#1c1716]">
-              <p className="font-semibold text-[18px] md:text-[20px]">
+            <div className="flex flex-col gap-0.5 text-[#1c1716]">
+              <p className="font-semibold text-xs sm:text-[18px] md:text-[20px]">
                 5-Star Ratings
               </p>
-              <p className="font-normal text-[14px] text-gray-600 leading-[1.55]">
+              <p className="font-normal text-xs text-gray-600 leading-snug hidden sm:block">
                 Helping travelers navigate living root bridges, canyons, and waterfalls seamlessly.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 items-center lg:items-start text-center lg:text-left">
-            <p className="font-medium leading-[1.12] text-[#1c1716] text-[40px] md:text-[48px] tracking-[-1.44px]">
+          <div className="bg-[#f7f8f4] sm:bg-transparent p-3.5 sm:p-0 rounded-2xl sm:rounded-none flex flex-col gap-1 sm:gap-3 items-center lg:items-start text-center lg:text-left border border-gray-100 sm:border-none">
+            <p className="font-bold leading-none text-[#1c1716] text-[28px] sm:text-[40px] md:text-[48px] tracking-tight">
               150+
             </p>
-            <div className="flex flex-col gap-1 text-[#1c1716]">
-              <p className="font-semibold text-[18px] md:text-[20px]">
-                Private Tours Handled
+            <div className="flex flex-col gap-0.5 text-[#1c1716]">
+              <p className="font-semibold text-xs sm:text-[18px] md:text-[20px]">
+                Private Tours
               </p>
-              <p className="font-normal text-[14px] text-gray-600 leading-[1.55]">
+              <p className="font-normal text-xs text-gray-600 leading-snug hidden sm:block">
                 Enabling family vacations and adventurous road trips across Meghalaya &amp; Assam.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 items-center lg:items-start text-center lg:text-left">
-            <p className="font-medium leading-[1.12] text-[#1c1716] text-[40px] md:text-[48px] tracking-[-1.44px]">
+          <div className="bg-[#f7f8f4] sm:bg-transparent p-3.5 sm:p-0 rounded-2xl sm:rounded-none flex flex-col gap-1 sm:gap-3 items-center lg:items-start text-center lg:text-left border border-gray-100 sm:border-none">
+            <p className="font-bold leading-none text-[#1c1716] text-[28px] sm:text-[40px] md:text-[48px] tracking-tight">
               100%
             </p>
-            <div className="flex flex-col gap-1 text-[#1c1716]">
-              <p className="font-semibold text-[18px] md:text-[20px]">
+            <div className="flex flex-col gap-0.5 text-[#1c1716]">
+              <p className="font-semibold text-xs sm:text-[18px] md:text-[20px]">
                 Local Khasi Drivers
               </p>
-              <p className="font-normal text-[14px] text-gray-600 leading-[1.55]">
+              <p className="font-normal text-xs text-gray-600 leading-snug hidden sm:block">
                 Travel with trusted local drivers who know every hidden gem and secret trail.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 items-center lg:items-start text-center lg:text-left">
-            <p className="font-medium leading-[1.12] text-[#1c1716] text-[40px] md:text-[48px] tracking-[-1.44px]">
+          <div className="bg-[#f7f8f4] sm:bg-transparent p-3.5 sm:p-0 rounded-2xl sm:rounded-none flex flex-col gap-1 sm:gap-3 items-center lg:items-start text-center lg:text-left border border-gray-100 sm:border-none">
+            <p className="font-bold leading-none text-[#1c1716] text-[28px] sm:text-[40px] md:text-[48px] tracking-tight">
               85%
             </p>
-            <div className="flex flex-col gap-1 text-[#1c1716]">
-              <p className="font-semibold text-[18px] md:text-[20px]">
+            <div className="flex flex-col gap-0.5 text-[#1c1716]">
+              <p className="font-semibold text-xs sm:text-[18px] md:text-[20px]">
                 More Custom Value
               </p>
-              <p className="font-normal text-[14px] text-gray-600 leading-[1.55]">
+              <p className="font-normal text-xs text-gray-600 leading-snug hidden sm:block">
                 No middleman markup. Direct coordination with local homestays and private vehicles.
               </p>
             </div>
@@ -557,10 +698,11 @@ export default function Home() {
       </section>
 
       {/* 3. Feature Section 02 - Adapted from guide/3.txt `ne` component */}
-      <section className="py-20 bg-[#f7f8f4] font-manrope">
-        <div className="flex flex-col xl:flex-row items-center justify-between w-full max-w-[1264px] mx-auto gap-[40px] xl:gap-[88px] px-6">
+      {/* 3. Feature Section */}
+      <section className="py-10 sm:py-20 bg-[#f7f8f4] font-manrope">
+        <div className="flex flex-col xl:flex-row items-center justify-between w-full max-w-[1264px] mx-auto gap-8 xl:gap-[88px] px-4 sm:px-6">
           
-          <div className="relative rounded-[32px] w-full xl:w-1/2 h-auto aspect-[642/496] shrink-0 overflow-hidden shadow-xl border border-black/5">
+          <div className="relative rounded-2xl sm:rounded-[32px] w-full xl:w-1/2 h-64 sm:h-80 md:h-[420px] shrink-0 overflow-hidden shadow-lg sm:shadow-xl border border-black/5">
             <img
               alt="Meghalaya Nature Trails"
               className="absolute inset-0 object-cover size-full hover:scale-105 transition-transform duration-700"
@@ -572,16 +714,16 @@ export default function Home() {
             <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] mb-2">
               Zero Friction Travel
             </span>
-            <h2 className="font-medium leading-[1.12] text-[#1c1716] text-[32px] md:text-[48px] tracking-[-1.44px] mb-[20px] w-full max-w-[500px]">
+            <h2 className="font-medium leading-tight text-[#1c1716] text-2xl sm:text-4xl md:text-[48px] tracking-tight mb-4 w-full max-w-[500px]">
               No Complexity. No Noise. Cultivate Future Trails
             </h2>
-            <p className="font-normal leading-[1.6] text-[#1c1716]/80 text-[16px] mb-[32px] w-full max-w-[480px]">
-              Borah Tours reimagines how travelers connect with Northeast India. We blend dedicated local drivers, handcrafted homestay itineraries, and Guwahati airport transfers to make your vacation effortless and memorable.
+            <p className="font-normal leading-relaxed text-[#1c1716]/80 text-sm sm:text-base mb-6 w-full max-w-[480px]">
+              Borah Tours &amp; Travel reimagines how travelers connect with Northeast India. We blend dedicated local drivers, handcrafted homestay itineraries, and Guwahati airport transfers to make your vacation effortless and memorable.
             </p>
 
             <button
               onClick={() => openWizard()}
-              className="btn-hover bg-[#c6f022] text-[#1e4630] font-bold flex gap-[10px] items-center justify-center px-[33px] py-[15px] rounded-[35px] cursor-pointer w-full sm:w-[220px] h-[52px] shadow-md"
+              className="btn-hover bg-[#c6f022] text-[#1e4630] font-bold flex gap-2 items-center justify-center px-8 py-3.5 rounded-full cursor-pointer w-full sm:w-[220px] h-[50px] shadow-md"
             >
               <span>Custom Plan</span>
               <ArrowRight size={18} className="text-[#1e4630]" />
@@ -592,49 +734,49 @@ export default function Home() {
       </section>
 
       {/* 4. Services Overview */}
-      <section id="services" className="py-20 bg-white border-t border-gray-100">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <section id="services" className="py-10 sm:py-20 bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="mb-8 sm:mb-14 flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] mb-1 block">
                 Full Service Hospitality
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">
+              <h2 className="text-2xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">
                 Seamless Travel Experience
               </h2>
-              <p className="text-gray-600 max-w-2xl mt-2 text-sm sm:text-base">
+              <p className="text-gray-600 max-w-2xl mt-1.5 text-xs sm:text-base">
                 We handle every detail from Guwahati airport pickup to boutique stays, so you can enjoy the magic of nature.
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-3xl p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
-              <Bus size={40} className="text-[#1e4630] mb-6" />
-              <h3 className="text-xl font-bold text-[#1c1716] mb-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
+            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
+              <Bus className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
+              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
                 Guwahati Airport Pickup
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                 Comfortable, timely transfers from Guwahati Airport / Station directly to Shillong, Cherrapunji, or Kaziranga.
               </p>
             </div>
 
-            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-3xl p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
-              <Route size={40} className="text-[#1e4630] mb-6" />
-              <h3 className="text-xl font-bold text-[#1c1716] mb-3">
+            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
+              <Route className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
+              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
                 Customized Itineraries
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                 From adventurous root bridge treks to serene Dawki river boating, we tailor every stop to your travel pace.
               </p>
             </div>
 
-            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-3xl p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
-              <Hotel size={40} className="text-[#1e4630] mb-6" />
-              <h3 className="text-xl font-bold text-[#1c1716] mb-3">
-                Homestay & Hotel Stays
+            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
+              <Hotel className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
+              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
+                Homestay &amp; Hotel Stays
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                 Handpicked accommodations ranging from cozy Meghalaya homestays to luxury forest resorts.
               </p>
             </div>
@@ -643,26 +785,32 @@ export default function Home() {
       </section>
 
       {/* 5. Curated Destinations Bento Grid */}
-      <section id="destinations" className="w-full bg-[#f7f8f4] py-20 px-6 relative border-t border-gray-200/60">
+      <section id="destinations" className="w-full bg-[#f7f8f4] py-10 sm:py-20 px-4 sm:px-6 relative border-t border-gray-200/60">
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-8 sm:mb-12 gap-4">
             <div>
               <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] mb-1 block">
                 Iconic Locations
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">Curated Destinations</h2>
-              <p className="text-gray-600 max-w-xl mt-2 text-sm sm:text-base">
+              <h2 className="text-2xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">Curated Destinations</h2>
+              <p className="text-gray-600 max-w-xl mt-1.5 text-xs sm:text-base">
                 Explore our handpicked selection of must-visit locations across Meghalaya &amp; Assam.
               </p>
             </div>
           </div>
 
-          {/* Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          {/* Mobile Swipe Hint */}
+          <div className="flex md:hidden items-center justify-between mb-3 text-xs font-bold text-[#1e4630] uppercase tracking-wider">
+            <span>Must-Visit Places</span>
+            <span className="flex items-center gap-1 opacity-80 text-[11px]">Swipe →</span>
+          </div>
+
+          {/* Responsive Layout: Mobile Horizontal Carousel / Desktop Bento Grid */}
+          <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-12 sm:gap-6">
             {destinations.map((dest) => (
               <article
                 key={dest.id}
-                className={`${dest.spanClass} group relative rounded-3xl overflow-hidden h-[420px] shadow-lg border border-black/5`}
+                className={`w-[82vw] sm:w-auto shrink-0 snap-center ${dest.spanClass} group relative rounded-2xl sm:rounded-3xl overflow-hidden h-72 sm:h-96 md:h-[420px] shadow-md sm:shadow-lg border border-black/5`}
               >
                 <img
                   alt={dest.name}
@@ -671,18 +819,18 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
 
-                <div className="absolute top-6 right-6">
-                  <div className="bg-[#c6f022] text-[#1e4630] font-bold text-xs px-3.5 py-1.5 rounded-full shadow-sm">
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+                  <div className="bg-[#c6f022] text-[#1e4630] font-bold text-[11px] sm:text-xs px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-sm">
                     {dest.duration}
                   </div>
                 </div>
 
-                <div className="absolute bottom-0 left-0 w-full p-8 flex flex-col gap-2.5">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[#c6f022] text-3xl font-bold opacity-60">
+                <div className="absolute bottom-0 left-0 w-full p-5 sm:p-8 flex flex-col gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-[#c6f022] text-2xl sm:text-3xl font-bold opacity-70">
                       {dest.num}
                     </span>
-                    <h3 className="text-2xl font-bold text-white">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white">
                       {dest.name}
                     </h3>
                   </div>
@@ -694,31 +842,107 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Roadmap Circuit */}
-          <div className="mt-16 flex flex-col lg:flex-row gap-8 items-center pt-8 border-t border-gray-200">
-            <div className="w-full lg:w-1/3 flex flex-col gap-4">
-              <div className="inline-flex items-center gap-2 bg-[#1e4630] text-[#c6f022] px-3.5 py-1 rounded-full self-start font-bold text-xs">
-                <Compass size={14} />
-                <span>Northeast Circuit</span>
+          {/* Live Google Maps Integration Section */}
+          <div className="mt-16 pt-10 border-t border-gray-200">
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-8">
+              <div>
+              
+                <h3 className="text-2xl sm:text-3xl font-bold text-[#1c1716] tracking-tight">
+                  Explore Tour Destinations on Google Maps
+                </h3>
+                <p className="text-sm text-gray-600 max-w-xl mt-2 leading-relaxed">
+                  Click any location below to view interactive Google Maps directions, driving estimates, and highlights starting from Guwahati Airport.
+                </p>
               </div>
-              <h3 className="text-2xl font-bold text-[#1c1716]">The Route Map</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Our most popular loop connects these locations efficiently starting from Guwahati Airport, ensuring minimal travel fatigue.
-              </p>
+
+              {/* External Google Maps App Link */}
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedMap.query)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-hover inline-flex items-center gap-2 bg-[#1e4630] text-[#c6f022] hover:bg-[#143624] text-xs font-bold px-5 py-3 rounded-2xl shadow-md transition-colors cursor-pointer shrink-0"
+              >
+                <span>Open in Google Maps</span>
+                <ExternalLink size={14} />
+              </a>
             </div>
 
-            <div className="w-full lg:w-2/3 h-[380px] rounded-3xl overflow-hidden shadow-xl relative border border-black/5 bg-[#1e4630]">
-              <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-iv2TsPpxJ4wdoUjbtxcrUqBlHO5zN9aMh55dBu27gKVjUsuLMeymMGH2FAEgKNsa_eIb8Gmy58EoIylHYmNnzH5-0WfS4to5U9_dirEbeyxxyeI_NLYfaKkWaEkyBdHtt0U5W2LWzuVChw16_pOI5rexfjlMq2oXgJOJr7369XYfcp0-SgreYKVwgX-NsA_-lw82W59GCkN2IwX2E1aLo9fxpLSvbh6jItSB8Qg_2MeOAQxRt_zh"
-                alt="Circuit Map View"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-md flex items-center gap-3 border border-black/5">
-                <Car className="text-[#1e4630]" />
+            {/* Destination Selection Chips */}
+            <div className="flex overflow-x-auto gap-2.5 mb-6 pb-2 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
+              {mapLocations.map((loc) => {
+                const isActive = activeMapId === loc.id;
+                return (
+                  <button
+                    key={loc.id}
+                    onClick={() => setActiveMapId(loc.id)}
+                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer border shrink-0 ${
+                      isActive
+                        ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] shadow-md scale-105"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
+                    }`}
+                  >
+                    <MapPin size={13} className={isActive ? "text-[#c6f022]" : "text-[#1e4630]"} />
+                    <span>{loc.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Google Maps Embed & Info Split Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              {/* Destination Detail Info Card */}
+              <div className="lg:col-span-4 bg-white border border-gray-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-lg flex flex-col justify-between space-y-5">
                 <div>
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Popular Tour Loop</p>
-                  <p className="text-base font-bold text-[#1c1716]">~280 km Guwahati Circuit</p>
+                  <div className="flex items-center gap-2 text-xs font-bold text-[#1e4630] uppercase tracking-wider mb-2">
+                    <MapPin size={14} className="text-[#1e4630]" />
+                    <span>{selectedMap.name}</span>
+                  </div>
+                  <h4 className="text-xl sm:text-2xl font-bold text-[#1c1716] leading-tight mb-2.5">
+                    {selectedMap.query}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                    {selectedMap.description}
+                  </p>
+
+                  <div className="space-y-3 pt-3 border-t border-gray-100">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
+                      <span className="text-gray-500 font-medium flex items-center gap-2">
+                        <Car size={15} className="text-[#1e4630]" /> Distance:
+                      </span>
+                      <span className="font-bold text-[#1c1716]">{selectedMap.distance}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
+                      <span className="text-gray-500 font-medium flex items-center gap-2">
+                        <Clock size={15} className="text-[#1e4630]" /> Drive Time:
+                      </span>
+                      <span className="font-bold text-[#1c1716]">{selectedMap.travelTime}</span>
+                    </div>
+                  </div>
                 </div>
+
+                <button
+                  onClick={() => openWizard(selectedMap.name)}
+                  className="btn-hover w-full bg-[#c6f022] text-[#1e4630] font-bold text-xs sm:text-sm py-3 sm:py-3.5 px-4 rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 shadow-md cursor-pointer transition-colors"
+                >
+                  <span>Plan Private Tour ({selectedMap.name})</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+
+              {/* Google Maps iFrame */}
+              <div className="lg:col-span-8 h-[300px] sm:h-[460px] min-h-[260px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg sm:shadow-xl border border-black/5 relative bg-gray-100">
+                <iframe
+                  title={`Google Maps - ${selectedMap.name}`}
+                  src={selectedMap.embedUrl}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full rounded-2xl sm:rounded-3xl"
+                ></iframe>
               </div>
             </div>
           </div>
@@ -727,26 +951,26 @@ export default function Home() {
       </section>
 
       {/* 6. Tour Packages Section */}
-      <section id="packages" className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-12">
+      <section id="packages" className="py-10 sm:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
             <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] block mb-1">
               Popular Tour Packages
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">
               Curated Northeast Experiences
             </h2>
-            <p className="text-gray-600 mt-2 text-sm">
+            <p className="text-gray-600 mt-1.5 text-xs sm:text-sm">
               Discover Meghalaya and Assam through our handcrafted itineraries. Select a category tab to filter.
             </p>
 
             {/* Filter Tabs */}
-            <div className="flex flex-wrap gap-2.5 mt-6 justify-center items-center bg-[#f7f8f4] p-1.5 rounded-full border border-gray-200 max-w-fit mx-auto">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2.5 mt-5 justify-center items-center bg-[#f7f8f4] p-1 sm:p-1.5 rounded-2xl sm:rounded-full border border-gray-200 max-w-fit mx-auto">
               {filterButtons.map((btn) => (
                 <button
                   key={btn.value}
                   onClick={() => setActiveFilter(btn.value)}
-                  className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-xl sm:rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
                     activeFilter === btn.value
                       ? "bg-[#1e4630] text-[#c6f022] shadow-md"
                       : "text-gray-600 hover:bg-gray-200/60"
@@ -758,16 +982,23 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Mobile Swipe Hint */}
+          <div className="flex md:hidden items-center justify-between mb-3 text-xs font-bold text-[#1e4630] uppercase tracking-wider">
+            <span>Handcrafted Packages</span>
+            <span className="flex items-center gap-1 opacity-80 text-[11px]">Swipe →</span>
+          </div>
+
+          {/* Responsive Layout: Mobile Horizontal Carousel / Desktop Grid */}
+          <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
             {filteredPackages.map((pkg) => {
-              const waLink = `https://wa.me/919876543210?text=Hi%20Borah%20Tours%2C%20I'm%20interested%20in%20"${pkg.title}"%20(${pkg.duration}).%20Please%20share%20details.`;
+              const waLink = `https://wa.me/919876543210?text=Hi%20Borah%20Tours%20%26%20Travel%2C%20I'm%20interested%20in%20"${pkg.title}"%20(${pkg.duration}).%20Please%20share%20details.`;
 
               return (
                 <article
                   key={pkg.id}
-                  className="group relative flex flex-col bg-[#f7f8f4] border border-gray-200/70 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300"
+                  className="w-[85vw] sm:w-auto shrink-0 snap-center group relative flex flex-col bg-[#f7f8f4] border border-gray-200/70 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="relative h-60 w-full overflow-hidden bg-[#1e4630]">
+                  <div className="relative h-48 sm:h-60 w-full overflow-hidden bg-[#1e4630]">
                     <img
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       alt={pkg.title}
@@ -775,23 +1006,23 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
 
-                    <div className="absolute top-4 right-4 bg-[#c6f022] text-[#1e4630] px-3.5 py-1 rounded-full font-bold text-xs uppercase shadow-sm">
+                    <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-[#c6f022] text-[#1e4630] px-3 py-1 rounded-full font-bold text-[11px] sm:text-xs uppercase shadow-sm">
                       {pkg.price} / pax
                     </div>
 
-                    <div className="absolute bottom-4 left-4 flex items-center gap-1.5 text-white text-xs font-medium">
+                    <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 flex items-center gap-1.5 text-white text-xs font-medium">
                       <Clock size={14} className="text-[#c6f022]" />
                       <span>{pkg.duration}</span>
                     </div>
                   </div>
 
-                  <div className="p-6 flex flex-col flex-grow space-y-4">
-                    <h3 className="text-xl font-bold text-[#1c1716] line-clamp-2 group-hover:text-[#1e4630] transition-colors">
+                  <div className="p-5 sm:p-6 flex flex-col flex-grow space-y-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] line-clamp-2 group-hover:text-[#1e4630] transition-colors">
                       {pkg.title}
                     </h3>
 
                     <div className="space-y-2 flex-grow">
-                      <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">
+                      <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-widest">
                         Trip Highlights
                       </p>
                       <ul className="text-xs text-gray-600 space-y-1.5 pl-0 list-none mb-0">
@@ -804,10 +1035,10 @@ export default function Home() {
                       </ul>
                     </div>
 
-                    <div className="pt-4 mt-auto flex items-center gap-3">
+                    <div className="pt-3 mt-auto flex items-center gap-2.5">
                       <button
                         onClick={() => setSelectedDetailPackage(pkg)}
-                        className="btn-hover flex-grow py-3 bg-white text-[#1e4630] text-center font-bold text-xs uppercase tracking-wider rounded-2xl border border-gray-300 hover:bg-[#1e4630] hover:text-[#c6f022] transition-all cursor-pointer shadow-sm"
+                        className="btn-hover flex-grow py-2.5 sm:py-3 bg-white text-[#1e4630] text-center font-bold text-xs uppercase tracking-wider rounded-xl sm:rounded-2xl border border-gray-300 hover:bg-[#1e4630] hover:text-[#c6f022] transition-all cursor-pointer shadow-sm"
                       >
                         View Itinerary
                       </button>
@@ -815,10 +1046,10 @@ export default function Home() {
                         href={waLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center w-12 h-12 bg-[#c6f022] text-[#1e4630] rounded-2xl shadow-md hover:scale-105 transition-transform cursor-pointer decoration-none"
+                        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#c6f022] text-[#1e4630] rounded-xl sm:rounded-2xl shadow-md hover:scale-105 transition-transform cursor-pointer decoration-none"
                         title="Book via WhatsApp"
                       >
-                        <MessageSquare size={20} />
+                        <MessageSquare size={18} />
                       </a>
                     </div>
                   </div>
@@ -829,38 +1060,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. Phone Lead Capture Component from guide/2.txt */}
+      {/* 7. Phone Lead Capture Component */}
       <PhoneLeadSection />
 
       {/* 8. Inline Custom Trip Request Section */}
-      <section id="custom-trip" className="py-20 bg-white border-t border-gray-100">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="bg-[#1e4630] text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-            <div className="relative z-10 max-w-2xl mx-auto text-center space-y-4">
+      <section id="custom-trip" className="py-10 sm:py-20 bg-white border-t border-gray-100">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="bg-[#1e4630] text-white rounded-2xl sm:rounded-3xl p-6 sm:p-12 shadow-2xl relative overflow-hidden">
+            <div className="relative z-10 max-w-2xl mx-auto text-center space-y-3 sm:space-y-4">
               <span className="text-xs font-bold uppercase tracking-widest text-[#c6f022]">
                 Customized Itineraries
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
+              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight">
                 Want a Personalized Tour Plan?
               </h2>
-              <p className="text-white/80 text-sm sm:text-base leading-relaxed">
+              <p className="text-white/80 text-xs sm:text-base leading-relaxed">
                 Tell us your tentative dates, places you wish to visit, and number of travelers. We will design a custom itinerary with a dedicated private vehicle.
               </p>
               
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                 <button
                   onClick={() => openWizard()}
-                  className="btn-hover w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#c6f022] text-[#1e4630] font-bold text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer"
+                  className="btn-hover w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 rounded-full bg-[#c6f022] text-[#1e4630] font-bold text-xs sm:text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Launch Custom Trip Wizard</span>
                   <Sparkles size={16} />
                 </button>
 
                 <a
-                  href="https://wa.me/919876543210?text=Hi%20Borah%20Tours%2C%20I%20want%20to%20discuss%20a%20customized%20Meghalaya%20trip."
+                  href="https://wa.me/919876543210?text=Hi%20Borah%20Tours%20%26%20Travel%2C%20I%20want%20to%20discuss%20a%20customized%20Meghalaya%20trip."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-full border-2 border-white text-white font-bold text-sm hover:bg-white hover:text-[#1e4630] transition-colors flex items-center justify-center gap-2 decoration-none cursor-pointer"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 rounded-full border-2 border-white text-white font-bold text-xs sm:text-sm hover:bg-white hover:text-[#1e4630] transition-colors flex items-center justify-center gap-2 decoration-none cursor-pointer"
                 >
                   <MessageSquare size={16} />
                   <span>Chat directly on WhatsApp</span>
@@ -871,8 +1102,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WhatsApp Floating Button */}
+      {/* Desktop Floating WhatsApp Button */}
       <WhatsAppButton />
+
+      {/* Mobile Sticky Bottom Action Bar */}
+      {/* <MobileBottomNav onOpenWizard={() => openWizard()} /> */}
 
       {/* Multi-Step Custom Trip Wizard Modal */}
       <TripWizardModal

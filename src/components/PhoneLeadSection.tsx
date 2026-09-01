@@ -25,7 +25,7 @@ export default function PhoneLeadSection() {
       setLoading(false);
       setSubmitted(true);
 
-      const message = `Hi Borah Tours, please call me back at ${phoneNumber} regarding tour packages.`;
+      const message = `Hi Borah Tours & Travel, please call me back at ${phoneNumber} regarding tour packages.`;
       const waUrl = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
       window.open(waUrl, "_blank");
 
@@ -134,7 +134,7 @@ export default function PhoneLeadSection() {
                 Explore With Ease, Plan With Confidence
               </h2>
               <p className="font-normal leading-[1.6] text-[#1c1716]/80 text-[16px]">
-                Thousands of travelers have experienced raw nature in Meghalaya & Assam with Borah Tours. Drop your phone number below and our lead coordinator will call you in 15 minutes.
+                Thousands of travelers have experienced raw nature in Meghalaya &amp; Assam with Borah Tours &amp; Travel. Drop your phone number below and our lead coordinator will call you in 15 minutes.
               </p>
             </div>
 

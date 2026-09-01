@@ -39,7 +39,7 @@ export default function PackageDetailModal({
   if (!pkg) return null;
 
   const waLink = `https://wa.me/919876543210?text=${encodeURIComponent(
-    `Hi Borah Tours, I want to book the "${pkg.title}" package (${pkg.duration}, ${pkg.price}). Please share details!`
+    `Hi Borah Tours & Travel, I want to book the "${pkg.title}" package (${pkg.duration}, ${pkg.price}). Please share details!`
   )}`;
 
   return (

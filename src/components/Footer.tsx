@@ -12,7 +12,7 @@ export default function Footer() {
           {/* Brand Col */}
           <div className="space-y-4">
             <h4 className="font-headline-md text-headline-md text-on-surface">
-              Borah Tours
+              Borah Tours &amp; Travel
             </h4>
             <p className="font-body-md text-on-surface-variant">
               Discover the hidden gems of Meghalaya, Assam, and Arunachal Pradesh with locally curated experiences and authentic hospitality.
@@ -39,8 +39,8 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail size={16} className="text-primary shrink-0" />
-                <a href="mailto:hello@borahtours.com" className="hover:text-primary transition-colors text-inherit decoration-none">
-                  hello@borahtours.com
+                <a href="mailto:hello@borahtoursandtravel.com" className="hover:text-primary transition-colors text-inherit decoration-none">
+                  hello@borahtoursandtravel.com
                 </a>
               </li>
             </ul>
@@ -79,7 +79,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="mt-16 pt-8 border-t border-outline-variant text-center font-label-sm text-label-sm text-on-surface-variant">
-          © {currentYear} Borah Tours & Travels. Authentically North East.
+          © {currentYear} Borah Tours &amp; Travel. Authentically North East.
         </div>
       </div>
     </footer>
