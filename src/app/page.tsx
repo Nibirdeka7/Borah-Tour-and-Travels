@@ -1098,7 +1098,7 @@ Please share available dates and booking details!`;
                   className="btn-hover w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 rounded-full bg-[#c6f022] text-[#1e4630] font-bold text-xs sm:text-sm shadow-xl flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Launch Custom Trip Wizard</span>
-                  <Sparkles size={16} />
+                  {/* <Sparkles size={16} /> */}
                 </button>
 
                 <a
