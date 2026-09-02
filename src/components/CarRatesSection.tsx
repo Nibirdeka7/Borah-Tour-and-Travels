@@ -58,6 +58,7 @@ export default function CarRatesSection() {
 
   const notes = [
     "The above rates are per-day vehicle charges.",
+    "Force Traveller Daily Rates: 13-Seater (₹10,000/day), 16-Seater (₹12,000/day), 25-Seater (₹14,000/day).",
     "Assam: Rates apply to Guwahati local sightseeing / official duty.",
     "Meghalaya & Arunachal: Rates apply as per confirmed itinerary.",
     "Rates include fuel, toll, parking, driver allowance, vehicle hiring charges, and sightseeing mentioned in itinerary.",

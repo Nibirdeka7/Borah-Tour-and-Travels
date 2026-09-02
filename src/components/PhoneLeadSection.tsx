@@ -36,8 +36,8 @@ export default function PhoneLeadSection() {
     }, 1200);
   };
 
-  const img1 = "/img/cerrapunji.png";
-  const img2 = "/img/shillong.png";
+  const img1 = "/img/cherrapunji/cerrapunji.png";
+  const img2 = "/img/shillong/shillong.png";
 
   return (
     <section className="w-full py-16 px-4 sm:px-6 lg:px-8 bg-[#f7f8f4] font-manrope">

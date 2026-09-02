@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { X, Clock, MapPin, CheckCircle, MessageSquare, Sparkles, Compass, ShieldCheck } from "lucide-react";
+import React, { useState } from "react";
+import { X, Clock, MapPin, CheckCircle, MessageSquare, Sparkles, Compass, ShieldCheck, Phone, Image as ImageIcon } from "lucide-react";
 
 export interface ItineraryStep {
   day: string;
@@ -17,6 +17,7 @@ export interface PackageData {
   price: string;
   duration: string;
   image: string;
+  gallery?: string[];
   categories: string[];
   highlights: string[];
   route: string;
@@ -36,31 +37,37 @@ export default function PackageDetailModal({
   onClose,
   onCustomize,
 }: PackageDetailModalProps) {
+  const [activeImage, setActiveImage] = useState<string | null>(null);
+
   if (!pkg) return null;
 
-  const waMessage = `Hi Borah Tour and Travels! I want to book the private tour package:
+  const currentCoverImage = activeImage || pkg.image;
+
+  const waMessage = `Hi Borah Tour and Travels! I want to inquire about the private tour package:
 - *Package:* ${pkg.title}
 - *Duration:* ${pkg.duration}
-- *Price:* ${pkg.price} / Pax
 - *Route:* ${pkg.route}
 - *Pace:* ${pkg.activityLevel}
 
-Please confirm vehicle availability and send me the detailed itinerary!`;
+Please share direct owner pricing and vehicle availability details!`;
   const waLink = `https://wa.me/917002674473?text=${encodeURIComponent(waMessage)}`;
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/70 backdrop-blur-md overflow-hidden"
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) {
+          setActiveImage(null);
+          onClose();
+        }
       }}
     >
       <div className="bg-white w-full max-w-3xl h-[92vh] sm:h-auto max-h-[92vh] sm:max-h-[90vh] flex flex-col rounded-t-[28px] sm:rounded-[32px] shadow-2xl overflow-hidden animate-in border-t sm:border border-black/10 font-manrope relative">
         
         {/* Banner Cover Image */}
-        <div className="relative h-44 sm:h-72 w-full overflow-hidden bg-[#1e4630] shrink-0">
+        <div className="relative h-48 sm:h-72 w-full overflow-hidden bg-[#1e4630] shrink-0 transition-all duration-500">
           <img
-            src={pkg.image}
+            src={currentCoverImage}
             alt={pkg.title}
             className="w-full h-full object-cover"
           />
@@ -68,7 +75,10 @@ Please confirm vehicle availability and send me the detailed itinerary!`;
 
           {/* Close button */}
           <button
-            onClick={onClose}
+            onClick={() => {
+              setActiveImage(null);
+              onClose();
+            }}
             className="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center hover:bg-black/60 transition-colors cursor-pointer z-20"
           >
             <X size={18} />
@@ -76,10 +86,11 @@ Please confirm vehicle availability and send me the detailed itinerary!`;
 
           {/* Floating Badges */}
           <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex gap-1.5 sm:gap-2 z-10">
-            <span className="bg-[#c6f022] text-[#1e4630] text-[10px] sm:text-xs font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-wider shadow-md">
-              {pkg.price} / Pax
+            <span className="bg-[#c6f022] text-[#1e4630] text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md flex items-center gap-1">
+              <Phone size={11} />
+              Contact Direct
             </span>
-            <span className="bg-white/90 text-[#1e4630] text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full flex items-center gap-1 shadow-md">
+            <span className="bg-white/90 text-[#1e4630] text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-md">
               <Clock size={12} />
               {pkg.duration}
             </span>
@@ -106,6 +117,36 @@ Please confirm vehicle availability and send me the detailed itinerary!`;
         {/* Modal Scrollable Body */}
         <div className="p-4 sm:p-8 overflow-y-auto flex-1 space-y-6 scroll-smooth">
           
+          {/* Destination Gallery Thumbnails */}
+          {pkg.gallery && pkg.gallery.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#1e4630]">
+                <span className="flex items-center gap-1.5">
+                  <ImageIcon size={14} />
+                  Destination Gallery ({pkg.gallery.length} Photos)
+                </span>
+                <span className="text-[10px] text-gray-500 font-normal">Click photo to preview</span>
+              </div>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {pkg.gallery.map((imgUrl, gIdx) => (
+                  <button
+                    key={gIdx}
+                    onClick={() => setActiveImage(imgUrl)}
+                    className={`relative h-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all cursor-pointer group ${
+                      currentCoverImage === imgUrl ? "border-[#c6f022] scale-95 shadow-md" : "border-gray-200 hover:border-[#1e4630]"
+                    }`}
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`${pkg.title} gallery ${gIdx + 1}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Highlights */}
           <div className="bg-[#f7f8f4] p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-black/5 space-y-2.5">
             <h3 className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#1e4630]">
@@ -124,7 +165,6 @@ Please confirm vehicle availability and send me the detailed itinerary!`;
           {/* Detailed Day-by-Day Itinerary */}
           <div className="space-y-5">
             <h3 className="text-base sm:text-lg font-bold text-[#1c1716] flex items-center gap-2">
-              {/* <Sparkles size={17} className="text-[#1e4630]" /> */}
               <span>Complete Day-by-Day Itinerary</span>
             </h3>
 
@@ -169,9 +209,15 @@ Please confirm vehicle availability and send me the detailed itinerary!`;
             </div>
           </div>
 
-          {/* Inclusions Note */}
-          <div className="p-3.5 sm:p-4 bg-amber-50 rounded-xl border border-amber-200/60 text-xs text-amber-900 leading-relaxed">
-            <span className="font-bold">What&apos;s Included:</span> Private dedicated SUV/Sedan vehicle, fuel &amp; driver charges, Guwahati airport pickup/drop, handpicked hotel/homestay stays, local sightseeing &amp; trip coordination.
+          {/* Direct Contact & Inclusions Note */}
+          <div className="p-3.5 sm:p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 leading-relaxed space-y-1">
+            <p className="font-bold flex items-center gap-1.5 text-emerald-950">
+              <Phone size={13} className="text-[#1e4630]" />
+              Direct Owner Rates – No Middleman Commission:
+            </p>
+            <p className="text-emerald-800">
+              Pricing depends on group size, vehicle choice, and stay preferences. Contact the owner directly for instant custom quotes and exact seasonal discounts.
+            </p>
           </div>
         </div>
 
@@ -179,12 +225,13 @@ Please confirm vehicle availability and send me the detailed itinerary!`;
         <div className="p-3.5 sm:p-6 bg-white border-t border-gray-100 flex flex-row items-center gap-2.5 justify-between shrink-0 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] z-20">
           <button
             onClick={() => {
+              setActiveImage(null);
               onClose();
               onCustomize(pkg.title);
             }}
             className="flex-1 py-3 px-3 rounded-xl border-2 border-[#1e4630] text-[#1e4630] font-bold text-xs hover:bg-[#1e4630] hover:text-[#c6f022] transition-colors cursor-pointer text-center"
           >
-            Customize
+            Customize Itinerary
           </button>
 
           <a
@@ -194,10 +241,11 @@ Please confirm vehicle availability and send me the detailed itinerary!`;
             className="btn-hover flex-1 py-3 px-3 rounded-xl bg-[#c6f022] text-[#1e4630] font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:opacity-95 transition-all text-center decoration-none cursor-pointer"
           >
             <MessageSquare size={16} />
-            <span>Book via WhatsApp</span>
+            <span>Contact Owner Directly</span>
           </a>
         </div>
       </div>
     </div>
   );
 }
+

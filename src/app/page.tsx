@@ -24,7 +24,11 @@ import {
   Star,
   ShieldCheck,
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  Mountain,
+  Trees,
+  Filter,
+  Layers
 } from "lucide-react";
 
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -36,7 +40,8 @@ import CarRatesSection from "@/components/CarRatesSection";
 import VehicleFleetSection from "@/components/VehicleFleetSection";
 
 export default function Home() {
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeRegion, setActiveRegion] = useState("meghalaya");
+  const [durationFilter, setDurationFilter] = useState("all");
 
   // Hero Video Playlist State (playing 3 videos sequentially inside the mask)
   const heroVideos = [
@@ -55,11 +60,38 @@ export default function Home() {
     {
       id: "circuit",
       name: "Full Circuit Loop",
-      query: "Guwahati to Shillong to Cherrapunji to Dawki to Mawlynnong to Kaziranga",
-      embedUrl: "https://maps.google.com/maps?q=Guwahati+to+Shillong+to+Cherrapunji+to+Dawki+to+Mawlynnong+to+Kaziranga&t=&z=8&ie=UTF8&iwloc=&output=embed",
-      distance: "~280-450 km Loop",
-      travelTime: "4 to 7 Days Circuit",
-      description: "Our signature tour loop starting from Guwahati Airport across Meghalaya & Assam."
+      query: "Guwahati to Tawang to Kaziranga to Cherrapunji",
+      embedUrl: "https://maps.google.com/maps?q=Guwahati+to+Tawang+to+Kaziranga+to+Cherrapunji&t=&z=6&ie=UTF8&iwloc=&output=embed",
+      distance: "~400-800 km Circuit",
+      travelTime: "3 to 9 Days Circuit",
+      description: "Our signature tour circuit starting from Guwahati Airport across Meghalaya, Assam & Arunachal Pradesh."
+    },
+    {
+      id: "tawang",
+      name: "Tawang",
+      query: "Tawang, Arunachal Pradesh",
+      embedUrl: "https://maps.google.com/maps?q=Tawang,Arunachal+Pradesh&t=&z=11&ie=UTF8&iwloc=&output=embed",
+      distance: "~440 km from Guwahati",
+      travelTime: "High Altitude Circuit",
+      description: "Himalayan haven featuring Tawang Monastery, Bum La Pass (15,200 ft) & Madhuri Lake."
+    },
+    {
+      id: "sela_pass",
+      name: "Sela Pass & Lake",
+      query: "Sela Pass, Arunachal Pradesh",
+      embedUrl: "https://maps.google.com/maps?q=Sela+Pass,Arunachal+Pradesh&t=&z=12&ie=UTF8&iwloc=&output=embed",
+      distance: "13,700 ft Altitude",
+      travelTime: "En route to Tawang",
+      description: "Dramatic mountain pass with sacred Sela Lake, Jaswant Garh War Memorial & Sela Tunnel."
+    },
+    {
+      id: "sangti_valley",
+      name: "Sangti Valley & Dirang",
+      query: "Sangti Valley, Dirang, Arunachal Pradesh",
+      embedUrl: "https://maps.google.com/maps?q=Sangti+Valley,Arunachal+Pradesh&t=&z=12&ie=UTF8&iwloc=&output=embed",
+      distance: "15 km from Dirang",
+      travelTime: "Scenic Valley Drive",
+      description: "Alpine river valley with local sheep farm, natural hot water spring & historic Dirang Dzong."
     },
     {
       id: "guwahati",
@@ -67,17 +99,17 @@ export default function Home() {
       query: "Guwahati, Assam",
       embedUrl: "https://maps.google.com/maps?q=Guwahati,Assam&t=&z=12&ie=UTF8&iwloc=&output=embed",
       distance: "Pickup Hub (0 km)",
-      travelTime: "Start / Airport Pickup",
-      description: "Gateway to Northeast India, Kamakhya Temple & Brahmaputra river sunset."
+      travelTime: "Airport / Station Pickup",
+      description: "Kamakhya Temple, Umananda, Basistha Temple, Zoo & Brahmaputra riverfront."
     },
     {
-      id: "shillong",
-      name: "Shillong",
-      query: "Shillong, Meghalaya",
-      embedUrl: "https://maps.google.com/maps?q=Shillong,Meghalaya&t=&z=12&ie=UTF8&iwloc=&output=embed",
-      distance: "98 km from Guwahati",
-      travelTime: "2.5 Hours Scenic Drive",
-      description: "'Scotland of the East' with pine forests, Umiam Lake, and local Khasi cafes."
+      id: "kaziranga",
+      name: "Kaziranga & Umrangso",
+      query: "Kaziranga National Park, Assam",
+      embedUrl: "https://maps.google.com/maps?q=Kaziranga+National+Park,Assam&t=&z=11&ie=UTF8&iwloc=&output=embed",
+      distance: "230 km from Guwahati",
+      travelTime: "4.5 Hours Drive",
+      description: "UNESCO Rhinos, Elephant/Jeep Safaris, Orchid Park, Panimur Falls & Umrangso Golf Field."
     },
     {
       id: "cherrapunji",
@@ -86,34 +118,16 @@ export default function Home() {
       embedUrl: "https://maps.google.com/maps?q=Cherrapunji,Meghalaya&t=&z=12&ie=UTF8&iwloc=&output=embed",
       distance: "54 km from Shillong",
       travelTime: "1.5 Hours Mountain Drive",
-      description: "Land of waterfalls, Nohkalikai Falls, double-decker living root bridges & caves."
+      description: "Land of waterfalls, Nohkalikai Falls, double-decker living root bridges & limestone caves."
     },
     {
       id: "dawki",
-      name: "Dawki",
+      name: "Dawki & Mawlynnong",
       query: "Dawki, Meghalaya",
       embedUrl: "https://maps.google.com/maps?q=Dawki,Meghalaya&t=&z=13&ie=UTF8&iwloc=&output=embed",
       distance: "85 km from Cherrapunji",
       travelTime: "2.5 Hours Drive",
-      description: "Famous for the crystal-clear Umngot river boating & Bangladesh border."
-    },
-    {
-      id: "mawlynnong",
-      name: "Mawlynnong",
-      query: "Mawlynnong, Meghalaya",
-      embedUrl: "https://maps.google.com/maps?q=Mawlynnong,Meghalaya&t=&z=14&ie=UTF8&iwloc=&output=embed",
-      distance: "30 km from Dawki",
-      travelTime: "1 Hour Drive",
-      description: "Asia's cleanest village, featuring living root bridge & skywalk view points."
-    },
-    {
-      id: "kaziranga",
-      name: "Kaziranga",
-      query: "Kaziranga National Park, Assam",
-      embedUrl: "https://maps.google.com/maps?q=Kaziranga+National+Park,Assam&t=&z=11&ie=UTF8&iwloc=&output=embed",
-      distance: "193 km from Guwahati",
-      travelTime: "4.5 Hours Highway Drive",
-      description: "UNESCO World Heritage site home to One-horned Rhinos & Wildlife Safaris."
+      description: "Crystal clear Umngot river boating, Krang Suri falls & Asia's cleanest village Mawlynnong."
     }
   ];
 
@@ -136,224 +150,893 @@ export default function Home() {
   const [success, setSuccess] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Package Data
+  // Package Data (Prices removed - Users contact owner directly)
   const packages: PackageData[] = [
+    // --- MEGHALAYA PACKAGES ---
     {
-      id: "khasi-retreat",
-      title: "The Khasi Hills Weekend Retreat",
-      price: "₹12,500",
-      duration: "4 Days / 3 Nights",
-      image: "/img/cerrapunji.png",
-      categories: ["short", "adventure"],
-      route: "Guwahati - Shillong - Cherrapunji - Guwahati",
-      activityLevel: "Moderate",
-      groupSize: "2-6 Pax",
+      id: "meghalaya-1day",
+      title: "1 Day Meghalaya Express Itinerary",
+      price: "Contact Owner",
+      duration: "1 Day",
+      image: "/img/cherrapunji/cerrapunji.png",
+      gallery: ["/img/cherrapunji/cerrapunji.png", "/img/shillong/shillong.png"],
+      categories: ["meghalaya", "short"],
+      route: "Guwahati → Cherrapunji → Guwahati",
+      activityLevel: "Moderate Sightseeing",
+      groupSize: "1-8 Pax",
       highlights: [
-        "Shillong City Tour & Umiam Lake View",
-        "Cherrapunji Waterfalls & Mawsmai Cave",
-        "Double Decker Living Root Bridge Hike"
+        "Umiam Lake & Elephant Falls",
+        "Mawkdok Dympep Valley View Point",
+        "Seven Sisters Waterfall, Mawsmai Cave & Eco Park"
       ],
       itinerary: [
         {
           day: "Day 01",
-          title: "Guwahati arrival & Scenic Shillong drive",
-          overnight: "Shillong",
-          description: "Pickup from Guwahati Airport/Station. Travel NH40 road looking over emerald hills. Stop at Umiam Lake viewpoint for tea and water activities. Explore local Shillong cafes in the evening.",
-          highlights: ["Guwahati Airport pickup", "Umiam Lake sightseeing", "Police Bazaar night walk"]
-        },
-        {
-          day: "Day 02",
-          title: "Cherrapunji Canyons & Caves exploration",
-          overnight: "Cherrapunji",
-          description: "Check out from Shillong. Travel to Sohra (Cherrapunji), checking Elephant Falls en route. Inspect deep limestone caves at Mawsmai and stand next to massive waterfall viewpoints.",
-          highlights: ["Elephant Falls hike", "Mawsmai Cave exploration", "Nohkalikai Falls photo stop"]
-        },
-        {
-          day: "Day 03",
-          title: "Double Decker Root Bridge Hike",
-          overnight: "Cherrapunji",
-          description: "Descend 3,000 stone steps into Nongriat valley with a local guide. Walk over suspended rope bridges to reach the historic Double-Decker Living Root Bridge. Relax next to crystal waterfalls.",
-          highlights: ["Double-Decker Root Bridge trek", "Nongriat natural blue pools", "Rainbow Falls optional extension"]
-        },
-        {
-          day: "Day 04",
-          title: "Mawlynnong Cleanest Village & Return",
+          title: "Guwahati to Cherrapunji Sightseeing & Return",
           overnight: "Departure",
-          description: "Visit Mawlynnong, Asia's cleanest village. Hike to the Single Root Bridge in Riwai. Travel back to Guwahati for drop-off at the airport or station.",
-          highlights: ["Riwai Single Root Bridge", "Cleanest Village walk", "Guwahati airport dropoff"]
+          description: "Early pickup from Guwahati. Scenic drive stopping at Umiam Lake viewpoint, Elephant Falls, and Mawkdok Dympep Valley View Point. Explore Seven Sisters Waterfall, Mawsmai Cave, and Eco Park before returning to Guwahati in the evening.",
+          highlights: [
+            "Umiam Lake view stop",
+            "Elephant Falls hike",
+            "Mawkdok Dympep Valley View Point",
+            "Seven Sisters Waterfall view",
+            "Mawsmai Cave exploration",
+            "Eco Park viewpoint walk",
+            "Return drive to Guwahati"
+          ]
         }
       ]
     },
     {
-      id: "family-odyssey",
-      title: "Meghalaya Family Odyssey",
-      price: "₹18,000",
-      duration: "6 Days / 5 Nights",
-      image: "/img/shillong.png",
-      categories: ["family"],
-      route: "Guwahati - Shillong - Cherrapunji - Dawki - Mawlynnong - Guwahati",
+      id: "meghalaya-2d1n",
+      title: "2 Days Meghalaya Abode of Clouds Tour",
+      price: "Contact Owner",
+      duration: "2 Days / 1 Night",
+      image: "/img/shillong/shillong.png",
+      gallery: ["/img/shillong/shillong.png", "/img/cherrapunji/cerrapunji.png"],
+      categories: ["meghalaya", "short"],
+      route: "Guwahati → Cherrapunji → Guwahati",
+      activityLevel: "Easy / Moderate",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Umiam Lake, Don Bosco & Air Force Museums",
+        "Garden of Caves & Arwah Cave",
+        "Nohkalikai, Wei Sawdong & Lyngksiar Waterfalls"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati to Cherrapunji via Museums & Caves",
+          overnight: "Cherrapunji",
+          description: "Drive from Guwahati to Cherrapunji. Visit Umiam Lake, Don Bosco Museum, Air Force Museum, Elephant Falls, Mawkdok Dympep Valley View Point, Garden of Caves, and mysterious Arwah Cave. Overnight stay in Cherrapunji.",
+          highlights: [
+            "Umiam Lake & Don Bosco Museum",
+            "Air Force Museum & Elephant Falls",
+            "Mawkdok Dympep Valley View Point",
+            "Garden of Caves & Arwah Cave exploration",
+            "Night stay in Cherrapunji"
+          ]
+        },
+        {
+          day: "Day 02",
+          title: "Cherrapunji Waterfalls & Return to Guwahati",
+          overnight: "Departure",
+          description: "Explore Seven Sisters Waterfall, Mawsmai Cave, Eco Park, majestic Nohkalikai Falls, step waterfall Wei Sawdong, and Lyngksiar Waterfall. Drive back to Guwahati after completing sightseeing.",
+          highlights: [
+            "Seven Sisters Waterfall & Mawsmai Cave",
+            "Eco Park & Nohkalikai Falls viewpoint",
+            "Wei Sawdong & Lyngksiar Waterfalls",
+            "Return drive to Guwahati"
+          ]
+        }
+      ]
+    },
+    {
+      id: "meghalaya-3d2n",
+      title: "3 Days Meghalaya Waterfall & Cave Tour",
+      price: "Contact Owner",
+      duration: "3 Days / 2 Nights",
+      image: "/img/cherrapunji/cerrapunji.png",
+      gallery: ["/img/cherrapunji/cerrapunji.png", "/img/shillong/shillong.png"],
+      categories: ["meghalaya", "short", "family"],
+      route: "Guwahati → Cherrapunji → Guwahati",
       activityLevel: "Easy Sightseeing",
-      groupSize: "3-8 Pax (Ideal for families)",
+      groupSize: "2-8 Pax",
       highlights: [
-        "Dawki Crystal River Boating",
-        "Mawlynnong (Cleanest Village) walk",
-        "Nartiang Monoliths & Jaintia Hills"
+        "Shillong Peak & Garden of Caves",
+        "Nohkalikai, Dainthlen, Wei Sawdong & Prut Falls",
+        "Kynrem Waterfall, Arwah Cave & Bull's Trek"
       ],
       itinerary: [
         {
           day: "Day 01",
-          title: "Arrival at Guwahati & Shillong Drive",
-          overnight: "Shillong",
-          description: "Pickup from Guwahati and transfer to Shillong. View pine forests and visit Umiam Lake. Spend a cozy evening at a boutique homestay.",
-          highlights: ["Guwahati private transfer", "Umiam Lake sunset", "Homestay traditional dinner"]
+          title: "Guwahati to Cherrapunji",
+          overnight: "Cherrapunji",
+          description: "Pickup from Guwahati. Sightseeing includes Umiam Lake, Don Bosco Museum, Shillong Peak, Air Force Museum, Elephant Falls, Mawkdok Dympep Valley View Point, and Garden of Caves. Night stay in Cherrapunji.",
+          highlights: [
+            "Umiam Lake & Shillong Peak views",
+            "Don Bosco & Air Force Museums",
+            "Elephant Falls & Mawkdok Valley",
+            "Garden of Caves & Night stay Cherrapunji"
+          ]
         },
         {
           day: "Day 02",
-          title: "Laitlum Canyons & Krang Suri Waterfalls",
-          overnight: "Shillong",
-          description: "Drive to Jaintia hills. Look over the dramatic gorges of Laitlum Canyons. Hike the easy stone pathway down to the bright blue natural pool of Krang Suri Falls.",
-          highlights: ["Laitlum Canyons viewing", "Krang Suri pool swim/boat", "Shillong local market shopping"]
+          title: "Cherrapunji Local Sightseeing",
+          overnight: "Cherrapunji",
+          description: "Full day local waterfall exploration: Nohkalikai Falls, Dainthlen Falls, 3-tiered Wei Sawdong Waterfall, Prut Falls, Lyngksiar Waterfall, and Eco Park. Night stay in Cherrapunji.",
+          highlights: [
+            "Nohkalikai & Dainthlen Waterfalls",
+            "Wei Sawdong 3-tier waterfall hike",
+            "Prut Falls & Lyngksiar Waterfall",
+            "Eco Park view & Night stay Cherrapunji"
+          ]
         },
         {
           day: "Day 03",
-          title: "Cherrapunji Waterfall Sightseeing",
-          overnight: "Cherrapunji",
-          description: "Drive from Shillong to Cherrapunji. Visit Eco Park, Seven Sisters Falls, and Nohkalikai falls. Explore the safe and well-lit Arwah Caves.",
-          highlights: ["Arwah Cave fossil walk", "Nohkalikai waterfalls", "Eco park views"]
-        },
-        {
-          day: "Day 04",
-          title: "Dawki Boating & Cleanest Village tour",
-          overnight: "Dawki / Mawlynnong",
-          description: "Drive to Dawki border. Board a traditional wooden boat on the crystal clear Umngot River. Travel to Mawlynnong for a peaceful evening walk.",
-          highlights: ["Umngot River boat cruise", "Mawlynnong local dinner", "Skywalk bamboo tower lookouts"]
-        },
-        {
-          day: "Day 05",
-          title: "Riwai Single Root Bridge & Shillong Return",
-          overnight: "Shillong",
-          description: "Check the Riwai root bridge in the morning. Travel back to Shillong, stopping at Elephant Falls for photos. Relax at your hotel.",
-          highlights: ["Riwai Root Bridge walk", "Elephant Falls viewpoint", "Cafes and music lounge visiting"]
-        },
-        {
-          day: "Day 06",
-          title: "Kamakhya Temple Cruise & Return",
+          title: "Cherrapunji to Guwahati",
           overnight: "Departure",
-          description: "Drive back to Guwahati. Visit the historic Kamakhya Temple on Nilachal Hills. Transfer to Guwahati airport for your onward journey.",
-          highlights: ["Kamakhya Temple darshan", "Local handicraft shopping", "Guwahati airport dropoff"]
+          description: "Visit Kynrem Waterfall, Seven Sisters Waterfall, Mawsmai Cave, Arwah Cave, and Bull's Trek. Drive back to Guwahati after sightseeing.",
+          highlights: [
+            "Kynrem & Seven Sisters Waterfalls",
+            "Mawsmai Cave & Arwah Cave walk",
+            "Bull's Trek exploration",
+            "Return drive to Guwahati"
+          ]
         }
       ]
     },
     {
-      id: "adventure-pack",
-      title: "The Ultimate Adventure Pack",
-      price: "₹22,500",
-      duration: "7 Days / 6 Nights",
-      image: "/img/bac 1.png",
-      categories: ["adventure"],
-      route: "Guwahati - Mawryngkhang - Cherrapunji - Dawki - Guwahati",
-      activityLevel: "Challenging / Active",
-      groupSize: "2-6 Pax",
+      id: "meghalaya-4d3n",
+      title: "4 Days Meghalaya & Mawlynnong Tour",
+      price: "Contact Owner",
+      duration: "4 Days / 3 Nights",
+      image: "/img/mawlynnong/bac 4.png",
+      gallery: ["/img/mawlynnong/bac 4.png", "/img/dawki/bac 3.png", "/img/cherrapunji/cerrapunji.png"],
+      categories: ["meghalaya", "family"],
+      route: "Guwahati → Cherrapunji → Mawlynnong → Guwahati",
+      activityLevel: "Moderate Sightseeing",
+      groupSize: "2-8 Pax",
       highlights: [
-        "Mawryngkhang Trek (Bamboo Skywalk Trail)",
-        "Laitlum Canyons & Deep Cave Crawls",
-        "Umngot River Kayaking & Camping"
+        "Cherrapunji Waterfalls & Cave Circuit",
+        "Mawlynnong Cleanest Village in Asia",
+        "Living Root Bridge & Dawki River Boating"
       ],
       itinerary: [
         {
           day: "Day 01",
-          title: "Guwahati to Shillong scenic drive",
-          overnight: "Shillong",
-          description: "Meet your guide at Guwahati airport. Travel to Shillong, setup gear, and attend a trip briefing with local outdoor experts.",
-          highlights: ["Guwahati airport pickup", "Gear checklist check", "Local organic dinner"]
+          title: "Guwahati to Cherrapunji",
+          overnight: "Cherrapunji",
+          description: "Pickup from Guwahati. Visit Umiam Lake, Don Bosco Museum, Shillong Peak, Air Force Museum, Elephant Falls, Mawkdok Dympep Valley View Point, and Garden of Caves. Night stay in Cherrapunji.",
+          highlights: ["Umiam Lake & Shillong Peak", "Elephant Falls & Mawkdok Valley", "Night stay in Cherrapunji"]
         },
         {
           day: "Day 02",
-          title: "Mawryngkhang Bamboo Skywalk trek",
-          overnight: "Shillong",
-          description: "Travel to Wahkhen village. Embark on the famous Mawryngkhang Trek—a trail built entirely on bamboo bridges hugging steep granite cliffs. High adrenaline guaranteed.",
-          highlights: ["Bamboo sky bridge walk", "Mawryngkhang sacred rock summit", "River swimming at Wahkhen"]
+          title: "Cherrapunji Local Sightseeing",
+          overnight: "Cherrapunji",
+          description: "Visit Nohkalikai Falls, Dainthlen Falls, Wei Sawdong Waterfall, Prut Falls, Lyngksiar Waterfall, and Eco Park. Night stay in Cherrapunji.",
+          highlights: ["Nohkalikai & Dainthlen Falls", "Wei Sawdong & Prut Falls", "Night stay in Cherrapunji"]
         },
         {
           day: "Day 03",
-          title: "Cherrapunji Canyons & Deep Caves hike",
-          overnight: "Cherrapunji",
-          description: "Drive to Cherrapunji. Hike along the Laitlum Canyon ridge. Head deep into wild limestone cave structures with helmets and headlamps.",
-          highlights: ["Laitlum Canyons trek", "Wild cave exploration", "Sohra cliff sunset"]
+          title: "Cherrapunji to Mawlynnong Drive",
+          overnight: "Mawlynnong",
+          description: "Visit Kynrem Waterfall, Seven Sisters Waterfall, Mawsmai Cave, and Arwah Cave. Drive to Asia's cleanest village, Mawlynnong. Night stay in Mawlynnong.",
+          highlights: ["Kynrem & Seven Sisters Waterfalls", "Mawsmai & Arwah Caves", "Drive to Mawlynnong & Night stay"]
         },
         {
           day: "Day 04",
-          title: "Krem Liat Prah cave crawl & exploration",
+          title: "Mawlynnong, Root Bridge & Dawki to Guwahati",
+          overnight: "Departure",
+          description: "Explore Mawlynnong Village, hike to the Single Living Root Bridge in Riwai, and experience transparent boat riding on Umngot River in Dawki. Drive back to Guwahati (~5-6 hours).",
+          highlights: [
+            "Mawlynnong Cleanest Village walk",
+            "Single Living Root Bridge hike",
+            "Dawki Umngot River boating",
+            "Return drive to Guwahati (~5-6 hours)"
+          ]
+        }
+      ]
+    },
+    {
+      id: "meghalaya-5d4n",
+      title: "5 Days Meghalaya Full Odyssey",
+      price: "Contact Owner",
+      duration: "5 Days / 4 Nights",
+      image: "/img/dawki/bac 3.png",
+      gallery: ["/img/dawki/bac 3.png", "/img/mawlynnong/bac 4.png", "/img/shillong/shillong.png"],
+      categories: ["meghalaya", "family", "adventure"],
+      route: "Guwahati → Cherrapunji → Upper Shillong → Dawki → Guwahati",
+      activityLevel: "Moderate",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Laitlum Canyon & Living Root Bridge",
+        "Dawki Umngot River Boating",
+        "Krang Suri & Phe Phe Waterfalls"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati to Cherrapunji",
           overnight: "Cherrapunji",
-          description: "Join professional guides to explore Krem Liat Prah, one of the longest natural cave systems in South Asia. Walk through massive fossil galleries.",
-          highlights: ["Liat Prah cave exploration", "Fossil sighting", "Adventure safety coordination"]
+          description: "Visit Umiam Lake, Don Bosco Museum, Shillong Peak, Air Force Museum, Elephant Falls, Mawkdok Dympep Valley View Point, and Garden of Caves. Night stay in Cherrapunji.",
+          highlights: ["Umiam Lake & Shillong Peak", "Elephant Falls & Mawkdok Valley", "Night stay in Cherrapunji"]
+        },
+        {
+          day: "Day 02",
+          title: "Cherrapunji Waterfalls Local Sightseeing",
+          overnight: "Cherrapunji",
+          description: "Explore Nohkalikai Falls, Dainthlen Falls, Wei Sawdong Waterfall, Prut Falls, Lyngksiar Waterfall, and Eco Park. Night stay in Cherrapunji.",
+          highlights: ["Nohkalikai & Wei Sawdong Falls", "Prut & Lyngksiar Waterfalls", "Night stay in Cherrapunji"]
+        },
+        {
+          day: "Day 03",
+          title: "Cherrapunji to Upper Shillong",
+          overnight: "Upper Shillong",
+          description: "Visit Kynrem Waterfall, Seven Sisters Waterfall, Mawsmai Cave, Arwah Cave, and Bull's Trek. Drive to Upper Shillong. Night stay in Upper Shillong.",
+          highlights: ["Kynrem & Seven Sisters Waterfalls", "Mawsmai & Arwah Caves", "Night stay in Upper Shillong"]
+        },
+        {
+          day: "Day 04",
+          title: "Upper Shillong to Dawki via Laitlum & Mawlynnong",
+          overnight: "Dawki",
+          description: "Explore Laitlum Canyon gorges, Mawlynnong Village, Riwai Living Root Bridge, and crystal clear Dawki River boating. Night stay in Dawki.",
+          highlights: ["Laitlum Canyon panoramic views", "Mawlynnong & Living Root Bridge", "Dawki River boating & Night stay"]
         },
         {
           day: "Day 05",
-          title: "Double Decker Bridge & Rainbow Falls hike",
+          title: "Dawki to Guwahati via Krang Suri & Phe Phe",
+          overnight: "Departure",
+          description: "Visit the stunning blue natural pools of Krang Suri Waterfall and multi-tiered Phe Phe Waterfall. Drive back to Guwahati (~5-6 hours).",
+          highlights: [
+            "Krang Suri blue pool waterfall",
+            "Phe Phe Waterfall exploration",
+            "Return drive to Guwahati (~5-6 hours)"
+          ]
+        }
+      ]
+    },
+    {
+      id: "meghalaya-6d5n",
+      title: "6 Days Meghalaya & Double Decker Root Bridge Trek",
+      price: "Contact Owner",
+      duration: "6 Days / 5 Nights",
+      image: "/img/cherrapunji/bac 1.png",
+      gallery: ["/img/cherrapunji/bac 1.png", "/img/dawki/bac 3.png", "/img/shillong/shillong.png"],
+      categories: ["meghalaya", "adventure"],
+      route: "Guwahati → Cherrapunji → Double Decker Trek → Dawki → Guwahati",
+      activityLevel: "Active Trekking",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Double Decker Living Root Bridge & Rainbow Falls Trek",
+        "Laitlum Canyon & Dawki River Boating",
+        "Krang Suri & Phe Phe Waterfalls"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati to Cherrapunji Drive",
           overnight: "Cherrapunji",
-          description: "Descend into Nongriat. Visit the Double Decker bridge and continue trekking 1.5 hours further into the jungle to reach the majestic Rainbow Falls.",
-          highlights: ["Double Decker root bridge", "Rainbow Falls wild trek", "Suspension bridge crossings"]
+          description: "Pickup from Guwahati. Sightseeing includes Umiam Lake, Don Bosco Museum, Shillong Peak, Air Force Museum, Elephant Falls, Mawkdok Valley, and Garden of Caves. Night stay in Cherrapunji.",
+          highlights: ["Umiam Lake & Shillong Peak", "Elephant Falls & Mawkdok Valley", "Night stay in Cherrapunji"]
+        },
+        {
+          day: "Day 02",
+          title: "Cherrapunji Local Sightseeing",
+          overnight: "Cherrapunji",
+          description: "Visit Nohkalikai Falls, Dainthlen Falls, Wei Sawdong Waterfall, Prut Falls, Lyngksiar Waterfall, and Eco Park. Night stay in Cherrapunji.",
+          highlights: ["Nohkalikai & Wei Sawdong Falls", "Prut & Lyngksiar Waterfalls", "Night stay in Cherrapunji"]
+        },
+        {
+          day: "Day 03",
+          title: "Double Decker Living Root Bridge & Rainbow Falls Trek",
+          overnight: "Cherrapunji",
+          description: "Trek from Tyrna Village down 3,000 steps to the historic Double Decker Living Root Bridge in Nongriat. Continue trekking to majestic Rainbow Falls. Night stay in Cherrapunji.",
+          highlights: [
+            "Tyrna Village starting point",
+            "Double Decker Living Root Bridge hike",
+            "Rainbow Falls jungle trek",
+            "Natural blue pool swimming & Night stay"
+          ]
+        },
+        {
+          day: "Day 04",
+          title: "Cherrapunji to Upper Shillong",
+          overnight: "Upper Shillong",
+          description: "Visit Kynrem Waterfall, Seven Sisters Waterfall, Mawsmai Cave, Arwah Cave, and Bull's Trek. Drive to Upper Shillong for night stay.",
+          highlights: ["Kynrem & Seven Sisters Waterfalls", "Mawsmai & Arwah Caves", "Night stay in Upper Shillong"]
+        },
+        {
+          day: "Day 05",
+          title: "Upper Shillong to Dawki",
+          overnight: "Dawki",
+          description: "Visit Laitlum Canyon, Mawlynnong Village, Riwai Living Root Bridge, and enjoy Dawki Umngot river boating. Night stay in Dawki.",
+          highlights: ["Laitlum Canyon viewing", "Mawlynnong & Living Root Bridge", "Dawki Boating & Night stay"]
         },
         {
           day: "Day 06",
-          title: "Dawki River Kayaking & Camping",
-          overnight: "Dawki Camping",
-          description: "Drive to Dawki. Spend the day kayaking, cliff jumping, and snorkeling in the transparent Umngot River. Sleep in riverside tents under the stars.",
-          highlights: ["Umngot river kayaking", "Cliff jumping", "Riverside bonfire and camping"]
+          title: "Dawki to Guwahati via Krang Suri & Phe Phe",
+          overnight: "Departure",
+          description: "Visit turquoise Krang Suri Waterfall and Phe Phe Waterfall. Drive back to Guwahati (~5-6 hours).",
+          highlights: ["Krang Suri & Phe Phe Waterfalls", "Drive back to Guwahati (~5-6 hours)"]
+        }
+      ]
+    },
+    {
+      id: "meghalaya-7d6n",
+      title: "7 Days Ultimate Meghalaya Explorer",
+      price: "Contact Owner",
+      duration: "7 Days / 6 Nights",
+      image: "/img/shillong/shillong.png",
+      gallery: ["/img/shillong/shillong.png", "/img/cherrapunji/bac 1.png", "/img/dawki/bac 3.png"],
+      categories: ["meghalaya", "family", "adventure"],
+      route: "Guwahati → Upper Shillong → Cherrapunji → Dawki → Guwahati",
+      activityLevel: "Moderate / Active",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Mawphlang Sacred Forest & Laitlum Canyon",
+        "Double Decker Root Bridge & Rainbow Falls Trek",
+        "Bamboo Trek, Dawki Boating, Krang Suri & Tyrshi Falls"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati to Upper Shillong",
+          overnight: "Upper Shillong",
+          description: "Pickup from Guwahati. Visit Umiam Lake, Don Bosco Museum, Shillong Peak, Air Force Museum, Elephant Falls, and ancient Mawphlang Sacred Forest. Night stay in Upper Shillong.",
+          highlights: ["Umiam Lake & Shillong Peak", "Elephant Falls & Mawphlang Sacred Forest", "Night stay in Upper Shillong"]
+        },
+        {
+          day: "Day 02",
+          title: "Upper Shillong to Cherrapunji via Laitlum",
+          overnight: "Cherrapunji",
+          description: "Visit Laitlum Canyon, Bull's Trek, Mawkdok Dympep Valley View Point, and Garden of Caves. Night stay in Cherrapunji.",
+          highlights: ["Laitlum Canyon gorge view", "Bull's Trek & Mawkdok Valley", "Night stay in Cherrapunji"]
+        },
+        {
+          day: "Day 03",
+          title: "Cherrapunji Local Sightseeing",
+          overnight: "Cherrapunji",
+          description: "Visit Kynrem Waterfall, Bangladesh View Point, Seven Sisters Waterfall, Mawsmai Cave, Arwah Cave, and Eco Park. Night stay in Cherrapunji.",
+          highlights: ["Kynrem Falls & Bangladesh View Point", "Seven Sisters Falls & Mawsmai Cave", "Night stay in Cherrapunji"]
+        },
+        {
+          day: "Day 04",
+          title: "Double Decker Living Root Bridge & Rainbow Falls Trek",
+          overnight: "Cherrapunji",
+          description: "Trek through Tyrna Village to Double Decker Living Root Bridge and Rainbow Falls. Night stay in Cherrapunji.",
+          highlights: ["Double Decker Root Bridge trek", "Rainbow Falls adventure", "Night stay in Cherrapunji"]
+        },
+        {
+          day: "Day 05",
+          title: "Cherrapunji Waterfalls to Upper Shillong",
+          overnight: "Upper Shillong",
+          description: "Visit Nohkalikai Falls, Dainthlen Falls, Wei Sawdong Waterfall, Prut Falls, and Lyngksiar Waterfall. Drive to Upper Shillong. Night stay in Upper Shillong.",
+          highlights: ["Nohkalikai & Wei Sawdong Waterfalls", "Prut & Lyngksiar Falls", "Night stay in Upper Shillong"]
+        },
+        {
+          day: "Day 06",
+          title: "Upper Shillong to Dawki via Bamboo Trek",
+          overnight: "Dawki",
+          description: "Experience the thrilling Bamboo Trek, visit Mawlynnong Village, Riwai Living Root Bridge, and enjoy Dawki Umngot river boating. Night stay in Dawki.",
+          highlights: ["Bamboo Trail Skywalk Trek", "Mawlynnong & Living Root Bridge", "Dawki Boating & Night stay"]
         },
         {
           day: "Day 07",
-          title: "Return to Guwahati",
+          title: "Dawki to Guwahati via Waterfalls Circuit",
           overnight: "Departure",
-          description: "Wake up to a riverside sunrise. Drive back to Guwahati for silk shopping and airport drop-off.",
-          highlights: ["Guwahati transfer", "Assamese local lunch", "Guwahati airport dropoff"]
+          description: "Visit Krang Suri Waterfall, Phe Phe Waterfall, and Tyrshi Waterfall. Drive back to Guwahati (~5-6 hours).",
+          highlights: ["Krang Suri, Phe Phe & Tyrshi Waterfalls", "Return drive to Guwahati (~5-6 hours)"]
         }
       ]
     },
+
+    // --- TAWANG / ARUNACHAL PRADESH PACKAGES ---
     {
-      id: "assam-wildlife",
-      title: "Assam Wildlife & Brahmaputra Trails",
-      price: "₹16,000",
-      duration: "4 Days / 3 Nights",
-      image: "/img/kaziranga.png",
-      categories: ["short", "family"],
-      route: "Guwahati - Kaziranga - Guwahati",
-      activityLevel: "Easy",
-      groupSize: "2-8 Pax",
+      id: "tawang-6d5n",
+      title: "6 Days Tawang & Sela Pass Express",
+      price: "Contact Owner",
+      duration: "6 Days / 5 Nights",
+      image: "/img/tawang/tawang.png",
+      gallery: ["/img/tawang/tawang.png", "/img/tawang/sela_pass.png", "/img/dirang/sangti_valley.png"],
+      categories: ["tawang", "adventure"],
+      route: "Guwahati → Dirang → Tawang → Bomdila → Guwahati",
+      activityLevel: "Mountain High Altitude",
+      groupSize: "2-6 Pax",
       highlights: [
-        "Kaziranga Jeep & Elephant Safari",
-        "Assam Tea Garden walking tours",
-        "Brahmaputra Sunset cruise"
+        "Kameng River, Tippi Orchid & Nichiphula Waterfall",
+        "Sela Pass (13,700 ft), Sela Lake & Nuranang Falls",
+        "Bum La Pass (15,200 ft), Madhuri Lake & Tawang Monastery"
       ],
       itinerary: [
         {
           day: "Day 01",
-          title: "Guwahati to Kaziranga National Park",
-          overnight: "Kaziranga",
-          description: "Pickup from Guwahati. Drive to Kaziranga, home of the Great One-horned Rhinoceros. Check into a beautiful jungle resort. Attend an evening cultural Assamese dance show.",
-          highlights: ["Guwahati pickup", "Scenic Assam rural drive", "Bihu cultural show"]
+          title: "Guwahati to Dirang Scenic Drive",
+          overnight: "Dirang",
+          description: "Drive from Guwahati to Dirang (Approx. 7-8 Hours). En route visit Kameng River near Bhalukpong, Tippi Orchid Centre, Nichiphula Waterfall, and Nag Mandir. Night stay in Dirang.",
+          highlights: ["Drive Guwahati to Dirang (7-8 hrs)", "Kameng River & Tippi Orchid Centre", "Nichiphula Waterfall & Nag Mandir", "Night stay in Dirang"]
         },
         {
           day: "Day 02",
-          title: "Kaziranga Elephant & Jeep Safaris",
-          overnight: "Kaziranga",
-          description: "Start with a pre-dawn Elephant safari in the Western range to view rhinos up close. In the afternoon, board an open 4x4 Jeep for a safari in the Central range to spot wild water buffaloes and tigers.",
-          highlights: ["Elephant riding safari", "Jeep wildlife safari", "Orchid and biodiversity park walk"]
+          title: "Dirang to Tawang via Sela Pass",
+          overnight: "Tawang",
+          description: "Drive from Dirang to Tawang (Approx. 6-7 Hours). Stop at world-famous Sela Pass (13,700 ft), serene Sela Lake, Jaswant Garh War Memorial, and majestic Nuranang (Jung) Falls. Night stay in Tawang.",
+          highlights: ["Sela Pass (13,700 ft altitude)", "Beautiful Sela Lake view", "Jaswant Garh War Memorial", "Nuranang Falls photo stop", "Night stay in Tawang"]
         },
         {
           day: "Day 03",
-          title: "Tea Garden walk & Sunset River Cruise",
-          overnight: "Guwahati",
-          description: "Walk through the historic tea garden trails. Travel back to Guwahati. In the evening, board a premium cruise liner on the Brahmaputra River for sunset views.",
-          highlights: ["Assam Tea Estate walk", "Guwahati transfer", "Brahmaputra sunset river cruise"]
+          title: "Explore Tawang – Bum La Pass Circuit",
+          overnight: "Tawang",
+          description: "Full day high-altitude circuit (8-10 Hours): visit Indo-China border at Bum La Pass, Pangateng Tso (P.T. Tso) Lake, and scenic Madhuri Lake (Sangetsar Tso). Night stay in Tawang.",
+          highlights: ["Bum La Pass (Subject to Permit/Weather)", "Madhuri Lake (Sangetsar Tso)", "Pangateng Tso (P.T. Tso) Lake", "Night stay in Tawang"]
         },
         {
           day: "Day 04",
-          title: "Kamakhya Temple visit & Silk Shopping",
+          title: "Explore Tawang Local Places",
+          overnight: "Tawang",
+          description: "Full day local sightseeing (7-8 Hours): visit historic Tawang Monastery (largest in India), Giant Buddha Statue, Tawang War Memorial, Khinmey Nyingma Monastery, Ani Gompa, and Ugyenling Monastery. Night stay in Tawang.",
+          highlights: ["Tawang Monastery (Asia's 2nd largest)", "Giant Buddha Statue", "Tawang War Memorial light & sound", "Ani Gompa & Ugyenling Monastery", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 05",
+          title: "Tawang to Bomdila via Sela Tunnel",
+          overnight: "Bomdila",
+          description: "Drive from Tawang to Bomdila (Approx. 7-8 Hours). Drive through Sela Tunnel, visit Dirang Monastery, and explore Sangti Valley. Night stay in Bomdila.",
+          highlights: ["Sela Tunnel modern mountain engineering", "Dirang Monastery visit", "Sangti Valley view point", "Night stay in Bomdila"]
+        },
+        {
+          day: "Day 06",
+          title: "Bomdila to Guwahati",
           overnight: "Departure",
-          description: "Visit the sacred Kamakhya Temple atop Nilachal Hill. Shop for authentic Muga and Pat silk garments before airport drop-off.",
-          highlights: ["Kamakhya Temple darshan", "Silk markets shopping", "Guwahati airport dropoff"]
+          description: "Visit Bomdila Monastery in the morning. Drive back to Guwahati (Approx. 8-9 Hours) for drop-off at Guwahati Airport or Railway Station.",
+          highlights: ["Bomdila Monastery visit", "Drive back to Guwahati (8-9 hrs)", "Guwahati Airport / Station drop-off"]
+        }
+      ]
+    },
+    {
+      id: "tawang-7d6n",
+      title: "7 Days Tawang Circuit & Bhalukpong",
+      price: "Contact Owner",
+      duration: "7 Days / 6 Nights",
+      image: "/img/tawang/sela_pass.png",
+      gallery: ["/img/tawang/sela_pass.png", "/img/tawang/tawang.png", "/img/dirang/sangti_valley.png"],
+      categories: ["tawang", "family", "adventure"],
+      route: "Guwahati → Bhalukpong → Dirang → Tawang → Bomdila → Guwahati",
+      activityLevel: "Mountain High Altitude",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Maha Mrityunjay Temple & Bhalukpong Gateway",
+        "Sela Pass, Sela Lake & Jaswant Garh Memorial",
+        "Bum La Pass, Madhuri Lake & Tawang Monasteries"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati to Bhalukpong",
+          overnight: "Bhalukpong",
+          description: "Drive from Guwahati to Bhalukpong (Approx. 5-6 Hours). Visit Maha Mrityunjay Temple en route. Night stay in Bhalukpong.",
+          highlights: ["Maha Mrityunjay Temple visit", "Drive to Bhalukpong (~5-6 hrs)", "Night stay in Bhalukpong"]
+        },
+        {
+          day: "Day 02",
+          title: "Bhalukpong to Dirang",
+          overnight: "Dirang",
+          description: "Drive from Bhalukpong to Dirang (Approx. 5-6 Hours). Sightseeing includes Kameng River, Tippi Orchid Centre, Nichiphula Waterfall, and Nag Mandir. Night stay in Dirang.",
+          highlights: ["Kameng River scenic bank", "Tippi Orchid Centre", "Nichiphula Waterfall & Nag Mandir", "Night stay in Dirang"]
+        },
+        {
+          day: "Day 03",
+          title: "Dirang to Tawang via Sela Pass",
+          overnight: "Tawang",
+          description: "Drive to Tawang (Approx. 6-7 Hours). Stop at Sela Pass, Sela Lake, Jaswant Garh War Memorial, and Nuranang Falls. Night stay in Tawang.",
+          highlights: ["Sela Pass & Sela Lake", "Jaswant Garh War Memorial", "Nuranang (Jung) Falls", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 04",
+          title: "Explore Tawang – Bum La Circuit",
+          overnight: "Tawang",
+          description: "Full day excursion (8-10 Hours) to Bum La Pass, Pangateng Tso Lake, and Madhuri Lake. Night stay in Tawang.",
+          highlights: ["Bum La Pass Indo-China Border", "Pangateng Tso Lake", "Madhuri Lake (Sangetsar Tso)", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 05",
+          title: "Explore Tawang Local Sightseeing",
+          overnight: "Tawang",
+          description: "Visit Tawang Monastery, Giant Buddha Statue, Tawang War Memorial, Khinmey Nyingma Monastery, Ani Gompa, and Ugyenling Monastery. Night stay in Tawang.",
+          highlights: ["Tawang Monastery", "Giant Buddha Statue", "Tawang War Memorial", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 06",
+          title: "Tawang to Bomdila",
+          overnight: "Bomdila",
+          description: "Drive to Bomdila (Approx. 7-8 Hours) via Sela Tunnel, Dirang Monastery, and Sangti Valley. Night stay in Bomdila.",
+          highlights: ["Sela Tunnel view", "Dirang Monastery & Sangti Valley", "Night stay in Bomdila"]
+        },
+        {
+          day: "Day 07",
+          title: "Bomdila to Guwahati Departure",
+          overnight: "Departure",
+          description: "Visit Bomdila Monastery. Drive back to Guwahati (Approx. 8-9 Hours) for airport/station drop-off.",
+          highlights: ["Bomdila Monastery visit", "Return drive to Guwahati (8-9 hrs)", "Guwahati drop-off"]
+        }
+      ]
+    },
+    {
+      id: "tawang-8d7n",
+      title: "8 Days Tawang, Sangti Valley & Shergaon",
+      price: "Contact Owner",
+      duration: "8 Days / 7 Nights",
+      image: "/img/dirang/sangti_valley.png",
+      gallery: ["/img/dirang/sangti_valley.png", "/img/tawang/tawang.png", "/img/tawang/sela_pass.png"],
+      categories: ["tawang", "adventure"],
+      route: "Guwahati → Dirang → Sangti Valley → Tawang → Bomdila → Shergaon → Guwahati",
+      activityLevel: "Moderate High Altitude",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Mandala Top, Sangti Valley & Local Sheep Farm",
+        "Sela Pass, Sela Lake & Nyukmadung War Memorial",
+        "Bum La Pass, Madhuri Lake & Shergaon Apple Farm"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati to Dirang",
+          overnight: "Dirang",
+          description: "Drive from Guwahati to Dirang (8-9 Hours). Visit Tippi Orchidarium, Tenga Valley, Tenga Hat Market, and Nag Mandir. Night stay in Dirang.",
+          highlights: ["Tippi Orchidarium & Tenga Valley", "Tenga Hat Market & Nag Mandir", "Night stay in Dirang"]
+        },
+        {
+          day: "Day 02",
+          title: "Dirang → Mandala Top → Sangti Valley",
+          overnight: "Sangti Valley",
+          description: "Explore 108 stupas at Mandala Top, Dirang Monastery, Sangti Valley river banks, Local Sheep Farm, natural Hot Water Spring, and historic Dirang Dzong. Night stay in Sangti Valley.",
+          highlights: ["Mandala Top 108 stupas", "Sangti Valley river walk", "Local Sheep Farm & Hot Spring", "Historic Dirang Dzong & Night stay"]
+        },
+        {
+          day: "Day 03",
+          title: "Sangti Valley to Tawang",
+          overnight: "Tawang",
+          description: "Drive to Tawang (~6 Hours). En route visit Nyukmadung War Memorial, Sela Pass, Sela Lake, and Jaswant Garh War Memorial. Night stay in Tawang.",
+          highlights: ["Nyukmadung War Memorial", "Sela Pass & Sela Lake", "Jaswant Garh War Memorial", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 04",
+          title: "Tawang Local Sightseeing",
+          overnight: "Tawang",
+          description: "Explore Tawang Monastery, Giant Buddha Statue, Tawang War Memorial, evening Light & Sound Show, and local Tawang market. Night stay in Tawang.",
+          highlights: ["Tawang Monastery & Giant Buddha", "Tawang War Memorial Light & Sound", "Local Tawang market shopping", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 05",
+          title: "Bum La Pass & High-Altitude Lakes",
+          overnight: "Tawang",
+          description: "Visit Bum La Pass (Indo-China Border), Madhuri Lake, and P.T. Tso Lake surrounded by pristine Himalayan snowscapes. Night stay in Tawang.",
+          highlights: ["Bum La Pass (Subject to Permit)", "Madhuri Lake & P.T. Tso Lake", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 06",
+          title: "Tawang → Jung Waterfall → Bomdila",
+          overnight: "Bomdila",
+          description: "Drive to Bomdila (~6-7 Hours). Stop at Nuranang (Jung) Waterfall, Sela Tunnel, and Bomdila Monastery. Night stay in Bomdila.",
+          highlights: ["Nuranang (Jung) Waterfall", "Sela Tunnel pass", "Bomdila Monastery & Night stay"]
+        },
+        {
+          day: "Day 07",
+          title: "Bomdila to Shergaon",
+          overnight: "Shergaon",
+          description: "Drive to Shergaon. Visit Shergaon Apple Farm, Local Craft Centre, Chilipong Monastery, Buddha Heritage Park, and traditional local shops. Night stay in Shergaon.",
+          highlights: ["Shergaon Apple Orchards", "Chilipong Monastery & Heritage Park", "Night stay in Shergaon"]
+        },
+        {
+          day: "Day 08",
+          title: "Shergaon to Guwahati Departure",
+          overnight: "Departure",
+          description: "Drive from Shergaon via Bhairabkunda back to Guwahati (~7-8 Hours). Drop-off at Guwahati Airport or Railway Station.",
+          highlights: ["Scenic drive via Bhairabkunda", "Return to Guwahati (~7-8 hrs)", "Airport / Station drop-off"]
+        }
+      ]
+    },
+    {
+      id: "tawang-9d8n",
+      title: "9 Days Grand Arunachal & Nameri Wilderness",
+      price: "Contact Owner",
+      duration: "9 Days / 8 Nights",
+      image: "/img/tawang/tawang.png",
+      gallery: ["/img/tawang/tawang.png", "/img/dirang/sangti_valley.png", "/img/tawang/sela_pass.png"],
+      categories: ["tawang", "family", "adventure"],
+      route: "Guwahati → Nameri → Dirang → Sangti Valley → Tawang → Bomdila → Shergaon → Guwahati",
+      activityLevel: "Comprehensive Himalayan Tour",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Nameri National Park & Jia Bhoroli River Walk",
+        "Sangti Valley, Mandala Top 108 Stupas & Hot Springs",
+        "Full Tawang, Bum La Circuit & Shergaon Apple Orchards"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati → Nameri National Park → Bhalukpong",
+          overnight: "Bhalukpong",
+          description: "Drive from Guwahati to Nameri National Park (~4.5-5 Hours). Enjoy a guided nature walk along Jia Bhoroli River. Drive to Bhalukpong for night stay.",
+          highlights: ["Nameri National Park jungle walk", "Jia Bhoroli River nature scenery", "Night stay in Bhalukpong"]
+        },
+        {
+          day: "Day 02",
+          title: "Bhalukpong to Dirang",
+          overnight: "Dirang",
+          description: "Drive to Dirang (~5 Hours). Visit Tippi Orchidarium, Tenga Valley, Tenga Hat Market, and Nag Mandir. Night stay in Dirang.",
+          highlights: ["Tippi Orchidarium", "Tenga Valley & Hat Market", "Nag Mandir & Night stay in Dirang"]
+        },
+        {
+          day: "Day 03",
+          title: "Dirang → Mandala Top → Sangti Valley",
+          overnight: "Sangti Valley",
+          description: "Visit Mandala Top 108 Stupas, Dirang Monastery, Sangti Valley river walk, Sheep Farm, Hot Springs, and historic Dirang Dzong. Night stay in Sangti Valley.",
+          highlights: ["Mandala Top stupas", "Sangti Valley river walk & sheep farm", "Hot Water Springs & Night stay"]
+        },
+        {
+          day: "Day 04",
+          title: "Sangti Valley to Tawang via Sela Pass",
+          overnight: "Tawang",
+          description: "Drive to Tawang (~6 Hours). En route visit Nyukmadung War Memorial, Sela Pass, Sela Lake, and Jaswant Garh War Memorial. Night stay in Tawang.",
+          highlights: ["Nyukmadung War Memorial", "Sela Pass & Sela Lake", "Jaswant Garh & Night stay Tawang"]
+        },
+        {
+          day: "Day 05",
+          title: "Tawang Local Sightseeing",
+          overnight: "Tawang",
+          description: "Visit Tawang Monastery, Giant Buddha Statue, Tawang War Memorial, evening Light & Sound Show, and local market. Night stay in Tawang.",
+          highlights: ["Tawang Monastery & Giant Buddha", "War Memorial Light & Sound Show", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 06",
+          title: "Bum La Pass & High-Altitude Lakes",
+          overnight: "Tawang",
+          description: "Visit Bum La Pass, Madhuri Lake (Sangetsar Tso), and P.T. Tso Lake. Night stay in Tawang.",
+          highlights: ["Bum La Pass Indo-China Border", "Madhuri Lake & P.T. Tso Lake", "Night stay in Tawang"]
+        },
+        {
+          day: "Day 07",
+          title: "Tawang → Jung Waterfall → Bomdila",
+          overnight: "Bomdila",
+          description: "Visit Nuranang (Jung) Waterfall, Sela Tunnel, and Bomdila Monastery. Night stay in Bomdila.",
+          highlights: ["Nuranang Waterfall", "Sela Tunnel & Bomdila Monastery", "Night stay in Bomdila"]
+        },
+        {
+          day: "Day 08",
+          title: "Bomdila to Shergaon",
+          overnight: "Shergaon",
+          description: "Visit Shergaon Apple Farm, Local Craft Centre, Chilipong Monastery, and Buddha Heritage Park. Night stay in Shergaon.",
+          highlights: ["Shergaon Apple Orchards", "Chilipong Monastery", "Night stay in Shergaon"]
+        },
+        {
+          day: "Day 09",
+          title: "Shergaon to Guwahati Departure",
+          overnight: "Departure",
+          description: "Drive back to Guwahati (~7-8 Hours) via Bhairabkunda. Drop-off at Guwahati Airport or Railway Station.",
+          highlights: ["Scenic Bhairabkunda highway drive", "Return to Guwahati", "Guwahati Airport / Station drop-off"]
+        }
+      ]
+    },
+
+    // --- ASSAM PACKAGES ---
+    {
+      id: "guwahati-1day",
+      title: "Guwahati Local Sightseeing",
+      price: "Contact Owner",
+      duration: "1 Day",
+      image: "/img/guwahati/guwahati.png",
+      gallery: ["/img/guwahati/guwahati.png", "/img/kaziranga/kaziranga_orchid.png"],
+      categories: ["assam", "short"],
+      route: "Guwahati City Local Circuit",
+      activityLevel: "Easy Sightseeing",
+      groupSize: "1-8 Pax",
+      highlights: [
+        "Maa Kamakhya & Umananda Temple",
+        "Tirupati Balaji & Basistha Temple",
+        "Assam State Zoo & Riverfront Sunset"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Full Day Guwahati City & Temple Sightseeing",
+          overnight: "Departure / Guwahati",
+          description: "Explore major attractions of Guwahati in one day. Visit Kamakhya Temple atop Nilachal Hill, peacocks at Umananda Temple, Tirupati Balaji Temple, Basistha Temple, Assam State Zoo, and watch the serene Brahmaputra Riverfront sunset.",
+          highlights: [
+            "Maa Kamakhya Temple darshan",
+            "Umananda Temple island boat ride",
+            "Tirupati Balaji & Basistha Temple",
+            "Assam State Zoo & Riverfront sunset walk"
+          ]
+        }
+      ]
+    },
+    {
+      id: "kaziranga-2d1n",
+      title: "Kaziranga Express Wildlife Tour",
+      price: "Contact Owner",
+      duration: "2 Days / 1 Night",
+      image: "/img/kaziranga/kaziranga.png",
+      gallery: ["/img/kaziranga/kaziranga.png", "/img/kaziranga/kaziranga_orchid.png", "/img/guwahati/guwahati.png"],
+      categories: ["assam", "short"],
+      route: "Guwahati - Kaziranga - Guwahati",
+      activityLevel: "Moderate Wildlife",
+      groupSize: "2-6 Pax",
+      highlights: [
+        "Maha Mrityunjay Temple Visit",
+        "Kaziranga Orchid & Biodiversity Park",
+        "Early Morning Elephant / Jeep Safari"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati to Kaziranga & Orchid Park",
+          overnight: "Kaziranga",
+          description: "Drive from Guwahati to Kaziranga (~230 km). Visit Maha Mrityunjay Temple. Explore Kaziranga Orchid Park flora & culture. Night stay in Kaziranga.",
+          highlights: ["Drive Guwahati to Kaziranga (~230 km)", "Maha Mrityunjay Temple", "Kaziranga Orchid Park", "Night stay in Kaziranga"]
+        },
+        {
+          day: "Day 02",
+          title: "Kaziranga Wildlife Safari & Return to Guwahati",
+          overnight: "Departure",
+          description: "Early morning Elephant Safari / Jeep Safari to spot One-Horned Rhinos. Drive back to Guwahati.",
+          highlights: ["Elephant / Jeep Safari", "One-Horned Rhino spotting", "Return to Guwahati"]
+        }
+      ]
+    },
+    {
+      id: "kaziranga-3d2n",
+      title: "Kaziranga Safari & Cultural Experience",
+      price: "Contact Owner",
+      duration: "3 Days / 2 Nights",
+      image: "/img/kaziranga/kaziranga_orchid.png",
+      gallery: ["/img/kaziranga/kaziranga_orchid.png", "/img/kaziranga/kaziranga.png", "/img/guwahati/guwahati.png"],
+      categories: ["assam", "family"],
+      route: "Guwahati - Kaziranga - Guwahati",
+      activityLevel: "Easy / Family Friendly",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Guwahati Pickup & Kamakhya Temple",
+        "Dual Safaris: Elephant & Evening Jeep Safari",
+        "Assam Tea Gardens & Kaziranga View Point"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati Pickup & Drive to Kaziranga",
+          overnight: "Kaziranga",
+          description: "Pickup from Guwahati Airport/Station. Visit Kamakhya Temple & Umananda Temple. Drive to Kaziranga.",
+          highlights: ["Guwahati pickup", "Kamakhya & Umananda Temples", "Drive to Kaziranga & Night stay"]
+        },
+        {
+          day: "Day 02",
+          title: "Kaziranga Dual Safaris & Cultural Show",
+          overnight: "Kaziranga",
+          description: "Pre-dawn Elephant Safari & evening 4x4 Jeep Safari. Assamese cultural dance show at Orchid Park.",
+          highlights: ["Elephant Safari", "Jeep Safari", "Orchid Park Cultural Show"]
+        },
+        {
+          day: "Day 03",
+          title: "Tea Gardens, Kaziranga View Point & Drop",
+          overnight: "Departure",
+          description: "Drive to Guwahati via Maha Mrityunjay Temple, Tea Gardens, and Kaziranga View Point. Drop-off at Guwahati.",
+          highlights: ["Maha Mrityunjay Temple", "Assam Tea Gardens walk", "Kaziranga View Point", "Guwahati drop-off"]
+        }
+      ]
+    },
+    {
+      id: "assam-5d4n",
+      title: "Assam Tour: Kaziranga & Umrangso",
+      price: "Contact Owner",
+      duration: "5 Days / 4 Nights",
+      image: "/img/umrangso/umrangso.png",
+      gallery: ["/img/umrangso/umrangso.png", "/img/panimur/panimur.png", "/img/kaziranga/kaziranga.png"],
+      categories: ["assam", "adventure"],
+      route: "Guwahati - Kaziranga - Umrangso - Guwahati",
+      activityLevel: "Moderate Scenic",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Kaziranga Elephant & Jeep Safaris",
+        "Panimur Waterfall (Niagara of Assam)",
+        "Umrangso Golf Field, Pushringdi Island & Dam"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati to Kaziranga Drive",
+          overnight: "Kaziranga",
+          description: "Pickup from Guwahati (~230 km). Visit Maha Mrityunjay Temple en route.",
+          highlights: ["Guwahati pickup", "Maha Mrityunjay Temple", "Night stay Kaziranga"]
+        },
+        {
+          day: "Day 02",
+          title: "Kaziranga National Park Safaris",
+          overnight: "Kaziranga",
+          description: "Early Elephant Safari & evening Jeep Safari. Cultural programme at Orchid Park.",
+          highlights: ["Elephant Safari", "Jeep Safari", "Cultural show at Orchid Park"]
+        },
+        {
+          day: "Day 03",
+          title: "Kaziranga to Umrangso & Panimur Waterfall",
+          overnight: "Umrangso",
+          description: "Drive to Umrangso (~255 km). Stop at Panimur Waterfall on Kopili River.",
+          highlights: ["Drive to Umrangso (~255 km)", "Panimur Waterfall visit", "Night stay Umrangso"]
+        },
+        {
+          day: "Day 04",
+          title: "Umrangso Local Sightseeing",
+          overnight: "Umrangso",
+          description: "Explore Umrangso Golf Field, Pushringdi Island, Tularam Cave, and Umrang Dam.",
+          highlights: ["Umrangso Golf Field", "Pushringdi Island", "Tularam Cave", "Umrang Dam"]
+        },
+        {
+          day: "Day 05",
+          title: "Umrangso to Guwahati & Miyugma Waterfall",
+          overnight: "Departure",
+          description: "Drive back to Guwahati (~260 km). Visit Miyugma Daogah Waterfall. Drop-off at Guwahati.",
+          highlights: ["Miyugma Daogah Waterfall", "Return to Guwahati (~260 km)", "Airport / Station drop"]
+        }
+      ]
+    },
+    {
+      id: "assam-6d5n",
+      title: "Grand Assam Tour: Guwahati, Kaziranga & Umrangso",
+      price: "Contact Owner",
+      duration: "6 Days / 5 Nights",
+      image: "/img/panimur/panimur.png",
+      gallery: ["/img/panimur/panimur.png", "/img/umrangso/umrangso.png", "/img/guwahati/guwahati.png", "/img/kaziranga/kaziranga.png"],
+      categories: ["assam", "family", "adventure"],
+      route: "Guwahati - Kaziranga - Umrangso - Guwahati",
+      activityLevel: "Easy / Moderate",
+      groupSize: "2-8 Pax",
+      highlights: [
+        "Guwahati Full Day City & Temple Tour",
+        "Kaziranga Dual Safaris & Orchid Culture",
+        "Panimur Waterfall & Umrangso Golf Field",
+        "Miyugma Daogah Waterfall"
+      ],
+      itinerary: [
+        {
+          day: "Day 01",
+          title: "Guwahati Local Sightseeing",
+          overnight: "Guwahati",
+          description: "Pickup from Guwahati. Sightseeing: Kamakhya, Umananda, Balaji, Basistha, Zoo & Riverfront. Night stay Guwahati.",
+          highlights: ["Kamakhya & Umananda", "Balaji & Basistha Temples", "Zoo & Riverfront sunset"]
+        },
+        {
+          day: "Day 02",
+          title: "Guwahati to Kaziranga",
+          overnight: "Kaziranga",
+          description: "Drive towards Kaziranga (~230 km). Visit Maha Mrityunjay Temple en route.",
+          highlights: ["Drive to Kaziranga (~230 km)", "Maha Mrityunjay Temple", "Night stay Kaziranga"]
+        },
+        {
+          day: "Day 03",
+          title: "Kaziranga National Park Safaris",
+          overnight: "Kaziranga",
+          description: "Elephant Safari & Jeep Safari. Cultural dance performance at Orchid Park.",
+          highlights: ["Elephant Safari", "Jeep Safari", "Orchid Park Cultural Show"]
+        },
+        {
+          day: "Day 04",
+          title: "Kaziranga to Umrangso & Panimur Waterfall",
+          overnight: "Umrangso",
+          description: "Drive to Umrangso (~255 km). Visit Panimur Waterfall Kopili river rapids.",
+          highlights: ["Panimur Waterfall visit", "Dima Hasao hill drive", "Night stay Umrangso"]
+        },
+        {
+          day: "Day 05",
+          title: "Umrangso Local Sightseeing",
+          overnight: "Umrangso",
+          description: "Full day sightseeing: Umrangso Golf Field, Pushringdi Island, Tularam Cave, Umrang Dam.",
+          highlights: ["Umrangso Golf Field", "Pushringdi Island", "Tularam Cave", "Umrang Dam"]
+        },
+        {
+          day: "Day 06",
+          title: "Umrangso to Guwahati & Departure",
+          overnight: "Departure",
+          description: "Drive back to Guwahati (~260 km). Visit Miyugma Daogah Waterfall. Drop-off at Guwahati.",
+          highlights: ["Miyugma Daogah Waterfall", "Return drive to Guwahati (~260 km)", "Airport / Station drop"]
         }
       ]
     }
@@ -362,66 +1045,119 @@ export default function Home() {
   // Destination Data
   const destinations = [
     {
-      id: "shillong",
+      id: "tawang",
       num: "01",
-      name: "Shillong",
-      state: "Meghalaya",
-      duration: "2-3 Days",
-      image: "/img/shillong.png",
-      desc: "Often referred to as the 'Scotland of the East', Shillong is a vibrant capital surrounded by pine trees, majestic peaks, and a rich musical culture.",
+      name: "Tawang & Sela Pass",
+      state: "Arunachal Pradesh",
+      duration: "4-6 Days",
+      image: "/img/tawang/tawang.png",
+      desc: "Sacred land of Himalayan monasteries, frozen Sela Lake (13,700 ft), Bum La Pass (15,200 ft), Madhuri Lake & Sela Tunnel.",
       spanClass: "md:col-span-8"
     },
     {
-      id: "cherrapunji",
+      id: "sangti_valley",
       num: "02",
-      name: "Cherrapunji",
-      state: "Meghalaya",
+      name: "Sangti Valley & Dirang",
+      state: "Arunachal Pradesh",
       duration: "2 Days",
-      image: "/img/cerrapunji.png",
-      desc: "The Land of Waterfalls. Experience living root bridges and dramatic canyon landscapes where clouds meet the earth.",
+      image: "/img/dirang/sangti_valley.png",
+      desc: "Idyllic mountain valley in Dirang with local sheep farm, natural hot water springs, Mandala Top 108 stupas & fruit orchards.",
       spanClass: "md:col-span-4 md:mt-12"
     },
     {
-      id: "kaziranga",
+      id: "cherrapunji",
       num: "03",
-      name: "Kaziranga National Park",
-      state: "Assam",
-      duration: "2-3 Days",
-      image: "/img/kaziranga.png",
-      desc: "UNESCO World Heritage Site in Assam, hosting two-thirds of the world's great One-horned Rhinoceroses, wild buffaloes, and tigers.",
-      spanClass: "md:col-span-12 md:-mt-4"
+      name: "Cherrapunji & Root Bridges",
+      state: "Meghalaya",
+      duration: "3-4 Days",
+      image: "/img/cherrapunji/cerrapunji.png",
+      desc: "Land of massive waterfalls (Nohkalikai, Wei Sawdong), Double Decker Living Root Bridge hike & limestone cave systems.",
+      spanClass: "md:col-span-6"
     },
     {
       id: "dawki",
       num: "04",
-      name: "Dawki",
+      name: "Dawki & Mawlynnong",
       state: "Meghalaya",
-      duration: "1 Day",
-      image: "/img/bac 3.png",
-      desc: "Famous for the crystal-clear Umngot River, where wooden boats seem to float effortlessly on transparent waters.",
+      duration: "1-2 Days",
+      image: "/img/dawki/bac 3.png",
+      desc: "Transparent boating on Umngot River, Asia's Cleanest Village Mawlynnong, Bamboo Skywalk Trek & Krang Suri blue pools.",
       spanClass: "md:col-span-6"
     },
     {
-      id: "mawlynnong",
+      id: "umrangso",
       num: "05",
-      name: "Mawlynnong",
-      state: "Meghalaya",
-      duration: "1 Day",
-      image: "/img/bac 4.png",
-      desc: "Asia's Cleanest Village. A testament to community-driven eco-tourism and living in harmony with nature.",
-      spanClass: "md:col-span-6"
+      name: "Umrangso & Panimur Falls",
+      state: "Assam (Dima Hasao)",
+      duration: "2 Days",
+      image: "/img/umrangso/umrangso.png",
+      desc: "Umrangso Golf Field, Pushringdi Island, Tularam Cave, Umrang Dam, and Panimur Waterfall ('Niagara of Assam').",
+      spanClass: "md:col-span-12 md:-mt-4"
     }
   ];
 
-  const filteredPackages = activeFilter === "all"
-    ? packages
-    : packages.filter(pkg => pkg.categories.includes(activeFilter));
+  const filteredPackages = packages.filter((pkg) => {
+    const matchesRegion =
+      activeRegion === "all" ? true : pkg.categories.includes(activeRegion);
 
-  const filterButtons = [
-    { label: "All Trips", value: "all" },
-    { label: "Short Trips", value: "short" },
-    { label: "Family Tours", value: "family" },
-    { label: "Adventure Packs", value: "adventure" }
+    if (!matchesRegion) return false;
+
+    if (durationFilter === "all") return true;
+
+    const match = pkg.duration.match(/(\d+)\s*Days?/i);
+    const numDays = match ? parseInt(match[1], 10) : 1;
+
+    if (durationFilter === "short") return numDays <= 3;
+    if (durationFilter === "medium") return numDays >= 4 && numDays <= 5;
+    if (durationFilter === "grand") return numDays >= 6;
+
+    return true;
+  });
+
+  const regionTabs = [
+    {
+      id: "meghalaya",
+      title: "Meghalaya Tours",
+      subtitle: "Waterfalls, Root Bridges & Canyons",
+      badgeText: `${packages.filter((p) => p.categories.includes("meghalaya")).length} Packages`,
+      icon: Trees,
+      coverImg: "/img/cherrapunji/cerrapunji.png",
+      tagline: "The Abode of Clouds"
+    },
+    {
+      id: "assam",
+      title: "Assam Tours",
+      subtitle: "Kaziranga Safaris & Umrangso",
+      badgeText: `${packages.filter((p) => p.categories.includes("assam")).length} Packages`,
+      icon: Compass,
+      coverImg: "/img/kaziranga/kaziranga.png",
+      tagline: "Rhinos & Tea Estates"
+    },
+    {
+      id: "tawang",
+      title: "Arunachal & Tawang",
+      subtitle: "Sela Pass, Monasteries & Lakes",
+      badgeText: `${packages.filter((p) => p.categories.includes("tawang")).length} Packages`,
+      icon: Mountain,
+      coverImg: "/img/tawang/tawang.png",
+      tagline: "Dawn-Lit Mountains"
+    },
+    {
+      id: "all",
+      title: "All Northeast",
+      subtitle: "Explore Complete Circuits",
+      badgeText: `${packages.length} Packages`,
+      icon: MapPin,
+      coverImg: "/img/guwahati/guwahati.png",
+      tagline: "Full Exploration"
+    }
+  ];
+
+  const durationTabs = [
+    { label: "All Durations", value: "all" },
+    { label: "1-3 Days (Short)", value: "short" },
+    { label: "4-5 Days (Medium)", value: "medium" },
+    { label: "6+ Days (Grand)", value: "grand" }
   ];
 
   // Custom Trip Form Handler
@@ -958,119 +1694,262 @@ export default function Home() {
       {/* Available Vehicles Fleet Section */}
       <VehicleFleetSection />
 
-      {/* 6. Tour Packages Section */}
-      <section id="packages" className="py-10 sm:py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] block mb-1">
-              Popular Tour Packages
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">
-              Curated Northeast Experiences
+      {/* 6. Master Organized Tour Packages Section */}
+      <section id="packages" className="py-12 sm:py-24 bg-[#f8faf6] border-t border-gray-200/80 font-manrope">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Header Title */}
+          <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 space-y-2">
+            
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#1c1716] tracking-tight">
+              Select Your Travel State
             </h2>
-            <p className="text-gray-600 mt-1.5 text-xs sm:text-sm">
-              Discover Meghalaya and Assam through our handcrafted itineraries. Select a category tab to filter.
+            <p className="text-xs sm:text-base text-gray-600 max-w-xl mx-auto leading-relaxed">
+              Browse our itineraries organized by region. Tap a state card below to filter packages effortlessly.
             </p>
+          </div>
 
-            {/* Filter Tabs */}
-            <div className="flex flex-wrap gap-1.5 sm:gap-2.5 mt-5 justify-center items-center bg-[#f7f8f4] p-1 sm:p-1.5 rounded-2xl sm:rounded-full border border-gray-200 max-w-fit mx-auto">
-              {filterButtons.map((btn) => (
+          {/* MASTER REGION SELECTOR (Mobile Optimized 2x2 Grid / Desktop 4-Col Grid) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-8 sm:mb-12">
+            {regionTabs.map((region) => {
+              const isActive = activeRegion === region.id;
+              const IconComp = region.icon;
+
+              return (
                 <button
-                  key={btn.value}
-                  onClick={() => setActiveFilter(btn.value)}
-                  className={`px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-xl sm:rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    activeFilter === btn.value
-                      ? "bg-[#1e4630] text-[#c6f022] shadow-md"
-                      : "text-gray-600 hover:bg-gray-200/60"
+                  key={region.id}
+                  onClick={() => {
+                    setActiveRegion(region.id);
+                    setDurationFilter("all");
+                  }}
+                  className={`group relative flex flex-col justify-between p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl transition-all duration-300 text-left cursor-pointer overflow-hidden border ${
+                    isActive
+                      ? "bg-[#1e4630] text-white border-[#c6f022] shadow-xl scale-[1.02] ring-2 ring-[#c6f022]/40"
+                      : "bg-white text-[#1c1716] border-gray-200/90 hover:border-[#1e4630]/50 hover:shadow-md"
                   }`}
                 >
-                  {btn.label}
+                  {/* Subtle Background Cover Image Tint for active card */}
+                  {isActive && (
+                    <div className="absolute inset-0 opacity-15 pointer-events-none">
+                      <img src={region.coverImg} alt={region.title} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#1e4630] via-[#1e4630]/80 to-transparent"></div>
+                    </div>
+                  )}
+
+                  <div className="relative z-10 space-y-2">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className={`p-2 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center ${
+                        isActive ? "bg-[#c6f022] text-[#1e4630]" : "bg-[#f7f8f4] text-[#1e4630] group-hover:bg-[#1e4630] group-hover:text-[#c6f022] transition-colors"
+                      }`}>
+                        <IconComp size={18} />
+                      </span>
+                      <span className={`text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full border ${
+                        isActive ? "bg-white/20 text-[#c6f022] border-[#c6f022]/30" : "bg-gray-100 text-gray-600 border-gray-200"
+                      }`}>
+                        {region.badgeText}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className={`text-sm sm:text-lg font-bold leading-tight ${isActive ? "text-white" : "text-[#1c1716]"}`}>
+                        {region.title}
+                      </h3>
+                      <p className={`text-[11px] sm:text-xs mt-0.5 line-clamp-1 ${isActive ? "text-gray-200" : "text-gray-500"}`}>
+                        {region.subtitle}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 pt-3 mt-2 border-t border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-semibold">
+                    <span className={isActive ? "text-[#c6f022]" : "text-gray-400"}>
+                      {region.tagline}
+                    </span>
+                    <ChevronRight size={14} className={`transition-transform ${isActive ? "text-[#c6f022] translate-x-0.5" : "text-gray-400"}`} />
+                  </div>
                 </button>
-              ))}
+              );
+            })}
+          </div>
+
+          {/* DURATION & STYLE SUB-FILTER BAR */}
+          <div className="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-gray-200/80 shadow-sm mb-8 sm:mb-12 flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            {/* Active Region Indicator */}
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#1c1716] self-start md:self-auto">
+              <Filter size={15} className="text-[#1e4630]" />
+              <span>
+                Filter {activeRegion === "all" ? "All Northeast" : activeRegion.toUpperCase()} Trips:
+              </span>
+              <span className="bg-[#1e4630]/10 text-[#1e4630] px-2.5 py-0.5 rounded-full text-xs">
+                {filteredPackages.length} Available
+              </span>
+            </div>
+
+            {/* Duration Pills */}
+            <div className="flex overflow-x-auto gap-1.5 sm:gap-2 w-full md:w-auto pb-1 md:pb-0 no-scrollbar">
+              {durationTabs.map((dt) => {
+                const isSelected = durationFilter === dt.value;
+                return (
+                  <button
+                    key={dt.value}
+                    onClick={() => setDurationFilter(dt.value)}
+                    className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                      isSelected
+                        ? "bg-[#1e4630] text-[#c6f022] shadow-sm"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200/70"
+                    }`}
+                  >
+                    {dt.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* Mobile Swipe Hint */}
-          <div className="flex md:hidden items-center justify-between mb-3 text-xs font-bold text-[#1e4630] uppercase tracking-wider">
+          <div className="flex md:hidden items-center justify-between mb-3 text-xs font-bold text-[#1e4630] uppercase tracking-wider px-1">
             <span>Handcrafted Packages</span>
             <span className="flex items-center gap-1 opacity-80 text-[11px]">Swipe →</span>
           </div>
 
-          {/* Responsive Layout: Mobile Horizontal Carousel / Desktop Grid */}
-          <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
-            {filteredPackages.map((pkg) => {
-              const waMessage = `Hi Borah Tours & Travel! I want to book the private tour package:
+          {/* PACKAGES CARDS RESPONSIVE GRID / CAROUSEL */}
+          {filteredPackages.length > 0 ? (
+            <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
+              {filteredPackages.map((pkg) => {
+                const waMessage = `Hi Borah Tours & Travel! I am interested in booking the private tour package:
 - *Package:* ${pkg.title}
 - *Duration:* ${pkg.duration}
-- *Price:* ${pkg.price} / Pax
+- *Route:* ${pkg.route}
 
-Please share available dates and booking details!`;
-              const waLink = `https://wa.me/917002674473?text=${encodeURIComponent(waMessage)}`;
+Please share direct owner quote and booking details!`;
+                const waLink = `https://wa.me/917002674473?text=${encodeURIComponent(waMessage)}`;
 
-              return (
-                <article
-                  key={pkg.id}
-                  className="w-[85vw] sm:w-auto shrink-0 snap-center group relative flex flex-col bg-[#f7f8f4] border border-gray-200/70 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="relative h-48 sm:h-60 w-full overflow-hidden bg-[#1e4630]">
-                    <img
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      alt={pkg.title}
-                      src={pkg.image}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                // Determine region tag badge
+                const isMeghalaya = pkg.categories.includes("meghalaya");
+                const isAssam = pkg.categories.includes("assam");
+                const isTawang = pkg.categories.includes("tawang");
 
-                    <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-[#c6f022] text-[#1e4630] px-3 py-1 rounded-full font-bold text-[11px] sm:text-xs uppercase shadow-sm">
-                      {pkg.price} / pax
+                const regionBadgeLabel = isMeghalaya
+                  ? "🌿 MEGHALAYA"
+                  : isTawang
+                  ? "🏔️ ARUNACHAL"
+                  : isAssam
+                  ? "🦏 ASSAM"
+                  : "✨ NORTHEAST";
+
+                return (
+                  <article
+                    key={pkg.id}
+                    className="w-[86vw] sm:w-auto shrink-0 snap-center group relative flex flex-col bg-white border border-gray-200/80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                  >
+                    {/* Header Image */}
+                    <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-[#1e4630]">
+                      <img
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        alt={pkg.title}
+                        src={pkg.image}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+
+                      {/* Region Tag Badge (Top Left) */}
+                      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-black/50 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-white/20">
+                        {regionBadgeLabel}
+                      </div>
+
+                      {/* Contact Direct Badge (Top Right) */}
+                      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-[#c6f022] text-[#1e4630] px-3 py-1 rounded-full font-bold text-[10px] sm:text-xs uppercase shadow-md flex items-center gap-1">
+                        <Phone size={11} />
+                        <span>Contact Direct</span>
+                      </div>
+
+                      {/* Duration & Group Size Pills (Bottom Left) */}
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs font-medium">
+                        <span className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px]">
+                          <Clock size={13} className="text-[#c6f022]" />
+                          {pkg.duration}
+                        </span>
+                        <span className="flex items-center gap-1 text-[11px] bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">
+                          <Users size={13} className="text-[#c6f022]" />
+                          {pkg.groupSize}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 flex items-center gap-1.5 text-white text-xs font-medium">
-                      <Clock size={14} className="text-[#c6f022]" />
-                      <span>{pkg.duration}</span>
-                    </div>
-                  </div>
+                    {/* Content Section */}
+                    <div className="p-5 sm:p-6 flex flex-col flex-grow space-y-4">
+                      
+                      {/* Title */}
+                      <h3 className="text-base sm:text-lg font-bold text-[#1c1716] leading-snug line-clamp-2 group-hover:text-[#1e4630] transition-colors">
+                        {pkg.title}
+                      </h3>
 
-                  <div className="p-5 sm:p-6 flex flex-col flex-grow space-y-4">
-                    <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] line-clamp-2 group-hover:text-[#1e4630] transition-colors">
-                      {pkg.title}
-                    </h3>
+                      {/* Route flow */}
+                      <div className="bg-[#f7f8f4] p-2.5 rounded-xl border border-gray-100 flex items-center gap-2 text-xs text-gray-700 font-medium">
+                        <MapPin size={14} className="text-[#1e4630] shrink-0" />
+                        <span className="line-clamp-1">{pkg.route}</span>
+                      </div>
 
-                    <div className="space-y-2 flex-grow">
-                      <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-widest">
-                        Trip Highlights
-                      </p>
-                      <ul className="text-xs text-gray-600 space-y-1.5 pl-0 list-none mb-0">
-                        {pkg.highlights.map((hl, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <CheckCircle size={14} className="text-[#1e4630] shrink-0 mt-0.5" />
-                            <span>{hl}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                      {/* Highlights list */}
+                      <div className="space-y-1.5 flex-grow">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          Trip Highlights
+                        </p>
+                        <ul className="text-xs text-gray-600 space-y-1.5 pl-0 list-none mb-0">
+                          {pkg.highlights.slice(0, 3).map((hl, idx) => (
+                            <li key={idx} className="flex items-start gap-2">
+                              <CheckCircle size={13} className="text-[#1e4630] shrink-0 mt-0.5" />
+                              <span className="line-clamp-1">{hl}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
 
-                    <div className="pt-3 mt-auto flex items-center gap-2.5">
-                      <button
-                        onClick={() => setSelectedDetailPackage(pkg)}
-                        className="btn-hover flex-grow py-2.5 sm:py-3 bg-white text-[#1e4630] text-center font-bold text-xs uppercase tracking-wider rounded-xl sm:rounded-2xl border border-gray-300 hover:bg-[#1e4630] hover:text-[#c6f022] transition-all cursor-pointer shadow-sm"
-                      >
-                        View Itinerary
-                      </button>
-                      <a
-                        href={waLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[#c6f022] text-[#1e4630] rounded-xl sm:rounded-2xl shadow-md hover:scale-105 transition-transform cursor-pointer decoration-none"
-                        title="Book via WhatsApp"
-                      >
-                        <MessageSquare size={18} />
-                      </a>
+                      {/* CTAs */}
+                      <div className="pt-3 border-t border-gray-100 flex items-center gap-2.5">
+                        <button
+                          onClick={() => setSelectedDetailPackage(pkg)}
+                          className="btn-hover flex-grow py-2.5 bg-white text-[#1e4630] text-center font-bold text-xs uppercase tracking-wider rounded-xl border border-gray-300 hover:bg-[#1e4630] hover:text-[#c6f022] transition-all cursor-pointer shadow-sm"
+                        >
+                          View Itinerary
+                        </button>
+
+                        <a
+                          href={waLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-hover flex items-center justify-center gap-1 px-3.5 py-2.5 bg-[#c6f022] text-[#1e4630] text-xs font-bold rounded-xl shadow-md cursor-pointer decoration-none"
+                          title="Contact Owner via WhatsApp"
+                        >
+                          <MessageSquare size={16} />
+                          <span className="hidden sm:inline">Inquire</span>
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="bg-white rounded-3xl p-8 sm:p-12 text-center border border-gray-200 max-w-lg mx-auto space-y-4 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-[#1e4630]/10 text-[#1e4630] flex items-center justify-center mx-auto">
+                <Compass size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-[#1c1716]">No Exact Matches Found</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                We don&apos;t have a preset tour matching this exact duration filter right now, but we specialize in custom itineraries!
+              </p>
+              <button
+                onClick={() => {
+                  setActiveRegion("all");
+                  setDurationFilter("all");
+                }}
+                className="btn-hover inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1e4630] text-[#c6f022] font-bold text-xs cursor-pointer shadow-md"
+              >
+                <span>Reset Filters</span>
+              </button>
+            </div>
+          )}
+
         </div>
       </section>
 
