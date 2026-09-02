@@ -32,6 +32,8 @@ import TripWizardModal from "@/components/TripWizardModal";
 import PhoneLeadSection from "@/components/PhoneLeadSection";
 import PackageDetailModal, { PackageData } from "@/components/PackageDetailModal";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import CarRatesSection from "@/components/CarRatesSection";
+import VehicleFleetSection from "@/components/VehicleFleetSection";
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("all");
@@ -457,7 +459,7 @@ export default function Home() {
       setSubmitting(false);
       setSuccess(true);
 
-      const phoneNumber = "918822837774";
+      const phoneNumber = "917002674473";
       const customMessage = `Hi Borah Tours & Travel, I have submitted a customized trip enquiry:
 - Name: ${fullName}
 - Contact: ${contactInfo}
@@ -950,6 +952,12 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Car Rates List Section */}
+      <CarRatesSection />
+
+      {/* Available Vehicles Fleet Section */}
+      <VehicleFleetSection />
+
       {/* 6. Tour Packages Section */}
       <section id="packages" className="py-10 sm:py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -997,7 +1005,7 @@ export default function Home() {
 - *Price:* ${pkg.price} / Pax
 
 Please share available dates and booking details!`;
-              const waLink = `https://wa.me/918822837774?text=${encodeURIComponent(waMessage)}`;
+              const waLink = `https://wa.me/917002674473?text=${encodeURIComponent(waMessage)}`;
 
               return (
                 <article
@@ -1094,7 +1102,7 @@ Please share available dates and booking details!`;
                 </button>
 
                 <a
-                  href="https://wa.me/918822837774?text=Hi%20Borah%20Tours%20%26%20Travel%2C%20I%20want%20to%20discuss%20a%20customized%20Meghalaya%20%26%20Assam%20trip."
+                  href="https://wa.me/917002674473?text=Hi%20Borah%20Tour%20and%20Travels%2C%20I%20want%20to%20discuss%20a%20customized%20Meghalaya%20%26%20Assam%20trip."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 rounded-full border-2 border-white text-white font-bold text-xs sm:text-sm hover:bg-white hover:text-[#1e4630] transition-colors flex items-center justify-center gap-2 decoration-none cursor-pointer"

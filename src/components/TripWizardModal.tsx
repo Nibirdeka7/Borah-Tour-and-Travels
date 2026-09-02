@@ -65,8 +65,8 @@ export default function TripWizardModal({
     setSubmitting(true);
 
     // Format WhatsApp message
-    const phoneNumber = "918822837774";
-    const message = `Hi Borah Tours & Travel! I want to plan a custom trip:
+    const phoneNumber = "917002674473";
+    const message = `Hi Borah Tour and Travels! I want to plan a custom trip:
 - *Name:* ${formData.fullName}
 - *Contact:* ${formData.contactNumber}
 - *Email:* ${formData.email || "N/A"}

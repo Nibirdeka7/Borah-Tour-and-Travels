@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, TreePine } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export default function Header() {
   const [activeHash, setActiveHash] = useState("#home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: "About Us", hash: "#about" },
+    { name: "Car Rates", hash: "#car-rates" },
+    { name: "Vehicles", hash: "#vehicles" },
     { name: "Destinations", hash: "#destinations" },
     { name: "Packages", hash: "#packages" },
     { name: "Contact", hash: "#custom-trip" },
@@ -72,11 +73,13 @@ export default function Header() {
           onClick={(e) => handleLinkClick(e, "#home")}
           className="flex items-center gap-2.5 cursor-pointer decoration-none group"
         >
-          <div className="w-8 h-8 rounded-full bg-[#c6f022] flex items-center justify-center text-[#1e4630] font-bold text-sm">
-            <TreePine size={18} />
-          </div>
+          <img
+            src="/img/logoHero.png"
+            alt="Borah Tour & Travels Logo"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-white/20 shadow-md group-hover:scale-105 transition-transform"
+          />
           <span className="font-headline-md text-lg sm:text-xl tracking-tight text-white font-semibold">
-            borah<span className="text-[#c6f022] font-normal">tours &amp; travel</span>
+            Borah<span className="text-[#c6f022] font-normal"> Tour &amp; Travels</span>
           </span>
         </a>
 

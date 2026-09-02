@@ -25,8 +25,8 @@ export default function PhoneLeadSection() {
       setLoading(false);
       setSubmitted(true);
 
-      const message = `Hi Borah Tours & Travel, please call me back at ${phoneNumber} regarding tour packages.`;
-      const waUrl = `https://wa.me/918822837774?text=${encodeURIComponent(message)}`;
+      const message = `Hi Borah Tour and Travels, please call me back at ${phoneNumber} regarding tour packages & vehicle rates.`;
+      const waUrl = `https://wa.me/917002674473?text=${encodeURIComponent(message)}`;
       window.open(waUrl, "_blank");
 
       setTimeout(() => {

@@ -8,8 +8,8 @@ interface WhatsAppButtonProps {
 }
 
 export default function WhatsAppButton({
-  phoneNumber = "+918822837774",
-  message = "Hi Borah Tours & Travel, I would like to plan a tour to Northeast India. Please share some custom packages."
+  phoneNumber = "+917002674473",
+  message = "Hi Borah Tour and Travels, I would like to plan a tour to Northeast India. Please share some custom packages."
 }: WhatsAppButtonProps) {
   const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(message)}`;
 

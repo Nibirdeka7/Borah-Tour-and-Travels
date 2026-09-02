@@ -38,7 +38,7 @@ export default function PackageDetailModal({
 }: PackageDetailModalProps) {
   if (!pkg) return null;
 
-  const waMessage = `Hi Borah Tours & Travel! I want to book the private tour package:
+  const waMessage = `Hi Borah Tour and Travels! I want to book the private tour package:
 - *Package:* ${pkg.title}
 - *Duration:* ${pkg.duration}
 - *Price:* ${pkg.price} / Pax
@@ -46,7 +46,7 @@ export default function PackageDetailModal({
 - *Pace:* ${pkg.activityLevel}
 
 Please confirm vehicle availability and send me the detailed itinerary!`;
-  const waLink = `https://wa.me/918822837774?text=${encodeURIComponent(waMessage)}`;
+  const waLink = `https://wa.me/917002674473?text=${encodeURIComponent(waMessage)}`;
 
   return (
     <div
