@@ -1243,9 +1243,7 @@ export default function Home() {
     }
   ];
 
-  const packages = cmsPackages.length > 0
-    ? [...cmsPackages, ...defaultPackages.filter(dp => !cmsPackages.some(cp => cp.id === dp.id))]
-    : defaultPackages;
+  const packages = cmsPackages.length > 0 ? cmsPackages : defaultPackages;
 
   // Destination Data
   const defaultDestinations = [
