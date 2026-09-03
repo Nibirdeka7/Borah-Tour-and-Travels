@@ -1537,18 +1537,17 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Mobile Swipe Hint */}
-          <div className="flex md:hidden items-center justify-between mb-3 text-xs font-bold text-[#1e4630] uppercase tracking-wider">
+          {/* Mobile Subtitle */}
+          <div className="block md:hidden mb-3 text-xs font-bold text-[#1e4630] uppercase tracking-wider">
             <span>Must-Visit Places</span>
-            <span className="flex items-center gap-1 opacity-80 text-[11px]">Swipe →</span>
           </div>
 
-          {/* Responsive Layout: Mobile Horizontal Carousel / Desktop Bento Grid */}
-          <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-12 sm:gap-6">
+          {/* Responsive Layout: Mobile Vertical Grid / Desktop Bento Grid */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6">
             {destinations.map((dest) => (
               <article
                 key={dest.id}
-                className={`w-[82vw] sm:w-auto shrink-0 snap-center ${dest.spanClass} group relative rounded-2xl sm:rounded-3xl overflow-hidden h-72 sm:h-96 md:h-[420px] shadow-md sm:shadow-lg border border-black/5`}
+                className={`w-full ${dest.spanClass} group relative rounded-2xl sm:rounded-3xl overflow-hidden h-64 sm:h-96 md:h-[420px] shadow-md sm:shadow-lg border border-black/5`}
               >
                 <img
                   alt={dest.name}
@@ -1565,10 +1564,10 @@ export default function Home() {
 
                 <div className="absolute bottom-0 left-0 w-full p-5 sm:p-8 flex flex-col gap-2">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-[#c6f022] text-2xl sm:text-3xl font-bold opacity-70">
+                    <span className="text-[#c6f022] text-xl sm:text-3xl font-bold opacity-70">
                       {dest.num}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-bold text-white">
+                    <h3 className="text-lg sm:text-2xl font-bold text-white">
                       {dest.name}
                     </h3>
                   </div>
@@ -1709,8 +1708,8 @@ export default function Home() {
             </p>
           </div>
 
-          {/* MASTER REGION SELECTOR (Mobile Optimized 2x2 Grid / Desktop 4-Col Grid) */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-8 sm:mb-12">
+          {/* MASTER REGION SELECTOR - DESKTOP (4-Col Cards) */}
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
             {regionTabs.map((region) => {
               const isActive = activeRegion === region.id;
               const IconComp = region.icon;
@@ -1722,7 +1721,7 @@ export default function Home() {
                     setActiveRegion(region.id);
                     setDurationFilter("all");
                   }}
-                  className={`group relative flex flex-col justify-between p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl transition-all duration-300 text-left cursor-pointer overflow-hidden border ${
+                  className={`group relative flex flex-col justify-between p-5 rounded-3xl transition-all duration-300 text-left cursor-pointer overflow-hidden border ${
                     isActive
                       ? "bg-[#1e4630] text-white border-[#c6f022] shadow-xl scale-[1.02] ring-2 ring-[#c6f022]/40"
                       : "bg-white text-[#1c1716] border-gray-200/90 hover:border-[#1e4630]/50 hover:shadow-md"
@@ -1738,12 +1737,12 @@ export default function Home() {
 
                   <div className="relative z-10 space-y-2">
                     <div className="flex items-center justify-between gap-1">
-                      <span className={`p-2 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center ${
+                      <span className={`p-2 rounded-xl text-sm font-bold flex items-center justify-center ${
                         isActive ? "bg-[#c6f022] text-[#1e4630]" : "bg-[#f7f8f4] text-[#1e4630] group-hover:bg-[#1e4630] group-hover:text-[#c6f022] transition-colors"
                       }`}>
                         <IconComp size={18} />
                       </span>
-                      <span className={`text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full border ${
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
                         isActive ? "bg-white/20 text-[#c6f022] border-[#c6f022]/30" : "bg-gray-100 text-gray-600 border-gray-200"
                       }`}>
                         {region.badgeText}
@@ -1751,16 +1750,16 @@ export default function Home() {
                     </div>
 
                     <div>
-                      <h3 className={`text-sm sm:text-lg font-bold leading-tight ${isActive ? "text-white" : "text-[#1c1716]"}`}>
+                      <h3 className={`text-lg font-bold leading-tight ${isActive ? "text-white" : "text-[#1c1716]"}`}>
                         {region.title}
                       </h3>
-                      <p className={`text-[11px] sm:text-xs mt-0.5 line-clamp-1 ${isActive ? "text-gray-200" : "text-gray-500"}`}>
+                      <p className={`text-xs mt-0.5 line-clamp-1 ${isActive ? "text-gray-200" : "text-gray-500"}`}>
                         {region.subtitle}
                       </p>
                     </div>
                   </div>
 
-                  <div className="relative z-10 pt-3 mt-2 border-t border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-semibold">
+                  <div className="relative z-10 pt-3 mt-2 border-t border-white/10 flex items-center justify-between text-xs font-semibold">
                     <span className={isActive ? "text-[#c6f022]" : "text-gray-400"}>
                       {region.tagline}
                     </span>
@@ -1771,16 +1770,48 @@ export default function Home() {
             })}
           </div>
 
+          {/* MASTER REGION SELECTOR - MOBILE (Sleek Segmented Pill Bar) */}
+          <div className="block md:hidden mb-4">
+            <div className="flex overflow-x-auto gap-2 no-scrollbar pb-2 -mx-4 px-4">
+              {regionTabs.map((region) => {
+                const isActive = activeRegion === region.id;
+                const IconComp = region.icon;
+                return (
+                  <button
+                    key={region.id}
+                    onClick={() => {
+                      setActiveRegion(region.id);
+                      setDurationFilter("all");
+                    }}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold shrink-0 transition-all cursor-pointer border ${
+                      isActive
+                        ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] shadow-md"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
+                    }`}
+                  >
+                    <IconComp size={15} className={isActive ? "text-[#c6f022]" : "text-[#1e4630]"} />
+                    <span>{region.title.replace(" Tours", "")}</span>
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                      isActive ? "bg-[#c6f022]/20 text-[#c6f022]" : "bg-gray-100 text-gray-500"
+                    }`}>
+                      {packages.filter((p) => region.id === "all" || p.categories.includes(region.id)).length}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* DURATION & STYLE SUB-FILTER BAR */}
-          <div className="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-gray-200/80 shadow-sm mb-8 sm:mb-12 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-gray-200/80 shadow-sm mb-6 sm:mb-12 flex flex-col md:flex-row items-center justify-between gap-3">
             
             {/* Active Region Indicator */}
             <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#1c1716] self-start md:self-auto">
-              <Filter size={15} className="text-[#1e4630]" />
+              <Filter size={14} className="text-[#1e4630]" />
               <span>
-                Filter {activeRegion === "all" ? "All Northeast" : activeRegion.toUpperCase()} Trips:
+                {activeRegion === "all" ? "All Northeast" : activeRegion.toUpperCase()} Trips:
               </span>
-              <span className="bg-[#1e4630]/10 text-[#1e4630] px-2.5 py-0.5 rounded-full text-xs">
+              <span className="bg-[#1e4630]/10 text-[#1e4630] px-2.5 py-0.5 rounded-full text-xs font-bold">
                 {filteredPackages.length} Available
               </span>
             </div>
@@ -1793,7 +1824,7 @@ export default function Home() {
                   <button
                     key={dt.value}
                     onClick={() => setDurationFilter(dt.value)}
-                    className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                    className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                       isSelected
                         ? "bg-[#1e4630] text-[#c6f022] shadow-sm"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200/70"
@@ -1806,15 +1837,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Mobile Swipe Hint */}
-          <div className="flex md:hidden items-center justify-between mb-3 text-xs font-bold text-[#1e4630] uppercase tracking-wider px-1">
-            <span>Handcrafted Packages</span>
-            <span className="flex items-center gap-1 opacity-80 text-[11px]">Swipe →</span>
-          </div>
-
-          {/* PACKAGES CARDS RESPONSIVE GRID / CAROUSEL */}
+          {/* PACKAGES CARDS RESPONSIVE GRID */}
           {filteredPackages.length > 0 ? (
-            <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
               {filteredPackages.map((pkg) => {
                 const waMessage = `Hi Borah Tours & Travel! I am interested in booking the private tour package:
 - *Package:* ${pkg.title}
@@ -1840,10 +1865,10 @@ Please share direct owner quote and booking details!`;
                 return (
                   <article
                     key={pkg.id}
-                    className="w-[86vw] sm:w-auto shrink-0 snap-center group relative flex flex-col bg-white border border-gray-200/80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                    className="w-full group relative flex flex-col bg-white border border-gray-200/80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                   >
                     {/* Header Image */}
-                    <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-[#1e4630]">
+                    <div className="relative h-44 sm:h-56 w-full overflow-hidden bg-[#1e4630]">
                       <img
                         className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         alt={pkg.title}
@@ -1876,7 +1901,7 @@ Please share direct owner quote and booking details!`;
                     </div>
 
                     {/* Content Section */}
-                    <div className="p-5 sm:p-6 flex flex-col flex-grow space-y-4">
+                    <div className="p-4 sm:p-6 flex flex-col flex-grow space-y-3.5">
                       
                       {/* Title */}
                       <h3 className="text-base sm:text-lg font-bold text-[#1c1716] leading-snug line-clamp-2 group-hover:text-[#1e4630] transition-colors">
@@ -1890,11 +1915,11 @@ Please share direct owner quote and booking details!`;
                       </div>
 
                       {/* Highlights list */}
-                      <div className="space-y-1.5 flex-grow">
+                      <div className="space-y-1 flex-grow">
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                           Trip Highlights
                         </p>
-                        <ul className="text-xs text-gray-600 space-y-1.5 pl-0 list-none mb-0">
+                        <ul className="text-xs text-gray-600 space-y-1 pl-0 list-none mb-0">
                           {pkg.highlights.slice(0, 3).map((hl, idx) => (
                             <li key={idx} className="flex items-start gap-2">
                               <CheckCircle size={13} className="text-[#1e4630] shrink-0 mt-0.5" />
@@ -1905,7 +1930,7 @@ Please share direct owner quote and booking details!`;
                       </div>
 
                       {/* CTAs */}
-                      <div className="pt-3 border-t border-gray-100 flex items-center gap-2.5">
+                      <div className="pt-3 border-t border-gray-100 flex items-center gap-2">
                         <button
                           onClick={() => setSelectedDetailPackage(pkg)}
                           className="btn-hover flex-grow py-2.5 bg-white text-[#1e4630] text-center font-bold text-xs uppercase tracking-wider rounded-xl border border-gray-300 hover:bg-[#1e4630] hover:text-[#c6f022] transition-all cursor-pointer shadow-sm"
@@ -1917,11 +1942,11 @@ Please share direct owner quote and booking details!`;
                           href={waLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="btn-hover flex items-center justify-center gap-1 px-3.5 py-2.5 bg-[#c6f022] text-[#1e4630] text-xs font-bold rounded-xl shadow-md cursor-pointer decoration-none"
+                          className="btn-hover flex items-center justify-center gap-1.5 px-4 py-2.5 bg-[#c6f022] text-[#1e4630] text-xs font-bold rounded-xl shadow-md cursor-pointer decoration-none"
                           title="Contact Owner via WhatsApp"
                         >
                           <MessageSquare size={16} />
-                          <span className="hidden sm:inline">Inquire</span>
+                          <span>WhatsApp</span>
                         </a>
                       </div>
                     </div>
