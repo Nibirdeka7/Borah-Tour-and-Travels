@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Bus,
   Route,
@@ -52,6 +52,23 @@ export default function Home() {
     { src: "/heroBGVideo.mp4", rotate: false },
   ];
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  // Background Video Preloading & Zero-Lag Playback Controller
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  useEffect(() => {
+    heroVideos.forEach((vid, idx) => {
+      const v = videoRefs.current[idx];
+      if (v) {
+        if (idx === currentVideoIndex) {
+          v.currentTime = 0;
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+        }
+      }
+    });
+  }, [currentVideoIndex]);
 
   const handleHeroVideoEnd = () => {
     setCurrentVideoIndex((prev) => (prev + 1) % heroVideos.length);
@@ -1297,29 +1314,40 @@ export default function Home() {
                 WebkitMaskSize: "100% 100%",
               }}
             >
-              <video
-                key={heroVideos[currentVideoIndex].src}
-                autoPlay
-                muted
-                playsInline
-                onEnded={handleHeroVideoEnd}
-                onTimeUpdate={handleVideoTimeUpdate}
-                className={`absolute object-cover transition-all duration-700 ease-in-out ${heroVideos[currentVideoIndex].rotate
-                    ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90"
-                    : "top-0 left-0 w-full h-full"
-                  }`}
-                style={
-                  heroVideos[currentVideoIndex].rotate
-                    ? {
-                      width: "calc(100% * 667 / 1213)",
-                      height: "calc(100% * 1213 / 667)",
+              {heroVideos.map((vid, idx) => {
+                const isActive = idx === currentVideoIndex;
+                return (
+                  <video
+                    key={vid.src}
+                    ref={(el) => {
+                      videoRefs.current[idx] = el;
+                    }}
+                    preload="auto"
+                    muted
+                    playsInline
+                    onEnded={isActive ? handleHeroVideoEnd : undefined}
+                    onTimeUpdate={isActive ? handleVideoTimeUpdate : undefined}
+                    className={`absolute object-cover transition-opacity duration-700 ease-in-out ${
+                      isActive ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
+                    } ${
+                      vid.rotate
+                        ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90"
+                        : "top-0 left-0 w-full h-full"
+                    }`}
+                    style={
+                      vid.rotate
+                        ? {
+                            width: "calc(100% * 667 / 1213)",
+                            height: "calc(100% * 1213 / 667)",
+                          }
+                        : {}
                     }
-                    : {}
-                }
-              >
-                <source src={heroVideos[currentVideoIndex].src} type="video/mp4" />
-              </video>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+                  >
+                    <source src={vid.src} type="video/mp4" />
+                  </video>
+                );
+              })}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none z-10"></div>
 
               {/* Mobile-Optimized Story-Style Video Playlist Indicators */}
               <div className="absolute top-3 left-4 right-4 sm:top-4 sm:left-6 sm:right-6 flex items-center gap-2 z-20">
@@ -1342,7 +1370,7 @@ export default function Home() {
             </div>
 
             {/* Desktop Floating CTA Card (Bottom Left) */}
-            <div className="hidden sm:block absolute bottom-6 left-6 bg-white p-5 rounded-3xl shadow-2xl max-w-[290px] z-20 border border-black/5">
+            <div className="hidden sm:block absolute bottom-6 left-6 bg-white p-5 rounded-3xl  max-w-[290px] z-20 border border-black/5">
               <span className="text-[11px] font-semibold text-[#1e4630] uppercase tracking-wider block mb-1.5">
                 250+ Happy Travelers Joined
               </span>
@@ -1472,7 +1500,7 @@ export default function Home() {
             <img
               alt="Meghalaya Nature Trails"
               className="absolute inset-0 object-cover size-full hover:scale-105 transition-transform duration-700"
-              src="/img/guide.png"
+              src="/img/branding/guideDada.png"
             />
           </div>
 

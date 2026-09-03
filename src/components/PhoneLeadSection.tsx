@@ -211,13 +211,22 @@ export default function PhoneLeadSection() {
         <div className="hidden lg:block relative w-full h-full">
           {/* Left Image Slideshow Frame */}
           <div className="absolute left-0 top-0 w-[38%] h-[540px] rounded-[28px] overflow-hidden shadow-xl border border-black/5 group">
-            <img
-              key={slideshowImages[currentSlideIndex].src}
-              alt={slideshowImages[currentSlideIndex].title}
-              className="w-full h-full object-cover transition-all duration-700 ease-in-out hover:scale-105"
-              src={slideshowImages[currentSlideIndex].src}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+            {slideshowImages.map((img, idx) => {
+              const isActive = idx === currentSlideIndex;
+              return (
+                <img
+                  key={img.src}
+                  src={img.src}
+                  alt={img.title}
+                  loading="eager"
+                  decoding="async"
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out hover:scale-105 ${
+                    isActive ? "opacity-100 z-0" : "opacity-0 z-0"
+                  }`}
+                />
+              );
+            })}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-10"></div>
 
             {/* Top Location Tag Badge */}
             <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-white/20 shadow-md">
