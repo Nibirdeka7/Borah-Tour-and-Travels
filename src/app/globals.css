@@ -156,6 +156,91 @@
   }
 }
 
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinReverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes shimmerProgress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 14s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spinReverse 10s linear infinite;
+}
+
+.animate-shimmer {
+  animation: shimmerProgress 1.6s ease-in-out infinite;
+}
+
+@keyframes marqueeLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marqueeLeft 32s linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marqueeRight 32s linear infinite;
+}
+
+.pause-marquee:hover .animate-marquee-left,
+.pause-marquee:hover .animate-marquee-right {
+  animation-play-state: paused;
+}
+
 .animate-in {
   animation: fadeInZoom 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

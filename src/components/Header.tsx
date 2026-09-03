@@ -12,6 +12,7 @@ export default function Header() {
     { name: "Vehicles", hash: "#vehicles" },
     { name: "Destinations", hash: "#destinations" },
     { name: "Packages", hash: "#packages" },
+    { name: "Gallery", hash: "#gallery" },
     { name: "Contact", hash: "#custom-trip" },
   ];
 
@@ -66,10 +67,10 @@ export default function Header() {
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 w-[94%] max-w-6xl z-50 font-manrope">
       <div className="bg-[#1e4630] text-white rounded-full px-6 py-3 shadow-2xl flex items-center justify-between border border-white/10 backdrop-blur-md">
-        
+
         {/* Logo */}
-        <a 
-          href="#home" 
+        <a
+          href="#home"
           onClick={(e) => handleLinkClick(e, "#home")}
           className="flex items-center gap-2.5 cursor-pointer decoration-none group"
         >
@@ -90,11 +91,10 @@ export default function Header() {
               key={link.name}
               href={link.hash}
               onClick={(e) => handleLinkClick(e, link.hash)}
-              className={`text-sm font-medium transition-colors decoration-none cursor-pointer ${
-                activeHash === link.hash
+              className={`text-sm font-medium transition-colors decoration-none cursor-pointer ${activeHash === link.hash
                   ? "text-[#c6f022] font-semibold"
                   : "text-white/80 hover:text-white"
-              }`}
+                }`}
             >
               {link.name}
             </a>
@@ -131,11 +131,10 @@ export default function Header() {
                 key={link.name}
                 href={link.hash}
                 onClick={(e) => handleLinkClick(e, link.hash)}
-                className={`text-base py-2 decoration-none transition-colors cursor-pointer ${
-                  activeHash === link.hash
+                className={`text-base py-2 decoration-none transition-colors cursor-pointer ${activeHash === link.hash
                     ? "text-[#c6f022] font-semibold border-l-2 border-[#c6f022] pl-3"
                     : "text-white/80 hover:text-white pl-3"
-                }`}
+                  }`}
               >
                 {link.name}
               </a>

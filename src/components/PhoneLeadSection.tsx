@@ -1,13 +1,70 @@
 "use client";
 
-import React, { useState } from "react";
-import { Loader2, ArrowRight, PhoneCall, CheckCircle } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Loader2, ArrowRight, PhoneCall, CheckCircle, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 
 export default function PhoneLeadSection() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+
+  // Slideshow Destinations Array (Starting with Cherrapunji followed by 6 more)
+  const slideshowImages = [
+    {
+      src: "/img/cherrapunji/cerrapunji.png",
+      title: "Cherrapunji Nohkalikai Falls",
+      location: "Cherrapunji, Meghalaya"
+    },
+    {
+      src: "/img/kaziranga/kaziranga.png",
+      title: "Kaziranga National Park",
+      location: "Kaziranga, Assam"
+    },
+    {
+      src: "/img/dawki/bac 3.png",
+      title: "Dawki Umngot River",
+      location: "Dawki, Meghalaya"
+    },
+    {
+      src: "/img/tawang/tawang.png",
+      title: "Tawang Monastery & Peaks",
+      location: "Tawang, Arunachal Pradesh"
+    },
+    {
+      src: "/img/cherrapunji/bac 1.png",
+      title: "Double Decker Living Root Bridge",
+      location: "Nongriat, Meghalaya"
+    },
+    {
+      src: "/img/guwahati/guwahati.png",
+      title: "Kamakhya & Brahmaputra Sunset",
+      location: "Guwahati, Assam"
+    },
+    {
+      src: "/img/panimur/panimur.png",
+      title: "Panimur Waterfalls",
+      location: "Dima Hasao, Assam"
+    }
+  ];
+
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  // Auto-play slideshow timer every 3.5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlideIndex((prev) => (prev + 1) % slideshowImages.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [slideshowImages.length]);
+
+  const handleNextSlide = () => {
+    setCurrentSlideIndex((prev) => (prev + 1) % slideshowImages.length);
+  };
+
+  const handlePrevSlide = () => {
+    setCurrentSlideIndex((prev) => (prev - 1 + slideshowImages.length) % slideshowImages.length);
+  };
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -20,7 +77,6 @@ export default function PhoneLeadSection() {
     setLoading(true);
     setError("");
 
-    // Simulate callback dispatch or direct WhatsApp redirect
     setTimeout(() => {
       setLoading(false);
       setSubmitted(true);
@@ -36,7 +92,6 @@ export default function PhoneLeadSection() {
     }, 1200);
   };
 
-  const img1 = "/img/cherrapunji/cerrapunji.png";
   const img2 = "/img/shillong/shillong.png";
 
   return (
@@ -57,18 +112,57 @@ export default function PhoneLeadSection() {
             </p>
           </div>
 
-          <div className="rounded-[24px] overflow-hidden w-full aspect-[4/3] shadow-md">
+          {/* Mobile Slideshow Container */}
+          <div className="relative rounded-[24px] overflow-hidden w-full aspect-[4/3] shadow-md group">
             <img
-              alt="Meghalaya Waterfalls"
-              className="w-full h-full object-cover"
-              src={img1}
+              key={slideshowImages[currentSlideIndex].src}
+              alt={slideshowImages[currentSlideIndex].title}
+              className="w-full h-full object-cover transition-all duration-700 ease-in-out"
+              src={slideshowImages[currentSlideIndex].src}
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none"></div>
+
+            {/* Location Tag */}
+            <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-white/20">
+              <MapPin size={12} className="text-[#c6f022]" />
+              <span>{slideshowImages[currentSlideIndex].location}</span>
+            </div>
+
+            {/* Slide Navigation Arrows */}
+            <button
+              onClick={handlePrevSlide}
+              aria-label="Previous slide"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-sm cursor-pointer hover:bg-black/60"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              onClick={handleNextSlide}
+              aria-label="Next slide"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-sm cursor-pointer hover:bg-black/60"
+            >
+              <ChevronRight size={18} />
+            </button>
+
+            {/* Slide Indicator Dots */}
+            <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-1.5 z-10">
+              {slideshowImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlideIndex(idx)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    currentSlideIndex === idx ? "w-6 bg-[#c6f022]" : "w-1.5 bg-white/50"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
 
           <div className="relative bg-[#ebeeed] rounded-[34px] p-8 flex flex-col items-center gap-6 shadow-sm border border-black/5">
             <div className="relative w-[180px] h-[180px] rounded-[20px] overflow-hidden shadow-inner">
               <img
-                alt="Dawki Crystal River"
+                alt="Shillong Scenery"
                 className="w-full h-full object-cover"
                 src={img2}
               />
@@ -115,13 +209,60 @@ export default function PhoneLeadSection() {
 
         {/* Desktop View */}
         <div className="hidden lg:block relative w-full h-full">
-          {/* Left Image Frame */}
-          <div className="absolute left-0 top-0 w-[38%] h-[540px] rounded-[28px] overflow-hidden shadow-xl border border-black/5">
+          {/* Left Image Slideshow Frame */}
+          <div className="absolute left-0 top-0 w-[38%] h-[540px] rounded-[28px] overflow-hidden shadow-xl border border-black/5 group">
             <img
-              alt="Meghalaya Scenery"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-              src={img1}
+              key={slideshowImages[currentSlideIndex].src}
+              alt={slideshowImages[currentSlideIndex].title}
+              className="w-full h-full object-cover transition-all duration-700 ease-in-out hover:scale-105"
+              src={slideshowImages[currentSlideIndex].src}
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+
+            {/* Top Location Tag Badge */}
+            <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 border border-white/20 shadow-md">
+              <MapPin size={13} className="text-[#c6f022]" />
+              <span>{slideshowImages[currentSlideIndex].location}</span>
+            </div>
+
+            {/* Bottom Title Caption */}
+            <div className="absolute bottom-6 left-5 right-5 text-white z-10">
+              <h4 className="text-lg font-bold text-white drop-shadow-md leading-snug">
+                {slideshowImages[currentSlideIndex].title}
+              </h4>
+            </div>
+
+            {/* Arrow Navigation */}
+            <button
+              onClick={handlePrevSlide}
+              aria-label="Previous slide"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-md cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={handleNextSlide}
+              aria-label="Next slide"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-md cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/60"
+            >
+              <ChevronRight size={20} />
+            </button>
+
+            {/* Slide Navigation Progress Bar */}
+            <div className="absolute bottom-3 left-5 right-5 flex items-center gap-1.5 z-10">
+              {slideshowImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlideIndex(idx)}
+                  className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
+                    currentSlideIndex === idx
+                      ? "flex-1 bg-[#c6f022] shadow-[0_0_8px_rgba(198,240,34,0.8)]"
+                      : "w-2 bg-white/40 hover:bg-white/70"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Center Form & Banner Text */}
@@ -178,7 +319,7 @@ export default function PhoneLeadSection() {
           {/* Right Floating Image Frame */}
           <div className="absolute right-0 top-0 rounded-[28px] size-[180px] overflow-hidden shadow-xl border-4 border-white">
             <img
-              alt="Dawki River"
+              alt="Shillong Scenery"
               className="w-full h-full object-cover scale-125 hover:scale-135 transition-transform duration-700"
               src={img2}
             />
@@ -189,3 +330,4 @@ export default function PhoneLeadSection() {
     </section>
   );
 }
+

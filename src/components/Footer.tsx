@@ -97,7 +97,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="mt-16 pt-8 border-t border-outline-variant text-center font-label-sm text-label-sm text-on-surface-variant">
-          © {currentYear} Borah Tours &amp; Travel. Authentically North East.
+          © {currentYear} Borah Tour &amp; Travels. Authentically North East.
         </div>
       </div>
     </footer>

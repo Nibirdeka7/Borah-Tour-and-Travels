@@ -81,9 +81,9 @@ export default function VehicleFleetSection() {
       tag: "Group Tour Special",
       image: "/img/vehicles/traveller.png",
       seatOptions: [
-        { label: "13 Seater", seats: "13 Seats", ratePerDay: "₹10,000" },
-        { label: "16 Seater", seats: "16 Seats", ratePerDay: "₹12,000" },
-        { label: "25 Seater", seats: "25 Seats", ratePerDay: "₹14,000" },
+        { label: "13 Seater", seats: "13 Seats", ratePerDay: "₹9,000" },
+        { label: "16 Seater", seats: "16 Seats", ratePerDay: "₹10,000" },
+        { label: "25 Seater", seats: "25 Seats", ratePerDay: "₹11,000" },
       ],
     },
     {

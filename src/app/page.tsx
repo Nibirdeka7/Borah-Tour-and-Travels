@@ -38,21 +38,30 @@ import PackageDetailModal, { PackageData } from "@/components/PackageDetailModal
 import MobileBottomNav from "@/components/MobileBottomNav";
 import CarRatesSection from "@/components/CarRatesSection";
 import VehicleFleetSection from "@/components/VehicleFleetSection";
+import TravelerGallerySection from "@/components/TravelerGallerySection";
 
 export default function Home() {
   const [activeRegion, setActiveRegion] = useState("meghalaya");
   const [durationFilter, setDurationFilter] = useState("all");
 
-  // Hero Video Playlist State (playing 3 videos sequentially inside the mask)
+  // Hero Video Playlist State (playing 4 videos sequentially inside the mask)
   const heroVideos = [
     { src: "/heroVid.mp4", rotate: false },
     { src: "/cherapunji.mp4", rotate: true },
+    { src: "/kazaranga.mp4", rotate: true, maxDuration: 49 },
     { src: "/heroBGVideo.mp4", rotate: false },
   ];
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const handleHeroVideoEnd = () => {
     setCurrentVideoIndex((prev) => (prev + 1) % heroVideos.length);
+  };
+
+  const handleVideoTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const currentVideo = heroVideos[currentVideoIndex];
+    if (currentVideo.maxDuration && e.currentTarget.currentTime >= currentVideo.maxDuration) {
+      handleHeroVideoEnd();
+    }
   };
 
   // Google Map Route Locations State
@@ -1085,8 +1094,28 @@ export default function Home() {
       spanClass: "md:col-span-6"
     },
     {
-      id: "umrangso",
+      id: "kaziranga",
       num: "05",
+      name: "Kaziranga National Park",
+      state: "Assam",
+      duration: "2-3 Days",
+      image: "/img/kaziranga/kaziranga.png",
+      desc: "UNESCO World Heritage Site, home of the One-Horned Rhinoceros, Elephant & Jeep Safaris, Assam Tea Estates & Orchid Park.",
+      spanClass: "md:col-span-6"
+    },
+    {
+      id: "guwahati",
+      num: "06",
+      name: "Maa Kamakhya & Guwahati",
+      state: "Assam",
+      duration: "1-2 Days",
+      image: "/img/guwahati/guwahati.png",
+      desc: "Sacred Maa Kamakhya Temple atop Nilachal Hill, peacocks at Umananda Island Temple, and Brahmaputra Riverfront Sunset Cruise.",
+      spanClass: "md:col-span-6"
+    },
+    {
+      id: "umrangso",
+      num: "07",
       name: "Umrangso & Panimur Falls",
       state: "Assam (Dima Hasao)",
       duration: "2 Days",
@@ -1228,7 +1257,7 @@ export default function Home() {
       {/* 1. Hero Section - Styled from guide/3.txt & guide/6.txt */}
       {/* 1. Hero Section */}
       <section id="home" className="relative pt-16 sm:pt-28 pb-8 sm:pb-16 bg-[#f7f8f4] overflow-hidden px-4 sm:px-6 lg:px-8">
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none opacity-20"
           style={{
             backgroundImage: "radial-gradient(#1e4630 0.75px, transparent 0.75px)",
@@ -1247,7 +1276,7 @@ export default function Home() {
                 A new way to live with Nature
               </h1>
               <p className="text-xs sm:text-base md:text-lg text-[#1c1716]/80 font-normal leading-relaxed max-w-2xl">
-                We redesigned how travelers connect with nature, explore hidden waterfalls, and experience local Khasi &amp; Assamese culture—all in one customized private tour service.
+                We redesigned how travelers connect with nature, explore hidden waterfalls, and experience Assamese &amp; NorthEast culture all in one customized private tour service.
               </p>
             </div>
           </div>
@@ -1274,17 +1303,17 @@ export default function Home() {
                 muted
                 playsInline
                 onEnded={handleHeroVideoEnd}
-                className={`absolute object-cover transition-all duration-700 ease-in-out ${
-                  heroVideos[currentVideoIndex].rotate
+                onTimeUpdate={handleVideoTimeUpdate}
+                className={`absolute object-cover transition-all duration-700 ease-in-out ${heroVideos[currentVideoIndex].rotate
                     ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90"
                     : "top-0 left-0 w-full h-full"
-                }`}
+                  }`}
                 style={
                   heroVideos[currentVideoIndex].rotate
                     ? {
-                        width: "calc(100% * 667 / 1213)",
-                        height: "calc(100% * 1213 / 667)",
-                      }
+                      width: "calc(100% * 667 / 1213)",
+                      height: "calc(100% * 1213 / 667)",
+                    }
                     : {}
                 }
               >
@@ -1302,11 +1331,10 @@ export default function Home() {
                     className="flex-1 py-2.5 -my-2.5 focus:outline-none cursor-pointer group"
                   >
                     <div
-                      className={`h-1 sm:h-1.5 rounded-full transition-all duration-500 ${
-                        currentVideoIndex === idx
+                      className={`h-1 sm:h-1.5 rounded-full transition-all duration-500 ${currentVideoIndex === idx
                           ? "bg-[#c6f022] shadow-[0_0_10px_rgba(198,240,34,0.8)]"
                           : "bg-white/35 group-hover:bg-white/60"
-                      }`}
+                        }`}
                     />
                   </button>
                 ))}
@@ -1318,7 +1346,7 @@ export default function Home() {
               <span className="text-[11px] font-semibold text-[#1e4630] uppercase tracking-wider block mb-1.5">
                 250+ Happy Travelers Joined
               </span>
-              
+
               <div className="flex items-center -space-x-2 mb-3">
                 <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Explorer" />
                 <img className="w-8 h-8 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Explorer" />
@@ -1375,7 +1403,7 @@ export default function Home() {
       {/* 2. Stats Counter Section */}
       <section className="w-full py-10 sm:py-16 bg-[#ffffff] border-y border-gray-100 font-manrope">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8 lg:gap-[90px] items-start justify-center relative w-full max-w-[1200px] mx-auto px-4 sm:px-6">
-          
+
           <div className="bg-[#f7f8f4] sm:bg-transparent p-3.5 sm:p-0 rounded-2xl sm:rounded-none flex flex-col gap-1 sm:gap-3 items-center lg:items-start text-center lg:text-left border border-gray-100 sm:border-none">
             <p className="font-bold leading-none text-[#1c1716] text-[28px] sm:text-[40px] md:text-[48px] tracking-tight">
               98%
@@ -1410,7 +1438,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-0.5 text-[#1c1716]">
               <p className="font-semibold text-xs sm:text-[18px] md:text-[20px]">
-                Local Khasi Drivers
+                Local Expert Drivers
               </p>
               <p className="font-normal text-xs text-gray-600 leading-snug hidden sm:block">
                 Travel with trusted local drivers who know every hidden gem and secret trail.
@@ -1439,7 +1467,7 @@ export default function Home() {
       {/* 3. Feature Section */}
       <section className="py-10 sm:py-20 bg-[#f7f8f4] font-manrope">
         <div className="flex flex-col xl:flex-row items-center justify-between w-full max-w-[1264px] mx-auto gap-8 xl:gap-[88px] px-4 sm:px-6">
-          
+
           <div className="relative rounded-2xl sm:rounded-[32px] w-full xl:w-1/2 h-64 sm:h-80 md:h-[420px] shrink-0 overflow-hidden shadow-lg sm:shadow-xl border border-black/5">
             <img
               alt="Meghalaya Nature Trails"
@@ -1583,7 +1611,7 @@ export default function Home() {
           <div className="mt-16 pt-10 border-t border-gray-200">
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-8">
               <div>
-              
+
                 <h3 className="text-2xl sm:text-3xl font-bold text-[#1c1716] tracking-tight">
                   Explore Tour Destinations on Google Maps
                 </h3>
@@ -1612,11 +1640,10 @@ export default function Home() {
                   <button
                     key={loc.id}
                     onClick={() => setActiveMapId(loc.id)}
-                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer border shrink-0 ${
-                      isActive
+                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer border shrink-0 ${isActive
                         ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] shadow-md scale-105"
                         : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
-                    }`}
+                      }`}
                   >
                     <MapPin size={13} className={isActive ? "text-[#c6f022]" : "text-[#1e4630]"} />
                     <span>{loc.name}</span>
@@ -1696,10 +1723,10 @@ export default function Home() {
       {/* 6. Master Organized Tour Packages Section */}
       <section id="packages" className="py-12 sm:py-24 bg-[#f8faf6] border-t border-gray-200/80 font-manrope">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Header Title */}
           <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 space-y-2">
-            
+
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#1c1716] tracking-tight">
               Select Your Travel State
             </h2>
@@ -1721,11 +1748,10 @@ export default function Home() {
                     setActiveRegion(region.id);
                     setDurationFilter("all");
                   }}
-                  className={`group relative flex flex-col justify-between p-5 rounded-3xl transition-all duration-300 text-left cursor-pointer overflow-hidden border ${
-                    isActive
+                  className={`group relative flex flex-col justify-between p-5 rounded-3xl transition-all duration-300 text-left cursor-pointer overflow-hidden border ${isActive
                       ? "bg-[#1e4630] text-white border-[#c6f022] shadow-xl scale-[1.02] ring-2 ring-[#c6f022]/40"
                       : "bg-white text-[#1c1716] border-gray-200/90 hover:border-[#1e4630]/50 hover:shadow-md"
-                  }`}
+                    }`}
                 >
                   {/* Subtle Background Cover Image Tint for active card */}
                   {isActive && (
@@ -1737,14 +1763,12 @@ export default function Home() {
 
                   <div className="relative z-10 space-y-2">
                     <div className="flex items-center justify-between gap-1">
-                      <span className={`p-2 rounded-xl text-sm font-bold flex items-center justify-center ${
-                        isActive ? "bg-[#c6f022] text-[#1e4630]" : "bg-[#f7f8f4] text-[#1e4630] group-hover:bg-[#1e4630] group-hover:text-[#c6f022] transition-colors"
-                      }`}>
+                      <span className={`p-2 rounded-xl text-sm font-bold flex items-center justify-center ${isActive ? "bg-[#c6f022] text-[#1e4630]" : "bg-[#f7f8f4] text-[#1e4630] group-hover:bg-[#1e4630] group-hover:text-[#c6f022] transition-colors"
+                        }`}>
                         <IconComp size={18} />
                       </span>
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
-                        isActive ? "bg-white/20 text-[#c6f022] border-[#c6f022]/30" : "bg-gray-100 text-gray-600 border-gray-200"
-                      }`}>
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${isActive ? "bg-white/20 text-[#c6f022] border-[#c6f022]/30" : "bg-gray-100 text-gray-600 border-gray-200"
+                        }`}>
                         {region.badgeText}
                       </span>
                     </div>
@@ -1783,17 +1807,15 @@ export default function Home() {
                       setActiveRegion(region.id);
                       setDurationFilter("all");
                     }}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold shrink-0 transition-all cursor-pointer border ${
-                      isActive
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold shrink-0 transition-all cursor-pointer border ${isActive
                         ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] shadow-md"
                         : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
-                    }`}
+                      }`}
                   >
                     <IconComp size={15} className={isActive ? "text-[#c6f022]" : "text-[#1e4630]"} />
                     <span>{region.title.replace(" Tours", "")}</span>
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                      isActive ? "bg-[#c6f022]/20 text-[#c6f022]" : "bg-gray-100 text-gray-500"
-                    }`}>
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? "bg-[#c6f022]/20 text-[#c6f022]" : "bg-gray-100 text-gray-500"
+                      }`}>
                       {packages.filter((p) => region.id === "all" || p.categories.includes(region.id)).length}
                     </span>
                   </button>
@@ -1804,7 +1826,7 @@ export default function Home() {
 
           {/* DURATION & STYLE SUB-FILTER BAR */}
           <div className="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-gray-200/80 shadow-sm mb-6 sm:mb-12 flex flex-col md:flex-row items-center justify-between gap-3">
-            
+
             {/* Active Region Indicator */}
             <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#1c1716] self-start md:self-auto">
               <Filter size={14} className="text-[#1e4630]" />
@@ -1824,11 +1846,10 @@ export default function Home() {
                   <button
                     key={dt.value}
                     onClick={() => setDurationFilter(dt.value)}
-                    className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                      isSelected
+                    className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${isSelected
                         ? "bg-[#1e4630] text-[#c6f022] shadow-sm"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200/70"
-                    }`}
+                      }`}
                   >
                     {dt.label}
                   </button>
@@ -1857,10 +1878,10 @@ Please share direct owner quote and booking details!`;
                 const regionBadgeLabel = isMeghalaya
                   ? "🌿 MEGHALAYA"
                   : isTawang
-                  ? "🏔️ ARUNACHAL"
-                  : isAssam
-                  ? "🦏 ASSAM"
-                  : "✨ NORTHEAST";
+                    ? "🏔️ ARUNACHAL"
+                    : isAssam
+                      ? "🦏 ASSAM"
+                      : "✨ NORTHEAST";
 
                 return (
                   <article
@@ -1902,7 +1923,7 @@ Please share direct owner quote and booking details!`;
 
                     {/* Content Section */}
                     <div className="p-4 sm:p-6 flex flex-col flex-grow space-y-3.5">
-                      
+
                       {/* Title */}
                       <h3 className="text-base sm:text-lg font-bold text-[#1c1716] leading-snug line-clamp-2 group-hover:text-[#1e4630] transition-colors">
                         {pkg.title}
@@ -1978,7 +1999,10 @@ Please share direct owner quote and booking details!`;
         </div>
       </section>
 
-      {/* 7. Phone Lead Capture Component */}
+      {/* 7. Happy Customer Journey Gallery Section with Dual Infinite Marquee */}
+      <TravelerGallerySection />
+
+      {/* 8. Phone Lead Capture Component */}
       <PhoneLeadSection />
 
       {/* 8. Inline Custom Trip Request Section */}
@@ -1995,7 +2019,7 @@ Please share direct owner quote and booking details!`;
               <p className="text-white/80 text-xs sm:text-base leading-relaxed">
                 Tell us your tentative dates, places you wish to visit, and number of travelers. We will design a custom itinerary with a dedicated private vehicle.
               </p>
-              
+
               <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                 <button
                   onClick={() => openWizard()}
