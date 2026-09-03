@@ -28,7 +28,8 @@ import {
   Mountain,
   Trees,
   Filter,
-  Layers
+  Layers,
+  Search
 } from "lucide-react";
 
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -42,6 +43,77 @@ import TravelerGallerySection from "@/components/TravelerGallerySection";
 export default function Home() {
   const [activeRegion, setActiveRegion] = useState("meghalaya");
   const [durationFilter, setDurationFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<PackageData[] | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Listen to site-search event broadcast from Navbar (Header.tsx)
+  useEffect(() => {
+    const handleSearchEvent = (e: CustomEvent<string>) => {
+      const q = e.detail || "";
+      setSearchQuery(q);
+      if (q.trim()) {
+        setActiveRegion("all");
+        setDurationFilter("all");
+      }
+    };
+
+    window.addEventListener("site-search" as any, handleSearchEvent);
+    return () => window.removeEventListener("site-search" as any, handleSearchEvent);
+  }, []);
+
+  // Debounce search query updates by 250ms
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Query Backend Search API Endpoint when debounced query updates
+  useEffect(() => {
+    if (!debouncedSearchQuery.trim()) {
+      setSearchResults(null);
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+    fetch(`/api/packages/search?q=${encodeURIComponent(debouncedSearchQuery.trim())}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) {
+          setSearchResults(
+            data.data.map((item: any) => ({
+              id: item._id || item.slug,
+              title: item.title,
+              price: item.price || "Contact Owner",
+              duration: item.duration,
+              image: item.image,
+              gallery: item.gallery || [],
+              categories: item.categories || [],
+              highlights: item.highlights || [],
+              route: item.route || "",
+              activityLevel: item.activityLevel || "Moderate Sightseeing",
+              groupSize: item.groupSize || "1-8 Pax",
+              itinerary: item.itinerary || [],
+            }))
+          );
+        }
+      })
+      .catch((err) => console.error("Search API Error:", err))
+      .finally(() => setIsSearching(false));
+  }, [debouncedSearchQuery]);
+
+  const updateSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim()) {
+      setActiveRegion("all");
+      setDurationFilter("all");
+    }
+    window.dispatchEvent(new CustomEvent("site-search", { detail: query }));
+  };
 
   // Dynamic MongoDB Content State
   const [cmsPackages, setCmsPackages] = useState<PackageData[]>([]);
@@ -1256,28 +1328,44 @@ export default function Home() {
         name: p.name,
         state: "Northeast India",
         duration: p.travelTime || "Custom",
-        image: p.image || "/img/cherrapunji/cerrapunji.png",
+        image: p.image || defaultDestinations[idx % defaultDestinations.length]?.image || "/img/cherrapunji/cerrapunji.png",
         desc: p.description || p.query || "",
         spanClass: idx % 3 === 0 ? "md:col-span-8" : idx % 3 === 1 ? "md:col-span-4" : "md:col-span-6"
       }))
     : defaultDestinations;
 
-  const filteredPackages = packages.filter((pkg) => {
+  const basePackages = searchResults !== null ? searchResults : packages;
+
+  const filteredPackages = basePackages.filter((pkg) => {
+    const hasSearchQuery = searchQuery.trim().length > 0;
+
+    // When searching, show results from ALL regions
     const matchesRegion =
-      activeRegion === "all" ? true : pkg.categories.includes(activeRegion);
+      hasSearchQuery || activeRegion === "all" ? true : pkg.categories.includes(activeRegion);
 
     if (!matchesRegion) return false;
 
-    if (durationFilter === "all") return true;
+    if (!hasSearchQuery && durationFilter !== "all") {
+      const match = pkg.duration.match(/(\d+)\s*Days?/i);
+      const numDays = match ? parseInt(match[1], 10) : 1;
 
-    const match = pkg.duration.match(/(\d+)\s*Days?/i);
-    const numDays = match ? parseInt(match[1], 10) : 1;
+      if (durationFilter === "short" && numDays > 3) return false;
+      if (durationFilter === "medium" && (numDays < 4 || numDays > 5)) return false;
+      if (durationFilter === "grand" && numDays < 6) return false;
+    }
 
-    if (durationFilter === "short") return numDays <= 3;
-    if (durationFilter === "medium") return numDays >= 4 && numDays <= 5;
-    if (durationFilter === "grand") return numDays >= 6;
+    if (!hasSearchQuery || searchResults !== null) return true;
 
-    return true;
+    const q = searchQuery.toLowerCase().trim();
+    const matchTitle = pkg.title.toLowerCase().includes(q);
+    const matchRoute = pkg.route?.toLowerCase().includes(q);
+    const matchDuration = pkg.duration.toLowerCase().includes(q);
+    const matchHighlights = pkg.highlights?.some((h) => h.toLowerCase().includes(q));
+    const matchItinerary = pkg.itinerary?.some(
+      (it) => it.title.toLowerCase().includes(q) || it.description.toLowerCase().includes(q) || it.overnight.toLowerCase().includes(q)
+    );
+
+    return matchTitle || matchRoute || matchDuration || matchHighlights || matchItinerary;
   });
 
   const regionTabs = [
@@ -1413,7 +1501,7 @@ export default function Home() {
                 {cmsSettings?.heroTitle || "A new way to live with Nature"}
               </h1>
               <p className="text-xs sm:text-base md:text-lg text-[#1c1716]/80 font-normal leading-relaxed max-w-2xl">
-                {cmsSettings?.heroSubtitle || "We redesigned how travelers connect with nature, explore hidden waterfalls, and experience Assamese & NorthEast culture all in one customized private tour service."}
+                { "We redesigned how travelers connect with nature, explore hidden waterfalls, and experience NorthEast culture all in one customized private tour service."}
               </p>
             </div>
           </div>
@@ -1779,10 +1867,10 @@ export default function Home() {
       </section>
 
       {/* Car Rates List Section */}
-      <CarRatesSection />
+      <CarRatesSection items={cmsVehicles} />
 
       {/* Available Vehicles Fleet Section */}
-      <VehicleFleetSection />
+      <VehicleFleetSection items={cmsVehicles} />
 
       {/* 6. Master Organized Tour Packages Section */}
       <section id="packages" className="py-12 sm:py-24 bg-[#f8faf6] border-t border-gray-200/80 font-manrope">
@@ -1795,8 +1883,64 @@ export default function Home() {
               Select Your Travel State
             </h2>
             <p className="text-xs sm:text-base text-gray-600 max-w-xl mx-auto leading-relaxed">
-              Browse our itineraries organized by region. Tap a state card below to filter packages effortlessly.
+              Browse our itineraries organized by region. Use the search bar below or tap a state card to filter packages effortlessly.
             </p>
+          </div>
+
+          {/* Real-time Interactive Search Bar Container (UX Optimized) */}
+          <div className="max-w-2xl mx-auto mb-8 sm:mb-12">
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none text-[#1e4630]">
+                <Search size={20} className="group-focus-within:text-[#1e4630] transition-colors" />
+              </div>
+
+              <input
+                type="text"
+                placeholder="Search packages, places (e.g. Cherrapunji, Dawki, Tawang, Waterfalls, 5 Days)..."
+                value={searchQuery}
+                onChange={(e) => updateSearch(e.target.value)}
+                className="w-full pl-11 sm:pl-13 pr-12 py-3.5 sm:py-4 bg-white rounded-2xl sm:rounded-3xl border-2 border-gray-200 focus:border-[#1e4630] text-xs sm:text-base font-medium text-[#1c1716] shadow-sm hover:shadow-md transition-all outline-none"
+              />
+
+              <div className="absolute inset-y-0 right-0 pr-4 flex items-center gap-2">
+                {isSearching && <Loader2 size={18} className="animate-spin text-[#1e4630]" />}
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => updateSearch("")}
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                  >
+                    <X size={18} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Quick Search Tag Pills (Mobile UX Optimized) */}
+            <div className="flex items-center gap-1.5 mt-3 overflow-x-auto no-scrollbar pb-1 -mx-2 px-2 text-[11px] sm:text-xs">
+              <span className="text-gray-400 font-semibold shrink-0">Popular:</span>
+              {[
+                "Cherrapunji",
+                "Living Root Bridge",
+                "Dawki Boating",
+                "Tawang",
+                "Kaziranga Safari",
+                "5 Days"
+              ].map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => updateSearch(tag)}
+                  className={`px-2.5 py-1 rounded-full border transition-all shrink-0 cursor-pointer ${
+                    searchQuery.toLowerCase() === tag.toLowerCase()
+                      ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] font-bold shadow-sm"
+                      : "bg-white text-gray-600 border-gray-200 hover:border-[#1e4630] hover:text-[#1e4630]"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* MASTER REGION SELECTOR - DESKTOP (4-Col Cards) */}
@@ -1972,15 +2116,11 @@ Please share direct owner quote and booking details!`;
                         <span>Contact Direct</span>
                       </div>
 
-                      {/* Duration & Group Size Pills (Bottom Left) */}
-                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs font-medium">
+                      {/* Duration Pill (Bottom Left) */}
+                      <div className="absolute bottom-3 left-3 flex items-center justify-between text-white text-xs font-medium">
                         <span className="flex items-center gap-1 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px]">
                           <Clock size={13} className="text-[#c6f022]" />
                           {pkg.duration}
-                        </span>
-                        <span className="flex items-center gap-1 text-[11px] bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">
-                          <Users size={13} className="text-[#c6f022]" />
-                          {pkg.groupSize}
                         </span>
                       </div>
                     </div>
@@ -2042,21 +2182,34 @@ Please share direct owner quote and booking details!`;
           ) : (
             <div className="bg-white rounded-3xl p-8 sm:p-12 text-center border border-gray-200 max-w-lg mx-auto space-y-4 shadow-sm">
               <div className="w-12 h-12 rounded-full bg-[#1e4630]/10 text-[#1e4630] flex items-center justify-center mx-auto">
-                <Compass size={24} />
+                <Search size={24} />
               </div>
-              <h3 className="text-lg font-bold text-[#1c1716]">No Exact Matches Found</h3>
+              <h3 className="text-lg font-bold text-[#1c1716]">
+                {searchQuery ? `No packages match "${searchQuery}"` : "No Exact Matches Found"}
+              </h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                We don&apos;t have a preset tour matching this exact duration filter right now, but we specialize in custom itineraries!
+                {searchQuery
+                  ? `Try searching for another place (e.g. Shillong, Dawki, Tawang) or clear your search query.`
+                  : "We don't have a preset tour matching this exact duration filter right now, but we specialize in custom itineraries!"}
               </p>
-              <button
-                onClick={() => {
-                  setActiveRegion("all");
-                  setDurationFilter("all");
-                }}
-                className="btn-hover inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1e4630] text-[#c6f022] font-bold text-xs cursor-pointer shadow-md"
-              >
-                <span>Reset Filters</span>
-              </button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-2">
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setActiveRegion("all");
+                    setDurationFilter("all");
+                  }}
+                  className="btn-hover w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#1e4630] text-[#c6f022] font-bold text-xs cursor-pointer shadow-md"
+                >
+                  <span>Reset Search &amp; Filters</span>
+                </button>
+                <button
+                  onClick={() => openWizard()}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#c6f022] text-[#1e4630] font-bold text-xs cursor-pointer shadow-md"
+                >
+                  <span>Custom Trip Wizard</span>
+                </button>
+              </div>
             </div>
           )}
 

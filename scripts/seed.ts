@@ -396,16 +396,18 @@ const PLACES_DATA = [
     embedUrl: "https://maps.google.com/maps?q=Guwahati+to+Tawang+to+Kaziranga+to+Cherrapunji&t=&z=6&ie=UTF8&iwloc=&output=embed",
     distance: "~400-800 km Circuit",
     travelTime: "3 to 9 Days Circuit",
-    description: "Our signature tour circuit starting from Guwahati Airport across Meghalaya, Assam & Arunachal Pradesh."
+    description: "Our signature tour circuit starting from Guwahati Airport across Meghalaya, Assam & Arunachal Pradesh.",
+    image: "/img/shillong/shillong.png"
   },
   {
-    name: "Tawang",
+    name: "Tawang & Sela Pass",
     slug: "tawang",
     query: "Tawang, Arunachal Pradesh",
     embedUrl: "https://maps.google.com/maps?q=Tawang,Arunachal+Pradesh&t=&z=11&ie=UTF8&iwloc=&output=embed",
     distance: "~440 km from Guwahati",
     travelTime: "High Altitude Circuit",
-    description: "Himalayan haven featuring Tawang Monastery, Bum La Pass (15,200 ft) & Madhuri Lake."
+    description: "Himalayan haven featuring Tawang Monastery, Bum La Pass (15,200 ft) & Madhuri Lake.",
+    image: "/img/tawang/tawang.png"
   },
   {
     name: "Sela Pass & Lake",
@@ -414,7 +416,8 @@ const PLACES_DATA = [
     embedUrl: "https://maps.google.com/maps?q=Sela+Pass,Arunachal+Pradesh&t=&z=12&ie=UTF8&iwloc=&output=embed",
     distance: "13,700 ft Altitude",
     travelTime: "En route to Tawang",
-    description: "Dramatic mountain pass with sacred Sela Lake, Jaswant Garh War Memorial & Sela Tunnel."
+    description: "Dramatic mountain pass with sacred Sela Lake, Jaswant Garh War Memorial & Sela Tunnel.",
+    image: "/img/tawang/tawang.png"
   },
   {
     name: "Sangti Valley & Dirang",
@@ -423,7 +426,8 @@ const PLACES_DATA = [
     embedUrl: "https://maps.google.com/maps?q=Sangti+Valley,Arunachal+Pradesh&t=&z=12&ie=UTF8&iwloc=&output=embed",
     distance: "15 km from Dirang",
     travelTime: "Scenic Valley Drive",
-    description: "Alpine river valley with local sheep farm, natural hot water spring & historic Dirang Dzong."
+    description: "Alpine river valley with local sheep farm, natural hot water spring & historic Dirang Dzong.",
+    image: "/img/dirang/sangti_valley.png"
   },
   {
     name: "Guwahati",
@@ -432,7 +436,8 @@ const PLACES_DATA = [
     embedUrl: "https://maps.google.com/maps?q=Guwahati,Assam&t=&z=12&ie=UTF8&iwloc=&output=embed",
     distance: "Pickup Hub (0 km)",
     travelTime: "Airport / Station Pickup",
-    description: "Kamakhya Temple, Umananda, Basistha Temple, Zoo & Brahmaputra riverfront."
+    description: "Kamakhya Temple, Umananda, Basistha Temple, Zoo & Brahmaputra riverfront.",
+    image: "/img/guwahati/guwahati.png"
   },
   {
     name: "Kaziranga & Umrangso",
@@ -441,16 +446,18 @@ const PLACES_DATA = [
     embedUrl: "https://maps.google.com/maps?q=Kaziranga+National+Park,Assam&t=&z=11&ie=UTF8&iwloc=&output=embed",
     distance: "230 km from Guwahati",
     travelTime: "4.5 Hours Drive",
-    description: "UNESCO Rhinos, Elephant/Jeep Safaris, Orchid Park, Panimur Falls & Umrangso Golf Field."
+    description: "UNESCO Rhinos, Elephant/Jeep Safaris, Orchid Park, Panimur Falls & Umrangso Golf Field.",
+    image: "/img/kaziranga/kaziranga.png"
   },
   {
-    name: "Cherrapunji",
+    name: "Cherrapunji & Root Bridges",
     slug: "cherrapunji",
     query: "Cherrapunji, Meghalaya",
     embedUrl: "https://maps.google.com/maps?q=Cherrapunji,Meghalaya&t=&z=12&ie=UTF8&iwloc=&output=embed",
     distance: "54 km from Shillong",
     travelTime: "1.5 Hours Mountain Drive",
-    description: "Land of waterfalls, Nohkalikai Falls, double-decker living root bridges & limestone caves."
+    description: "Land of waterfalls, Nohkalikai Falls, double-decker living root bridges & limestone caves.",
+    image: "/img/cherrapunji/cerrapunji.png"
   },
   {
     name: "Dawki & Mawlynnong",
@@ -459,7 +466,8 @@ const PLACES_DATA = [
     embedUrl: "https://maps.google.com/maps?q=Dawki,Meghalaya&t=&z=13&ie=UTF8&iwloc=&output=embed",
     distance: "85 km from Cherrapunji",
     travelTime: "2.5 Hours Drive",
-    description: "Crystal clear Umngot river boating, Krang Suri falls & Asia's cleanest village Mawlynnong."
+    description: "Crystal clear Umngot river boating, Krang Suri falls & Asia's cleanest village Mawlynnong.",
+    image: "/img/dawki/bac 3.png"
   }
 ];
 
@@ -518,32 +526,34 @@ const VEHICLES_DATA = [
     name: "Force Traveller",
     brandModel: "Force Motors",
     year: "New Model",
-    seats: "13 Seats",
+    seats: "12 Seats",
     transmission: "Manual",
     fuel: "Diesel",
-    ratePerDay: "₹10,000",
+    ratePerDay: "₹7,500",
     category: "tempo",
     tag: "Group Tour Special",
     image: "/img/vehicles/traveller.png",
     seatOptions: [
-      { label: "13 Seater", seats: "13 Seats", ratePerDay: "₹9,000" },
-      { label: "16 Seater", seats: "16 Seats", ratePerDay: "₹10,000" },
-      { label: "25 Seater", seats: "25 Seats", ratePerDay: "₹11,000" }
+      { label: "12 Seater", seats: "12 Seats", ratePerDay: "₹7,500" },
+      { label: "16 Seater", seats: "16 Seats", ratePerDay: "₹8,500" },
+      { label: "25 Seater", seats: "25 Seats", ratePerDay: "₹9,500" }
     ]
   },
   {
     name: "Force Urbania",
     brandModel: "Force Motors Luxury",
     year: "New Model",
-    seats: "13 Seats",
+    seats: "10 Seats",
     transmission: "Manual",
     fuel: "Diesel",
-    ratePerDay: "₹12,000",
+    ratePerDay: "₹8,500",
     category: "tempo",
     tag: "Luxury Group Cruiser",
     image: "/img/vehicles/urbania.png",
     seatOptions: [
-      { label: "13 Seater", seats: "13 Seats", ratePerDay: "₹12,000" }
+      { label: "10 Seater", seats: "10 Seats", ratePerDay: "₹8,500" },
+      { label: "13 Seater", seats: "13 Seats", ratePerDay: "₹9,000" },
+      { label: "17 Seater", seats: "17 Seats", ratePerDay: "₹9,500" }
     ]
   }
 ];
@@ -554,15 +564,18 @@ async function seed() {
     await mongoose.connect(MONGO_URI);
     console.log('Connected to MongoDB successfully!');
 
-    // 1. Seed Admin User
+    // 1. Seed Admin Users
     const passwordHash = await bcrypt.hash(ADMIN_PASSWORD, 10);
-    await User.deleteMany({ email: ADMIN_EMAIL });
-    await User.create({
-      email: ADMIN_EMAIL,
-      passwordHash,
-      role: 'ADMIN',
-    });
-    console.log(`✓ Admin User created/updated: ${ADMIN_EMAIL}`);
+    const adminEmails = ['sintuborah81@gmail.com', 'nibirdeka70@gmail.com'];
+    for (const email of adminEmails) {
+      await User.deleteMany({ email });
+      await User.create({
+        email,
+        passwordHash,
+        role: 'ADMIN',
+      });
+      console.log(`✓ Admin User created/updated: ${email}`);
+    }
 
     // 2. Seed Site Settings
     await SiteSettings.deleteMany({});

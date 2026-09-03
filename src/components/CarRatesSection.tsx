@@ -2,9 +2,22 @@
 
 import React, { useState, useRef } from "react";
 
-export default function CarRatesSection() {
+interface CarRatesSectionProps {
+  items?: any[];
+}
+
+export default function CarRatesSection({ items }: CarRatesSectionProps = {}) {
   const [activeStateTab, setActiveStateTab] = useState<number>(1); // Default Meghalaya (index 1)
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Extract admin vehicle rates if updated in admin panel
+  const dzireItem = items?.find((v) => v.name?.toLowerCase().includes("dzire"));
+  const ertigaItem = items?.find((v) => v.name?.toLowerCase().includes("ertiga"));
+  const innovaItem = items?.find((v) => v.name?.toLowerCase().includes("innova"));
+
+  const dzireBasePrice = dzireItem?.ratePerDay ? parseInt(dzireItem.ratePerDay.replace(/[^0-9]/g, ""), 10) || 4000 : 4000;
+  const ertigaBasePrice = ertigaItem?.ratePerDay ? parseInt(ertigaItem.ratePerDay.replace(/[^0-9]/g, ""), 10) || 5000 : 5000;
+  const innovaBasePrice = innovaItem?.ratePerDay ? parseInt(innovaItem.ratePerDay.replace(/[^0-9]/g, ""), 10) || 6000 : 6000;
 
   const ratesData = [
     {
@@ -13,9 +26,9 @@ export default function CarRatesSection() {
       subtitle: "Guwahati Local Sightseeing / Official Duty",
       tag: "Local & Official",
       rates: [
-        { model: "Swift Dzire", price: "₹3,500", pax: "4-5 Seats" },
-        { model: "Maruti Ertiga", price: "₹4,500", pax: "6-7 Seats" },
-        { model: "Toyota Innova", price: "₹5,500", pax: "7-8 Seats" },
+        { model: "Swift Dzire", price: `₹${(dzireBasePrice - 500).toLocaleString("en-IN")}`, pax: "4-5 Seats" },
+        { model: "Maruti Ertiga", price: `₹${(ertigaBasePrice - 500).toLocaleString("en-IN")}`, pax: "6-7 Seats" },
+        { model: "Toyota Innova", price: `₹${(innovaBasePrice - 500).toLocaleString("en-IN")}`, pax: "7-8 Seats" },
       ],
       popular: false,
     },
@@ -25,9 +38,9 @@ export default function CarRatesSection() {
       subtitle: "As per Confirmed Itinerary per day cost",
       tag: "Most Popular",
       rates: [
-        { model: "Swift Dzire", price: "₹4,000", pax: "4-5 Seats" },
-        { model: "Maruti Ertiga", price: "₹5,000", pax: "6-7 Seats" },
-        { model: "Toyota Innova", price: "₹6,000", pax: "7-8 Seats" },
+        { model: "Swift Dzire", price: `₹${dzireBasePrice.toLocaleString("en-IN")}`, pax: "4-5 Seats" },
+        { model: "Maruti Ertiga", price: `₹${ertigaBasePrice.toLocaleString("en-IN")}`, pax: "6-7 Seats" },
+        { model: "Toyota Innova", price: `₹${innovaBasePrice.toLocaleString("en-IN")}`, pax: "7-8 Seats" },
       ],
       popular: true,
     },
@@ -37,9 +50,9 @@ export default function CarRatesSection() {
       subtitle: "As per Confirmed Itinerary per day cost",
       tag: "Scenic Trails",
       rates: [
-        { model: "Swift Dzire", price: "₹4,500", pax: "4-5 Seats" },
-        { model: "Maruti Ertiga", price: "₹5,500", pax: "6-7 Seats" },
-        { model: "Toyota Innova", price: "₹6,500", pax: "7-8 Seats" },
+        { model: "Swift Dzire", price: `₹${(dzireBasePrice + 500).toLocaleString("en-IN")}`, pax: "4-5 Seats" },
+        { model: "Maruti Ertiga", price: `₹${(ertigaBasePrice + 500).toLocaleString("en-IN")}`, pax: "6-7 Seats" },
+        { model: "Toyota Innova", price: `₹${(innovaBasePrice + 500).toLocaleString("en-IN")}`, pax: "7-8 Seats" },
       ],
       popular: false,
     },

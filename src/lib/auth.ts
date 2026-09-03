@@ -5,8 +5,33 @@ import User from '@/models/User';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'borah_tours_jwt_secret_key_2026';
 
-export const getAdminEmail = () => (process.env.ADMIN_EMAIL || 'nibirdeka70@gmail.com').trim().toLowerCase();
-export const getAdminPassword = () => process.env.ADMIN_PASSWORD || 'nibir@borah2026';
+const DEFAULT_ADMIN_EMAILS = ['sintuborah81@gmail.com', 'nibirdeka70@gmail.com'];
+
+export const getAdminEmails = (): string[] => {
+  const list = [...DEFAULT_ADMIN_EMAILS];
+
+  if (process.env.ADMIN_EMAILS) {
+    const split = process.env.ADMIN_EMAILS.split(',').map((e) => e.trim().toLowerCase());
+    split.forEach((e) => {
+      if (e && !list.includes(e)) list.push(e);
+    });
+  }
+
+  if (process.env.ADMIN_EMAIL) {
+    const single = process.env.ADMIN_EMAIL.trim().toLowerCase();
+    if (single && !list.includes(single)) list.push(single);
+  }
+
+  return list;
+};
+
+export const isAuthorizedAdminEmail = (email: string): boolean => {
+  if (!email) return false;
+  const normalized = email.trim().toLowerCase();
+  return getAdminEmails().includes(normalized);
+};
+
+export const getAdminPassword = (): string => process.env.ADMIN_PASSWORD || 'borah@2026';
 
 export function signToken(payload: { userId: string; email: string; role: string }): string {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });

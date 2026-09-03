@@ -2,13 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { connectDB } from '@/lib/db';
 import User from '@/models/User';
-import { signToken, getAdminEmail, getAdminPassword } from '@/lib/auth';
+import { signToken, isAuthorizedAdminEmail, getAdminPassword } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function POST(req: NextRequest) {
   try {
+    // Enforce rate limiting: Max 10 login attempts per minute per IP
+    const rateLimit = checkRateLimit(req, {
+      limit: 10,
+      windowMs: 60 * 1000,
+      identifier: 'auth-login',
+    });
+
+    if (rateLimit.isRateLimited && rateLimit.response) {
+      return rateLimit.response;
+    }
+
     const { email, password } = await req.json();
 
     if (!email || !password) {
@@ -18,19 +30,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const targetAdminEmail = getAdminEmail();
-    const targetAdminPassword = getAdminPassword();
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Verify email strictly matches the configured admin email
-    if (normalizedEmail !== targetAdminEmail) {
+    // Verify email is in authorized admin emails list (sintuborah81@gmail.com, nibirdeka70@gmail.com or env ADMIN_EMAILS)
+    if (!isAuthorizedAdminEmail(normalizedEmail)) {
       return NextResponse.json(
-        { success: false, message: 'Access denied: Only authorized admin email can log in' },
+        { success: false, message: 'Access denied: Email is not an authorized admin account' },
         { status: 403 }
       );
     }
 
-    // Verify password strictly matches configured ADMIN_PASSWORD
+    const targetAdminPassword = getAdminPassword();
+
+    // Verify password matches configured ADMIN_PASSWORD
     if (password !== targetAdminPassword) {
       return NextResponse.json(
         { success: false, message: 'Invalid admin password' },
@@ -42,7 +54,7 @@ export async function POST(req: NextRequest) {
 
     let user = await User.findOne({ email: normalizedEmail });
 
-    // Seed or update password hash in DB
+    // Seed or update password hash in DB for this admin user
     const passwordHash = await bcrypt.hash(password, 10);
     if (!user) {
       user = await User.create({
@@ -52,6 +64,7 @@ export async function POST(req: NextRequest) {
       });
     } else {
       user.passwordHash = passwordHash;
+      user.role = 'ADMIN';
       await user.save();
     }
 
