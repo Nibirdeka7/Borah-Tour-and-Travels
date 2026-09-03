@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Sora, Manrope } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import AppLayoutWrapper from "@/components/AppLayoutWrapper";
 import PagePreloader from "@/components/PagePreloader";
 
 const inter = Inter({
@@ -64,11 +63,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${sora.variable} ${manrope.variable} h-full scroll-smooth`}>
       <body className="min-h-full flex flex-col bg-background text-on-surface antialiased">
         <PagePreloader />
-        <Header />
-        <main className="w-full pt-20 flex-1 flex flex-col">
-          {children}
-        </main>
-        <Footer />
+        <AppLayoutWrapper>{children}</AppLayoutWrapper>
       </body>
     </html>
   );

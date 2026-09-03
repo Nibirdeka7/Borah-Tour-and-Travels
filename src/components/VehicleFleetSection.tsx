@@ -1,7 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
-import { Users, Fuel, Calendar, Gauge, Car, MessageSquare } from "lucide-react";
+import {
+  Users,
+  Fuel as FuelIcon,
+  Calendar,
+  Gauge,
+  Car,
+  MessageSquare,
+  CheckCircle2,
+  Info,
+  ShieldCheck,
+  UserCheck,
+  Navigation,
+  ParkingSquare,
+  Ticket,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 
 export interface SeatOption {
   seats: string;       // e.g. "13 Seats"
@@ -24,29 +40,34 @@ export interface Vehicle {
   seatOptions?: SeatOption[];
 }
 
-export default function VehicleFleetSection() {
+interface VehicleFleetSectionProps {
+  items?: Vehicle[];
+}
+
+export default function VehicleFleetSection({ items }: VehicleFleetSectionProps = {}) {
   const [activeTab, setActiveTab] = useState<"all" | "sedan" | "suv" | "tempo">("all");
   const [selectedSeats, setSelectedSeats] = useState<Record<string, SeatOption>>({});
+  const [showNotes, setShowNotes] = useState<boolean>(false);
 
-  const vehicles: Vehicle[] = [
+  const defaultVehicles: Vehicle[] = [
     {
       id: "dzire-2026",
       name: "Maruti Suzuki Swift Dzire",
-      brandModel: "Maruti Suzuki 2026",
-      year: "2026",
+      brandModel: "Maruti Suzuki",
+      year: "New Model",
       seats: "5 Seats",
       transmission: "Manual",
       fuel: "Petrol",
       ratePerDay: "₹4,000",
       category: "sedan",
-      tag: "Latest 2026 Edition",
+      tag: "Latest Edition",
       image: "/img/vehicles/marutiSuzukiSwiftDezire1.png",
     },
     {
       id: "ertiga-2025",
       name: "Maruti Suzuki Ertiga",
       brandModel: "Maruti Suzuki Ertiga",
-      year: "2025",
+      year: "New Model",
       seats: "8 Seats",
       transmission: "Manual",
       fuel: "Petrol",
@@ -59,7 +80,7 @@ export default function VehicleFleetSection() {
       id: "innova-crysta",
       name: "Toyota Innova Crysta",
       brandModel: "Toyota Crysta",
-      year: "2023",
+      year: "New Model",
       seats: "8 Seats",
       transmission: "Manual",
       fuel: "Diesel",
@@ -72,7 +93,7 @@ export default function VehicleFleetSection() {
       id: "traveller-2024",
       name: "Force Traveller",
       brandModel: "Force Motors",
-      year: "2025",
+      year: "New Model",
       seats: "13 Seats",
       transmission: "Manual",
       fuel: "Diesel",
@@ -90,7 +111,7 @@ export default function VehicleFleetSection() {
       id: "urbania-2025",
       name: "Force Urbania",
       brandModel: "Force Motors Luxury",
-      year: "2025",
+      year: "New Model",
       seats: "13 Seats",
       transmission: "Manual",
       fuel: "Diesel",
@@ -100,10 +121,32 @@ export default function VehicleFleetSection() {
       image: "/img/vehicles/urbania.png",
       seatOptions: [
         { label: "13 Seater", seats: "13 Seats", ratePerDay: "₹12,000" }
-        // { label: "16 Seater", seats: "16 Seats", ratePerDay: "₹14,000" },
       ],
     },
   ];
+
+  const inclusions = [
+    { icon: Navigation, label: "Toll Charges" },
+    { icon: ParkingSquare, label: "Parking Fees" },
+    { icon: UserCheck, label: "Driver Allowance" },
+    { icon: FuelIcon, label: "Fuel Included" },
+    { icon: ShieldCheck, label: "Vehicle Hiring" },
+    { icon: Ticket, label: "All Sightseeing" },
+  ];
+
+  const notes = [
+    "The above rates are per-day vehicle charges.",
+    "Force Traveller Daily Rates: 13-Seater (₹9,000/day), 16-Seater (₹10,000/day), 25-Seater (₹11,000/day).",
+    "Assam: Rates apply to Guwahati local sightseeing / official duty.",
+    "Meghalaya & Arunachal: Rates apply as per confirmed itinerary.",
+    "Rates include fuel, toll, parking, driver allowance, vehicle hiring charges, and sightseeing mentioned in itinerary.",
+    "Any additional sightseeing, extra hours, route changes, or additional kilometres may be charged separately.",
+    "Rates subject to vehicle availability and confirmation at time of booking.",
+    "Hotel, food, entry tickets, adventure activities, and personal expenses are excluded unless specified.",
+    "Final fare may vary depending on travel days and itinerary."
+  ];
+
+  const vehicles = items && items.length > 0 ? items : defaultVehicles;
 
   const filteredVehicles = activeTab === "all" 
     ? vehicles 
@@ -115,8 +158,9 @@ export default function VehicleFleetSection() {
     const seatText = currentSeat ? ` (${currentSeat.label})` : "";
     const rateText = currentSeat ? currentSeat.ratePerDay : v.ratePerDay;
     const capacityText = currentSeat ? currentSeat.seats : v.seats;
+    const modelText = v.year && v.year.includes("Model") ? v.year : "New Model";
     
-    const text = `Hi Borah Tour and Travels! I am interested in booking the *${v.name}${seatText}* (${v.year} Model, ${capacityText}, ${v.fuel}) at ${rateText}/day. Please let me know availability.`;
+    const text = `Hi Borah Tour and Travels! I am interested in booking the *${v.name}${seatText}* (${modelText}, ${capacityText}, ${v.fuel}) at ${rateText}/day. Please let me know availability.`;
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
   };
 
@@ -168,7 +212,7 @@ export default function VehicleFleetSection() {
         </div>
 
         {/* Vehicles Cards Grid: Mobile Horizontal Carousel / Desktop Grid */}
-        <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
+        <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 mb-10 sm:mb-14">
           {filteredVehicles.map((v) => {
             const activeSeatOption = v.seatOptions
               ? selectedSeats[v.id] || v.seatOptions[0]
@@ -273,7 +317,7 @@ export default function VehicleFleetSection() {
 
                     <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-xl border border-gray-100 text-[11px] sm:text-xs font-medium text-gray-700">
                       <Calendar size={13} className="text-[#1e4630] shrink-0" />
-                      <span>{v.year} Model</span>
+                      <span>{v.year && v.year.includes("Model") ? v.year : "New Model"}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-xl border border-gray-100 text-[11px] sm:text-xs font-medium text-gray-700">
@@ -282,7 +326,7 @@ export default function VehicleFleetSection() {
                     </div>
 
                     <div className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-xl border border-gray-100 text-[11px] sm:text-xs font-medium text-gray-700">
-                      <Fuel size={13} className="text-[#1e4630] shrink-0" />
+                      <FuelIcon size={13} className="text-[#1e4630] shrink-0" />
                       <span>{v.fuel}</span>
                     </div>
                   </div>
@@ -303,6 +347,67 @@ export default function VehicleFleetSection() {
               </div>
             );
           })}
+        </div>
+
+        {/* Package Inclusions Grid */}
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-gray-200/80 shadow-sm mb-6 sm:mb-12">
+          <div className="flex items-center gap-2 mb-4 sm:mb-6">
+            <ShieldCheck size={20} className="text-[#1e4630]" />
+            <h3 className="text-lg sm:text-2xl font-bold text-[#1c1716]">
+              Included in Daily Vehicle Rates
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-4">
+            {inclusions.map((inc, idx) => {
+              const IconComp = inc.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-[#f7f8f4] border border-gray-100 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl flex flex-col items-center text-center space-y-1.5 sm:space-y-2.5 hover:border-[#1e4630]/30 transition-colors"
+                >
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#1e4630]/10 flex items-center justify-center text-[#1e4630] shrink-0">
+                    <IconComp size={16} className="sm:w-5 sm:h-5" />
+                  </div>
+                  <span className="text-[11px] sm:text-xs font-bold text-[#1c1716] leading-tight">
+                    {inc.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Important Rate Notes Accordion for Mobile / Clean Box for Desktop */}
+        <div className="bg-[#1e4630]/5 border border-[#1e4630]/15 rounded-2xl sm:rounded-3xl p-4 sm:p-8">
+          <div
+            onClick={() => setShowNotes(!showNotes)}
+            className="flex items-center justify-between cursor-pointer sm:cursor-default"
+          >
+            <div className="flex items-center gap-2">
+              <Info size={18} className="text-[#1e4630] shrink-0" />
+              <h4 className="text-base sm:text-lg font-bold text-[#1c1716]">
+                Important Notes &amp; Policies
+              </h4>
+            </div>
+
+            {/* Mobile Accordion Toggle Icon */}
+            <button className="sm:hidden text-[#1e4630] font-bold p-1">
+              {showNotes ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </button>
+          </div>
+
+          {/* Notes Content: Always visible on sm+, toggleable on mobile */}
+          <div className={`${showNotes ? "block" : "hidden sm:block"} mt-4 pt-3 border-t border-[#1e4630]/10`}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
+              {notes.map((note, i) => (
+                <div key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-700 leading-relaxed">
+                  <CheckCircle2 size={15} className="text-[#1e4630] shrink-0 mt-0.5" />
+                  <span>{note}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
       </div>

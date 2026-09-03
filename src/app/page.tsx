@@ -35,7 +35,6 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import TripWizardModal from "@/components/TripWizardModal";
 import PhoneLeadSection from "@/components/PhoneLeadSection";
 import PackageDetailModal, { PackageData } from "@/components/PackageDetailModal";
-import MobileBottomNav from "@/components/MobileBottomNav";
 import CarRatesSection from "@/components/CarRatesSection";
 import VehicleFleetSection from "@/components/VehicleFleetSection";
 import TravelerGallerySection from "@/components/TravelerGallerySection";
@@ -43,6 +42,108 @@ import TravelerGallerySection from "@/components/TravelerGallerySection";
 export default function Home() {
   const [activeRegion, setActiveRegion] = useState("meghalaya");
   const [durationFilter, setDurationFilter] = useState("all");
+
+  // Dynamic MongoDB Content State
+  const [cmsPackages, setCmsPackages] = useState<PackageData[]>([]);
+  const [cmsPlaces, setCmsPlaces] = useState<any[]>([]);
+  const [cmsGallery, setCmsGallery] = useState<any[]>([]);
+  const [cmsVehicles, setCmsVehicles] = useState<any[]>([]);
+  const [cmsSettings, setCmsSettings] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("/api/packages", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setCmsPackages(
+            data.data.map((item: any) => ({
+              id: item._id || item.slug,
+              title: item.title,
+              price: item.price || "Contact Owner",
+              duration: item.duration,
+              image: item.image,
+              gallery: item.gallery || [],
+              categories: item.categories || ["meghalaya"],
+              route: item.route || "",
+              activityLevel: item.activityLevel || "Moderate Sightseeing",
+              groupSize: item.groupSize || "1-8 Pax",
+              highlights: item.highlights || [],
+              itinerary: item.itinerary || []
+            }))
+          );
+        }
+      })
+      .catch(() => { });
+
+    fetch("/api/places", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setCmsPlaces(
+            data.data.map((item: any) => ({
+              id: item._id || item.slug,
+              name: item.name,
+              query: item.query || item.name,
+              embedUrl: item.embedUrl || `https://maps.google.com/maps?q=${encodeURIComponent(item.name)}&t=&z=11&ie=UTF8&iwloc=&output=embed`,
+              distance: item.distance || "",
+              travelTime: item.travelTime || "",
+              description: item.description || "",
+              image: item.image || ""
+            }))
+          );
+        }
+      })
+      .catch(() => { });
+
+    fetch("/api/gallery", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setCmsGallery(
+            data.data.map((item: any) => ({
+              id: item._id,
+              src: item.image,
+              title: item.title,
+              category: item.category
+            }))
+          );
+        }
+      })
+      .catch(() => { });
+
+    fetch("/api/vehicles", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setCmsVehicles(
+            data.data.map((item: any) => ({
+              id: item._id,
+              name: item.name,
+              brandModel: item.brandModel || item.name,
+              year: item.year || "New Model",
+              seats: item.seats || "5 Seats",
+              transmission: item.transmission || "Manual",
+              fuel: item.fuel || "Diesel",
+              ratePerDay: item.ratePerDay || "Contact Owner",
+              category: item.category || "sedan",
+              tag: item.tag || "Available",
+              image: item.image,
+              seatOptions: item.seatOptions
+            }))
+          );
+        }
+      })
+      .catch(() => { });
+
+    fetch("/api/settings", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          setCmsSettings(data.data);
+        }
+      })
+      .catch(() => { });
+  }, []);
 
   // Hero Video Playlist State (playing 4 videos sequentially inside the mask)
   const heroVideos = [
@@ -62,7 +163,7 @@ export default function Home() {
       if (v) {
         if (idx === currentVideoIndex) {
           v.currentTime = 0;
-          v.play().catch(() => {});
+          v.play().catch(() => { });
         } else {
           v.pause();
         }
@@ -82,7 +183,7 @@ export default function Home() {
   };
 
   // Google Map Route Locations State
-  const mapLocations = [
+  const defaultMapLocations = [
     {
       id: "circuit",
       name: "Full Circuit Loop",
@@ -157,6 +258,8 @@ export default function Home() {
     }
   ];
 
+  const mapLocations = cmsPlaces.length > 0 ? cmsPlaces : defaultMapLocations;
+
   const [activeMapId, setActiveMapId] = useState("circuit");
   const selectedMap = mapLocations.find((m) => m.id === activeMapId) || mapLocations[0];
 
@@ -177,7 +280,7 @@ export default function Home() {
   const formRef = useRef<HTMLFormElement>(null);
 
   // Package Data (Prices removed - Users contact owner directly)
-  const packages: PackageData[] = [
+  const defaultPackages: PackageData[] = [
     // --- MEGHALAYA PACKAGES ---
     {
       id: "meghalaya-1day",
@@ -1068,8 +1171,12 @@ export default function Home() {
     }
   ];
 
+  const packages = cmsPackages.length > 0
+    ? [...cmsPackages, ...defaultPackages.filter(dp => !cmsPackages.some(cp => cp.id === dp.id))]
+    : defaultPackages;
+
   // Destination Data
-  const destinations = [
+  const defaultDestinations = [
     {
       id: "tawang",
       num: "01",
@@ -1141,6 +1248,19 @@ export default function Home() {
       spanClass: "md:col-span-12 md:-mt-4"
     }
   ];
+
+  const destinations = cmsPlaces.length > 0
+    ? cmsPlaces.map((p, idx) => ({
+        id: p.id || p._id,
+        num: `0${idx + 1}`.slice(-2),
+        name: p.name,
+        state: "Northeast India",
+        duration: p.travelTime || "Custom",
+        image: p.image || "/img/cherrapunji/cerrapunji.png",
+        desc: p.description || p.query || "",
+        spanClass: idx % 3 === 0 ? "md:col-span-8" : idx % 3 === 1 ? "md:col-span-4" : "md:col-span-6"
+      }))
+    : defaultDestinations;
 
   const filteredPackages = packages.filter((pkg) => {
     const matchesRegion =
@@ -1290,10 +1410,10 @@ export default function Home() {
                 <span>Private Guwahati Airport Pickups</span>
               </div> */}
               <h1 className="text-3xl sm:text-5xl md:text-5xl font-display-lg text-[#1c1716] font-semibold tracking-tight leading-[1.15] mb-2.5">
-                A new way to live with Nature
+                {cmsSettings?.heroTitle || "A new way to live with Nature"}
               </h1>
               <p className="text-xs sm:text-base md:text-lg text-[#1c1716]/80 font-normal leading-relaxed max-w-2xl">
-                We redesigned how travelers connect with nature, explore hidden waterfalls, and experience Assamese &amp; NorthEast culture all in one customized private tour service.
+                {cmsSettings?.heroSubtitle || "We redesigned how travelers connect with nature, explore hidden waterfalls, and experience Assamese & NorthEast culture all in one customized private tour service."}
               </p>
             </div>
           </div>
@@ -1327,19 +1447,17 @@ export default function Home() {
                     playsInline
                     onEnded={isActive ? handleHeroVideoEnd : undefined}
                     onTimeUpdate={isActive ? handleVideoTimeUpdate : undefined}
-                    className={`absolute object-cover transition-opacity duration-700 ease-in-out ${
-                      isActive ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
-                    } ${
-                      vid.rotate
+                    className={`absolute object-cover transition-opacity duration-700 ease-in-out ${isActive ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
+                      } ${vid.rotate
                         ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-90"
                         : "top-0 left-0 w-full h-full"
-                    }`}
+                      }`}
                     style={
                       vid.rotate
                         ? {
-                            width: "calc(100% * 667 / 1213)",
-                            height: "calc(100% * 1213 / 667)",
-                          }
+                          width: "calc(100% * 667 / 1213)",
+                          height: "calc(100% * 1213 / 667)",
+                        }
                         : {}
                     }
                   >
@@ -1360,8 +1478,8 @@ export default function Home() {
                   >
                     <div
                       className={`h-1 sm:h-1.5 rounded-full transition-all duration-500 ${currentVideoIndex === idx
-                          ? "bg-[#c6f022] shadow-[0_0_10px_rgba(198,240,34,0.8)]"
-                          : "bg-white/35 group-hover:bg-white/60"
+                        ? "bg-[#c6f022] shadow-[0_0_10px_rgba(198,240,34,0.8)]"
+                        : "bg-white/35 group-hover:bg-white/60"
                         }`}
                     />
                   </button>
@@ -1492,91 +1610,9 @@ export default function Home() {
       </section>
 
       {/* 3. Feature Section 02 - Adapted from guide/3.txt `ne` component */}
-      {/* 3. Feature Section */}
-      <section className="py-10 sm:py-20 bg-[#f7f8f4] font-manrope">
-        <div className="flex flex-col xl:flex-row items-center justify-between w-full max-w-[1264px] mx-auto gap-8 xl:gap-[88px] px-4 sm:px-6">
+     
 
-          <div className="relative rounded-2xl sm:rounded-[32px] w-full xl:w-1/2 h-64 sm:h-80 md:h-[420px] shrink-0 overflow-hidden shadow-lg sm:shadow-xl border border-black/5">
-            <img
-              alt="Meghalaya Nature Trails"
-              className="absolute inset-0 object-cover size-full hover:scale-105 transition-transform duration-700"
-              src="/img/branding/guideDada.png"
-            />
-          </div>
-
-          <div className="flex flex-col items-center xl:items-start text-center xl:text-left w-full xl:w-1/2 shrink-0 overflow-hidden">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] mb-2">
-              Zero Friction Travel
-            </span>
-            <h2 className="font-medium leading-tight text-[#1c1716] text-2xl sm:text-4xl md:text-[48px] tracking-tight mb-4 w-full max-w-[500px]">
-              No Complexity. No Noise. Cultivate Future Trails
-            </h2>
-            <p className="font-normal leading-relaxed text-[#1c1716]/80 text-sm sm:text-base mb-6 w-full max-w-[480px]">
-              Borah Tours &amp; Travel reimagines how travelers connect with Northeast India. We blend dedicated local drivers, handcrafted homestay itineraries, and Guwahati airport transfers to make your vacation effortless and memorable.
-            </p>
-
-            <button
-              onClick={() => openWizard()}
-              className="btn-hover bg-[#c6f022] text-[#1e4630] font-bold flex gap-2 items-center justify-center px-8 py-3.5 rounded-full cursor-pointer w-full sm:w-[220px] h-[50px] shadow-md"
-            >
-              <span>Custom Plan</span>
-              <ArrowRight size={18} className="text-[#1e4630]" />
-            </button>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 4. Services Overview */}
-      <section id="services" className="py-10 sm:py-20 bg-white border-t border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="mb-8 sm:mb-14 flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] mb-1 block">
-                Full Service Hospitality
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">
-                Seamless Travel Experience
-              </h2>
-              <p className="text-gray-600 max-w-2xl mt-1.5 text-xs sm:text-base">
-                We handle every detail from Guwahati airport pickup to boutique stays, so you can enjoy the magic of nature.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
-            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
-              <Bus className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
-              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
-                Guwahati Airport Pickup
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                Comfortable, timely transfers from Guwahati Airport / Station directly to Shillong, Cherrapunji, or Kaziranga.
-              </p>
-            </div>
-
-            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
-              <Route className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
-              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
-                Customized Itineraries
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                From adventurous root bridge treks to serene Dawki river boating, we tailor every stop to your travel pace.
-              </p>
-            </div>
-
-            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
-              <Hotel className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
-              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
-                Homestay &amp; Hotel Stays
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                Handpicked accommodations ranging from cozy Meghalaya homestays to luxury forest resorts.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* 5. Curated Destinations Bento Grid */}
       <section id="destinations" className="w-full bg-[#f7f8f4] py-10 sm:py-20 px-4 sm:px-6 relative border-t border-gray-200/60">
@@ -1588,7 +1624,7 @@ export default function Home() {
               </span>
               <h2 className="text-2xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">Curated Destinations</h2>
               <p className="text-gray-600 max-w-xl mt-1.5 text-xs sm:text-base">
-                Explore our handpicked selection of must-visit locations across Meghalaya &amp; Assam.
+                Explore our handpicked selection of must-visit locations across NorthEast.
               </p>
             </div>
           </div>
@@ -1669,8 +1705,8 @@ export default function Home() {
                     key={loc.id}
                     onClick={() => setActiveMapId(loc.id)}
                     className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer border shrink-0 ${isActive
-                        ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] shadow-md scale-105"
-                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
+                      ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] shadow-md scale-105"
+                      : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100 hover:border-gray-300"
                       }`}
                   >
                     <MapPin size={13} className={isActive ? "text-[#c6f022]" : "text-[#1e4630]"} />
@@ -1777,8 +1813,8 @@ export default function Home() {
                     setDurationFilter("all");
                   }}
                   className={`group relative flex flex-col justify-between p-5 rounded-3xl transition-all duration-300 text-left cursor-pointer overflow-hidden border ${isActive
-                      ? "bg-[#1e4630] text-white border-[#c6f022] shadow-xl scale-[1.02] ring-2 ring-[#c6f022]/40"
-                      : "bg-white text-[#1c1716] border-gray-200/90 hover:border-[#1e4630]/50 hover:shadow-md"
+                    ? "bg-[#1e4630] text-white border-[#c6f022] shadow-xl scale-[1.02] ring-2 ring-[#c6f022]/40"
+                    : "bg-white text-[#1c1716] border-gray-200/90 hover:border-[#1e4630]/50 hover:shadow-md"
                     }`}
                 >
                   {/* Subtle Background Cover Image Tint for active card */}
@@ -1836,8 +1872,8 @@ export default function Home() {
                       setDurationFilter("all");
                     }}
                     className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold shrink-0 transition-all cursor-pointer border ${isActive
-                        ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] shadow-md"
-                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
+                      ? "bg-[#1e4630] text-[#c6f022] border-[#1e4630] shadow-md"
+                      : "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
                       }`}
                   >
                     <IconComp size={15} className={isActive ? "text-[#c6f022]" : "text-[#1e4630]"} />
@@ -1875,8 +1911,8 @@ export default function Home() {
                     key={dt.value}
                     onClick={() => setDurationFilter(dt.value)}
                     className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${isSelected
-                        ? "bg-[#1e4630] text-[#c6f022] shadow-sm"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200/70"
+                      ? "bg-[#1e4630] text-[#c6f022] shadow-sm"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200/70"
                       }`}
                   >
                     {dt.label}
@@ -2027,8 +2063,92 @@ Please share direct owner quote and booking details!`;
         </div>
       </section>
 
+        {/* 4. Services Overview */}
+      <section id="services" className="py-10 sm:py-20 bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="mb-8 sm:mb-14 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] mb-1 block">
+                Full Service Hospitality
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-bold text-[#1c1716] tracking-tight">
+                Seamless Travel Experience
+              </h2>
+              <p className="text-gray-600 max-w-2xl mt-1.5 text-xs sm:text-base">
+                We handle every detail from Guwahati airport pickup to boutique stays, so you can enjoy the magic of nature.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
+            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
+              <Bus className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
+              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
+                Guwahati Airport Pickup
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                Comfortable, timely transfers from Guwahati Airport / Station directly to Shillong, Cherrapunji, or Kaziranga.
+              </p>
+            </div>
+
+            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
+              <Route className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
+              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
+                Customized Itineraries
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                From adventurous root bridge treks to serene Dawki river boating, we tailor every stop to your travel pace.
+              </p>
+            </div>
+
+            <div className="bg-[#f7f8f4] border border-gray-200/60 rounded-2xl sm:rounded-3xl p-5 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl relative overflow-hidden group">
+              <Hotel className="text-[#1e4630] mb-4 sm:mb-6 w-8 h-8 sm:w-10 sm:h-10" />
+              <h3 className="text-lg sm:text-xl font-bold text-[#1c1716] mb-2 sm:mb-3">
+                Homestay &amp; Hotel Stays
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                Handpicked accommodations ranging from cozy Meghalaya homestays to luxury forest resorts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* 7. Happy Customer Journey Gallery Section with Dual Infinite Marquee */}
-      <TravelerGallerySection />
+      <TravelerGallerySection items={cmsGallery} />
+       {/* 3. Feature Section */}
+      <section className="py-10 sm:py-20 bg-[#f7f8f4] font-manrope">
+        <div className="flex flex-col xl:flex-row items-center justify-between w-full max-w-[1264px] mx-auto gap-8 xl:gap-[88px] px-4 sm:px-6">
+
+          <div className="relative rounded-2xl sm:rounded-[32px] w-full xl:w-1/2 h-64 sm:h-80 md:h-[420px] shrink-0 overflow-hidden shadow-lg sm:shadow-xl border border-black/5">
+            <img
+              alt="Meghalaya Nature Trails"
+              className="absolute inset-0 object-cover size-full hover:scale-105 transition-transform duration-700"
+              src="/img/branding/guideDada.png"
+            />
+          </div>
+
+          <div className="flex flex-col items-center xl:items-start text-center xl:text-left w-full xl:w-1/2 shrink-0 overflow-hidden">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#1e4630] mb-2">
+              Zero Friction Travel
+            </span>
+            <h2 className="font-medium leading-tight text-[#1c1716] text-2xl sm:text-4xl md:text-[48px] tracking-tight mb-4 w-full max-w-[500px]">
+              No Complexity. No Noise. Cultivate Future Trails
+            </h2>
+            <p className="font-normal leading-relaxed text-[#1c1716]/80 text-sm sm:text-base mb-6 w-full max-w-[480px]">
+              Borah Tours &amp; Travel reimagines how travelers connect with Northeast India. We blend dedicated local drivers, handcrafted homestay itineraries, and Guwahati airport transfers to make your vacation effortless and memorable.
+            </p>
+
+            <button
+              onClick={() => openWizard()}
+              className="btn-hover bg-[#c6f022] text-[#1e4630] font-bold flex gap-2 items-center justify-center px-8 py-3.5 rounded-full cursor-pointer w-full sm:w-[220px] h-[50px] shadow-md"
+            >
+              <span>Custom Plan</span>
+              <ArrowRight size={18} className="text-[#1e4630]" />
+            </button>
+          </div>
+
+        </div>
+      </section>
 
       {/* 8. Phone Lead Capture Component */}
       <PhoneLeadSection />
@@ -2042,10 +2162,10 @@ Please share direct owner quote and booking details!`;
                 Customized Itineraries
               </span>
               <h2 className="text-2xl sm:text-4xl font-bold tracking-tight">
-                Want a Personalized Tour Plan?
+                {cmsSettings?.customTripTitle || "Want a Personalized Tour Plan?"}
               </h2>
               <p className="text-white/80 text-xs sm:text-base leading-relaxed">
-                Tell us your tentative dates, places you wish to visit, and number of travelers. We will design a custom itinerary with a dedicated private vehicle.
+                {cmsSettings?.customTripSubtitle || "Tell us your tentative dates, places you wish to visit, and number of travelers. We will design a custom itinerary with a dedicated private vehicle."}
               </p>
 
               <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
@@ -2091,6 +2211,7 @@ Please share direct owner quote and booking details!`;
         onClose={() => setSelectedDetailPackage(null)}
         onCustomize={(title) => openWizard(title)}
       />
+      
 
     </div>
   );
