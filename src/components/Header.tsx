@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export default function Header() {
   const [activeHash, setActiveHash] = useState("#home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [navSearchQuery, setNavSearchQuery] = useState("");
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   const navLinks = [
     { name: "Car Rates", hash: "#car-rates" },
@@ -17,16 +15,6 @@ export default function Header() {
     { name: "Gallery", hash: "#gallery" },
     { name: "Contact", hash: "#custom-trip" },
   ];
-
-  // Sync Navbar search query with site-search events from page.tsx
-  useEffect(() => {
-    const handleSearchEvent = (e: CustomEvent<string>) => {
-      setNavSearchQuery(e.detail || "");
-    };
-
-    window.addEventListener("site-search" as any, handleSearchEvent);
-    return () => window.removeEventListener("site-search" as any, handleSearchEvent);
-  }, []);
 
   // Intersection Observer to highlight active section on scroll
   useEffect(() => {
@@ -55,32 +43,12 @@ export default function Header() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSearchChange = (value: string) => {
-    setNavSearchQuery(value);
-    // Broadcast query to page.tsx
-    window.dispatchEvent(new CustomEvent("site-search", { detail: value }));
 
-    // If typing query and not at packages section, scroll to packages
-    if (value.trim()) {
-      const targetElement = document.getElementById("packages");
-      if (targetElement) {
-        const headerOffset = 90;
-        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-      }
-    }
-  };
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     e.preventDefault();
     setActiveHash(hash);
     setMobileMenuOpen(false);
-    setIsMobileSearchOpen(false);
 
     const targetId = hash.substring(1);
     const targetElement = document.getElementById(targetId);
@@ -135,31 +103,8 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Right Actions: Desktop Search Input + CTA + Mobile Toggle */}
+        {/* Right Actions: CTA + Mobile Toggle */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-
-          {/* Navbar Search Input (Desktop/Laptop) */}
-          <div className="hidden md:flex items-center relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/60">
-              <Search size={14} />
-            </div>
-            <input
-              type="text"
-              placeholder="Search tours..."
-              value={navSearchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-8 pr-7 py-1.5 bg-white/10 hover:bg-white/15 focus:bg-white/20 text-white placeholder-white/60 text-xs rounded-full border border-white/15 focus:border-[#c6f022] outline-none transition-all w-32 xl:w-48 focus:w-56"
-            />
-            {navSearchQuery && (
-              <button
-                type="button"
-                onClick={() => handleSearchChange("")}
-                className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-white/60 hover:text-white cursor-pointer"
-              >
-                <X size={13} />
-              </button>
-            )}
-          </div>
 
           {/* Book CTA Button */}
           <a
@@ -169,15 +114,6 @@ export default function Header() {
           >
             Book Your Trip
           </a>
-
-          {/* Mobile Search Toggle Icon */}
-          <button
-            onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
-            className="md:hidden p-1.5 sm:p-2 text-white/90 hover:text-[#c6f022] transition-colors cursor-pointer shrink-0"
-            aria-label="Toggle Search"
-          >
-            <Search size={18} className="sm:w-5 sm:h-5" />
-          </button>
 
           {/* Mobile Drawer Menu Toggle Icon */}
           <button
@@ -190,63 +126,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Expandable Mobile Search Bar Bar */}
-      {isMobileSearchOpen && (
-        <div className="md:hidden absolute top-14 left-0 w-full bg-[#1e4630] text-white rounded-2xl p-2.5 shadow-2xl border border-white/10 mt-1 z-50 animate-in">
-          <div className="relative flex items-center">
-            <Search size={15} className="absolute left-3 text-white/60" />
-            <input
-              type="text"
-              autoFocus
-              placeholder="Search packages (e.g. Cherrapunji, Dawki, Tawang)..."
-              value={navSearchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full pl-8 pr-8 py-2 bg-white/15 text-white placeholder-white/60 text-xs rounded-xl border border-white/20 focus:border-[#c6f022] outline-none"
-            />
-            {navSearchQuery ? (
-              <button
-                type="button"
-                onClick={() => handleSearchChange("")}
-                className="absolute right-3 text-white/70 hover:text-white"
-              >
-                <X size={14} />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setIsMobileSearchOpen(false)}
-                className="absolute right-3 text-white/70 hover:text-white"
-              >
-                <X size={14} />
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden absolute top-14 left-0 w-full bg-[#1e4630] text-white rounded-3xl p-5 shadow-2xl border border-white/10 mt-2 z-40">
-          {/* Mobile Search Bar inside menu */}
-          <div className="relative flex items-center mb-4">
-            <Search size={15} className="absolute left-3 text-white/60" />
-            <input
-              type="text"
-              placeholder="Search packages, places..."
-              value={navSearchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full pl-8 pr-8 py-2 bg-white/15 text-white placeholder-white/60 text-xs rounded-xl border border-white/20 focus:border-[#c6f022] outline-none"
-            />
-            {navSearchQuery && (
-              <button
-                type="button"
-                onClick={() => handleSearchChange("")}
-                className="absolute right-3 text-white/70 hover:text-white"
-              >
-                <X size={14} />
-              </button>
-            )}
-          </div>
 
           <div className="flex flex-col gap-2.5">
             {navLinks.map((link) => (

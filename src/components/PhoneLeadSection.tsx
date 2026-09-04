@@ -284,7 +284,7 @@ export default function PhoneLeadSection() {
                 Explore With Ease, Plan With Confidence
               </h2>
               <p className="font-normal leading-[1.6] text-[#1c1716]/80 text-[16px]">
-                Thousands of travelers have experienced raw nature in Meghalaya &amp; Assam with Borah Tours &amp; Travel. Drop your phone number below and our lead coordinator will call you in 15 minutes.
+                Thousands of travelers have experienced raw nature in Northeast with Borah Tour &amp; Travels. Drop your phone number below and our lead coordinator will call you in 15 minutes.
               </p>
             </div>
 

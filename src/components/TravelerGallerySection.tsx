@@ -53,7 +53,7 @@ export default function TravelerGallerySection({ items }: TravelerGallerySection
           Real Memories from Our Guests
         </h2>
         <p className="text-xs sm:text-sm text-gray-500">
-          Photos shared directly by travelers exploring Meghalaya, Assam & Arunachal Pradesh with Borah Tours.
+          Photos shared directly by travelers exploring Meghalaya, Assam & Arunachal Pradesh with Borah Tour & Travels.
         </p>
       </div>
 
