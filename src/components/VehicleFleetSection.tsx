@@ -190,7 +190,7 @@ export default function VehicleFleetSection({ items }: VehicleFleetSectionProps 
             {[
               { id: "all", label: "All Vehicles" },
               { id: "sedan", label: "Sedans (5 Seats)" },
-              { id: "suv", label: "SUVs (8 Seats)" },
+              { id: "suv", label: "SUVs (7-8 Seats)" },
               { id: "tempo", label: "Travellers (13-25 Seats)" },
             ].map((tab) => (
               <button

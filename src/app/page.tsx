@@ -2097,7 +2097,7 @@ Please share direct owner quote and booking details!`;
                 Guwahati Airport Pickup
               </h3>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                Comfortable, timely transfers from Guwahati Airport / Station directly to Shillong, Cherrapunji, or Kaziranga.
+                Comfortable, timely transfers from Guwahati Airport / Station directly to entire NorthEast.
               </p>
             </div>
 
