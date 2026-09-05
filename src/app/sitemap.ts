@@ -19,7 +19,16 @@ const PACKAGE_SLUGS = [
   'assam-6d5n',
 ];
 
-const DESTINATION_SLUGS = ['circuit'];
+const DESTINATION_SLUGS = [
+  'circuit',
+  'tawang',
+  'sela_pass',
+  'sangti_valley',
+  'guwahati',
+  'kaziranga',
+  'cherrapunji',
+  'dawki',
+];
 
 const STATIC_ROUTES = [
   '',
@@ -36,7 +45,7 @@ const STATIC_ROUTES = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://borahtoursandtravel.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.borahtourandtravels.in';
   const lastModified = new Date();
 
   const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((route) => ({

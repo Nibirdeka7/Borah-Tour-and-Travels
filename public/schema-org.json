@@ -3,11 +3,11 @@
   "@graph": [
     {
       "@type": "TravelAgency",
-      "@id": "https://borahtoursandtravel.com/#organization",
+      "@id": "https://www.borahtourandtravels.in/#organization",
       "name": "Borah Tour & Travels",
-      "url": "https://borahtoursandtravel.com",
-      "logo": "https://borahtoursandtravel.com/logoHero.png",
-      "image": "https://borahtoursandtravel.com/img/shillong/shillong.png",
+      "url": "https://www.borahtourandtravels.in",
+      "logo": "https://www.borahtourandtravels.in/logoHero.png",
+      "image": "https://www.borahtourandtravels.in/img/shillong/shillong.png",
       "telephone": "+917002674473",
       "priceRange": "₹₹",
       "address": {
@@ -42,17 +42,17 @@
     },
     {
       "@type": "WebSite",
-      "@id": "https://borahtoursandtravel.com/#website",
-      "url": "https://borahtoursandtravel.com",
+      "@id": "https://www.borahtourandtravels.in/#website",
+      "url": "https://www.borahtourandtravels.in",
       "name": "Borah Tour & Travels",
       "description": "Customized Meghalaya, Tawang, and Assam private tour packages with Guwahati airport pickup.",
       "publisher": {
-        "@id": "https://borahtoursandtravel.com/#organization"
+        "@id": "https://www.borahtourandtravels.in/#organization"
       }
     },
     {
       "@type": "OfferCatalog",
-      "@id": "https://borahtoursandtravel.com/#catalog",
+      "@id": "https://www.borahtourandtravels.in/#catalog",
       "name": "Northeast India Tour Packages Catalog",
       "itemListElement": [
         {

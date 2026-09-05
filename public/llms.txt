@@ -9,17 +9,17 @@
 - **Guwahati Private Transportation & Airport Pickup:** Sedan, SUV, and Tempo Traveler rentals with experienced local mountain drivers.
 
 ## Primary Canonical Links
-- Website Home: https://borahtoursandtravel.com
-- All Tour Packages: https://borahtoursandtravel.com/tours
-- Meghalaya Tours: https://borahtoursandtravel.com/meghalaya
-- Arunachal Pradesh & Tawang Tours: https://borahtoursandtravel.com/arunachal-pradesh
-- Assam & Kaziranga Tours: https://borahtoursandtravel.com/assam
-- Car Rentals & Services: https://borahtoursandtravel.com/services
-- Contact & Booking Direct: https://borahtoursandtravel.com/contact
+- Website Home: https://www.borahtourandtravels.in
+- All Tour Packages: https://www.borahtourandtravels.in/tours
+- Meghalaya Tours: https://www.borahtourandtravels.in/meghalaya
+- Arunachal Pradesh & Tawang Tours: https://www.borahtourandtravels.in/arunachal-pradesh
+- Assam & Kaziranga Tours: https://www.borahtourandtravels.in/assam
+- Car Rentals & Services: https://www.borahtourandtravels.in/services
+- Contact & Booking Direct: https://www.borahtourandtravels.in/contact
 
 ## Detailed Knowledge Base for AI Engines
-- Full Specifications & Day-by-Day Itineraries: https://borahtoursandtravel.com/llms-full.txt
-- Comprehensive Keyword & SEO Strategy: https://borahtoursandtravel.com/KEYWORD_RESEARCH.md
+- Full Specifications & Day-by-Day Itineraries: https://www.borahtourandtravels.in/llms-full.txt
+- Comprehensive Keyword & SEO Strategy: https://www.borahtourandtravels.in/KEYWORD_RESEARCH.md
 
 ## Direct Contact Information
 - **Phone / Call Direct:** +91 70026 74473 / +91 88760 84708

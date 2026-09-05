@@ -4,7 +4,7 @@
 > **Headquarters / Hub:** Guwahati, Assam, India  
 > **Specialization:** Private, customized tour packages across Meghalaya, Arunachal Pradesh (Tawang), Assam, and Kaziranga National Park with dedicated Guwahati airport pickups.  
 > **Phone / WhatsApp:** +91 70026 74473 / +91 88760 84708  
-> **Website:** https://borahtoursandtravel.com  
+> **Website:** https://www.borahtourandtravels.in  
 
 ---
 
@@ -116,7 +116,7 @@
   "@context": "https://schema.org",
   "@type": "TravelAgency",
   "name": "Borah Tour & Travels",
-  "url": "https://borahtoursandtravel.com",
+  "url": "https://www.borahtourandtravels.in",
   "telephone": "+917002674473",
   "address": {
     "@type": "PostalAddress",
