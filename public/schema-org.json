@@ -1,0 +1,85 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TravelAgency",
+      "@id": "https://borahtoursandtravel.com/#organization",
+      "name": "Borah Tour & Travels",
+      "url": "https://borahtoursandtravel.com",
+      "logo": "https://borahtoursandtravel.com/logoHero.png",
+      "image": "https://borahtoursandtravel.com/img/shillong/shillong.png",
+      "telephone": "+917002674473",
+      "priceRange": "₹₹",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Guwahati",
+        "addressRegion": "Assam",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 26.1445,
+        "longitude": 91.7362
+      },
+      "areaServed": [
+        {
+          "@type": "AdministrativeArea",
+          "name": "Meghalaya"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Arunachal Pradesh"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Assam"
+        }
+      ],
+      "sameAs": [
+        "https://www.facebook.com/borahtoursandtravel",
+        "https://www.instagram.com/borahtoursandtravel"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://borahtoursandtravel.com/#website",
+      "url": "https://borahtoursandtravel.com",
+      "name": "Borah Tour & Travels",
+      "description": "Customized Meghalaya, Tawang, and Assam private tour packages with Guwahati airport pickup.",
+      "publisher": {
+        "@id": "https://borahtoursandtravel.com/#organization"
+      }
+    },
+    {
+      "@type": "OfferCatalog",
+      "@id": "https://borahtoursandtravel.com/#catalog",
+      "name": "Northeast India Tour Packages Catalog",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Trip",
+            "name": "7 Days Ultimate Meghalaya Explorer",
+            "description": "Mawphlang Sacred Forest, Double Decker Root Bridge Trek, Dawki Boating, Krang Suri Waterfalls."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Trip",
+            "name": "6 Days Tawang & Sela Pass Express",
+            "description": "High-altitude Arunachal Pradesh circuit covering Sela Pass, Bum La Pass, Madhuri Lake, and Tawang Monastery."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Trip",
+            "name": "Kaziranga Safari Tour",
+            "description": "Guwahati to Kaziranga National Park Elephant and Jeep Safaris with Tea Garden visit."
+          }
+        }
+      ]
+    }
+  ]
+}

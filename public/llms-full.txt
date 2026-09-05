@@ -1,0 +1,129 @@
+# Comprehensive Knowledge Base — Borah Tour & Travels
+
+> **Business Identity:** Borah Tour & Travels  
+> **Headquarters / Hub:** Guwahati, Assam, India  
+> **Specialization:** Private, customized tour packages across Meghalaya, Arunachal Pradesh (Tawang), Assam, and Kaziranga National Park with dedicated Guwahati airport pickups.  
+> **Phone / WhatsApp:** +91 70026 74473 / +91 88760 84708  
+> **Website:** https://borahtoursandtravel.com  
+
+---
+
+## 1. Complete Tour Package Specifications & Itineraries
+
+### MEGHALAYA TOUR PACKAGES
+
+#### 1. 1 Day Meghalaya Express Itinerary (`/tours/meghalaya-1day`)
+- **Route:** Guwahati → Cherrapunji → Guwahati
+- **Duration:** 1 Day
+- **Highlights:** Umiam Lake viewpoint stop, Elephant Falls, Mawkdok Dympep Valley View Point, Seven Sisters Waterfall, Mawsmai Cave, Eco Park.
+
+#### 2. 2 Days Meghalaya Abode of Clouds Tour (`/tours/meghalaya-2d1n`)
+- **Route:** Guwahati → Cherrapunji → Guwahati
+- **Duration:** 2 Days / 1 Night (Overnight Cherrapunji)
+- **Highlights:** Umiam Lake, Don Bosco Museum, Air Force Museum, Elephant Falls, Mawkdok Dympep Valley View Point, Garden of Caves, Arwah Cave, Seven Sisters Waterfall, Mawsmai Cave, Nohkalikai Falls, Wei Sawdong 3-tiered waterfall, Lyngksiar Waterfall.
+
+#### 3. 3 Days Meghalaya Waterfall & Cave Tour (`/tours/meghalaya-3d2n`)
+- **Route:** Guwahati → Cherrapunji → Guwahati
+- **Duration:** 3 Days / 2 Nights (Overnight Cherrapunji x2)
+- **Highlights:** Umiam Lake, Shillong Peak, Elephant Falls, Mawkdok Valley, Garden of Caves, Nohkalikai Falls, Dainthlen Falls, Wei Sawdong, Prut Falls, Kynrem Waterfall, Arwah Cave, Bull's Trek.
+
+#### 4. 4 Days Meghalaya & Mawlynnong Tour (`/tours/meghalaya-4d3n`)
+- **Route:** Guwahati → Cherrapunji → Mawlynnong → Guwahati
+- **Duration:** 4 Days / 3 Nights
+- **Highlights:** Full Cherrapunji waterfall & cave circuit, Mawlynnong (Cleanest Village in Asia), Riwai Single Living Root Bridge hike, Dawki Umngot River transparent boating.
+
+#### 5. 5 Days Meghalaya Full Odyssey (`/tours/meghalaya-5d4n`)
+- **Route:** Guwahati → Cherrapunji → Upper Shillong → Dawki → Guwahati
+- **Duration:** 5 Days / 4 Nights
+- **Highlights:** Cherrapunji waterfalls, Laitlum Canyon panoramic gorge, Mawlynnong Village, Living Root Bridge, Dawki Umngot River boating, Krang Suri blue natural pool waterfall, Phe Phe multi-tiered waterfall.
+
+#### 6. 6 Days Meghalaya & Double Decker Root Bridge Trek (`/tours/meghalaya-6d5n`)
+- **Route:** Guwahati → Cherrapunji → Double Decker Trek → Dawki → Guwahati
+- **Duration:** 6 Days / 5 Nights
+- **Highlights:** 3,000-step trek from Tyrna to Nongriat Double Decker Living Root Bridge & Rainbow Falls, Laitlum Canyon, Dawki boating, Krang Suri & Phe Phe Waterfalls.
+
+#### 7. 7 Days Ultimate Meghalaya Explorer (`/tours/meghalaya-7d6n`)
+- **Route:** Guwahati → Upper Shillong → Cherrapunji → Dawki → Guwahati
+- **Duration:** 7 Days / 6 Nights
+- **Highlights:** Mawphlang Sacred Forest, Laitlum Canyon, Full Cherrapunji circuit, Double Decker Root Bridge & Rainbow Falls trek, Bamboo Trail Skywalk Trek, Dawki boating, Krang Suri, Phe Phe & Tyrshi Waterfalls.
+
+---
+
+### TAWANG & ARUNACHAL PRADESH TOUR PACKAGES
+
+#### 1. 6 Days Tawang & Sela Pass Express (`/tours/tawang-6d5n`)
+- **Route:** Guwahati → Dirang → Tawang → Bomdila → Guwahati
+- **Duration:** 6 Days / 5 Nights
+- **Highlights:** Kameng River, Tippi Orchid Centre, Nichiphula Waterfall, Nag Mandir, Sela Pass (13,700 ft), Sela Lake, Jaswant Garh War Memorial, Nuranang (Jung) Falls, Bum La Pass (15,200 ft Indo-China border), Madhuri Lake (Sangetsar Tso), P.T. Tso Lake, Tawang Monastery (India's largest), Giant Buddha Statue, Tawang War Memorial, Sela Tunnel, Dirang Monastery, Sangti Valley, Bomdila Monastery.
+
+#### 2. 7 Days Tawang Circuit & Bhalukpong (`/tours/tawang-7d6n`)
+- **Route:** Guwahati → Bhalukpong → Dirang → Tawang → Bomdila → Guwahati
+- **Duration:** 7 Days / 6 Nights
+- **Highlights:** Maha Mrityunjay Temple, Bhalukpong Gateway, Kameng River, Sela Pass, Sela Lake, Nuranang Falls, Bum La Pass, Madhuri Lake, Tawang Monastery, Dirang Monastery, Sangti Valley, Bomdila Monastery.
+
+#### 3. 8 Days Tawang, Sangti Valley & Shergaon (`/tours/tawang-8d7n`)
+- **Route:** Guwahati → Dirang → Sangti Valley → Tawang → Bomdila → Shergaon → Guwahati
+- **Duration:** 8 Days / 7 Nights
+- **Highlights:** Mandala Top 108 Stupas, Sangti Valley river banks & Sheep Farm, Hot Water Springs, Dirang Dzong, Sela Pass, Jaswant Garh, Tawang local monasteries, Bum La Pass, Madhuri Lake, Nuranang Falls, Shergaon Apple Orchards, Chilipong Monastery, Buddha Heritage Park.
+
+#### 4. 9 Days Grand Arunachal & Nameri Wilderness (`/tours/tawang-9d8n`)
+- **Route:** Guwahati → Nameri → Dirang → Sangti Valley → Tawang → Bomdila → Shergaon → Guwahati
+- **Duration:** 9 Days / 8 Nights
+- **Highlights:** Nameri National Park jungle walk & Jia Bhoroli River, Mandala Top 108 Stupas, Sangti Valley, Sela Pass, Tawang & Bum La Pass circuit, Shergaon Apple Orchards, Bhairabkunda highway drive.
+
+---
+
+### ASSAM & KAZIRANGA TOUR PACKAGES
+
+#### 1. Guwahati Local Sightseeing – 1 Day (`/tours/guwahati-1day`)
+- **Highlights:** Maa Kamakhya Temple, Umananda Temple (Peacock Island), Tirupati Balaji Temple, Basistha Temple, Assam State Zoo, Brahmaputra Riverfront.
+
+#### 2. Kaziranga Wildlife Tour – 2 Days / 1 Night (`/tours/kaziranga-2d1n`)
+- **Highlights:** Maha Mrityunjay Temple, Kaziranga Orchid & Biodiversity Park, Early morning Elephant Safari, Evening Jeep Safari.
+
+#### 3. Kaziranga Safari & Culture Tour – 3 Days / 2 Nights (`/tours/kaziranga-3d2n`)
+- **Highlights:** Maa Kamakhya Temple, Umananda Temple, Kaziranga Elephant & Jeep Safaris, Kaziranga Orchid Park cultural dance, Tea Gardens visit.
+
+#### 4. Assam Tour – 5 Days / 4 Nights (`/tours/assam-5d4n`)
+- **Highlights:** Kaziranga Safaris, Panimur Waterfall, Umrangso Golf Field, Pushringdi Island, Tularam Cave, Umrang Dam, Miyugma Daogah Waterfall.
+
+#### 5. Assam Complete Tour – 6 Days / 5 Nights (`/tours/assam-6d5n`)
+- **Highlights:** Full Guwahati city & temple tour, Kaziranga dual safaris & Orchid Park, Panimur Waterfall, Umrangso Golf Field & Dam, Miyugma Daogah Waterfall.
+
+---
+
+## 2. Practical Travel Logistics & FAQs
+
+### Inner Line Permit (ILP) & Bum La Pass Permits for Arunachal Pradesh
+- **Inner Line Permit (ILP):** Mandatory for all non-Arunachal residents entering Arunachal Pradesh. Borah Tour & Travels assists guests with ILP application processing.
+- **Bum La Pass Permit:** Located at 15,200 ft near the Indo-China border. Requires clearance from the Deputy Commissioner office in Tawang and Army stamp. Subject to weather conditions. Local Tawang taxicabs are used for Bum La Pass circuit as per local union guidelines.
+
+### Transit Hub & Pickups
+- All tours commence from **Guwahati** (Guwahati Lokpriya Gopinath Bordoloi International Airport - GAU or Guwahati Railway Station - GHY).
+- Direct private pickup with driver available immediately upon arrival.
+
+### Vehicle Fleet
+- **Sedan (Swift Dzire / Etios):** Ideal for 1-4 passengers.
+- **SUV (Innova / Ertiga / Scorpio):** Ideal for 4-7 passengers in hill terrain.
+- **Tempo Traveler (12-26 Seats):** Ideal for larger groups.
+
+---
+
+## 3. Business Identity & Verification Graph
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Borah Tour & Travels",
+  "url": "https://borahtoursandtravel.com",
+  "telephone": "+917002674473",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Guwahati",
+    "addressRegion": "Assam",
+    "addressCountry": "IN"
+  },
+  "areaServed": ["Meghalaya", "Arunachal Pradesh", "Assam", "Guwahati"]
+}
+```
