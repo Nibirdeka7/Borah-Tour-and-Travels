@@ -38,6 +38,7 @@ import PackageDetailModal, { PackageData } from "@/components/PackageDetailModal
 import CarRatesSection from "@/components/CarRatesSection";
 import VehicleFleetSection from "@/components/VehicleFleetSection";
 import TravelerGallerySection from "@/components/TravelerGallerySection";
+import CustomerReviewsSection from "@/components/CustomerReviewsSection";
 
 export default function Home() {
   const [activeRegion, setActiveRegion] = useState("meghalaya");
@@ -2159,6 +2160,9 @@ Please share direct owner quote and booking details!`;
 
         </div>
       </section>
+
+      {/* 7.5 Customer Reviews & Testimonials Section */}
+      <CustomerReviewsSection />
 
       {/* 8. Phone Lead Capture Component */}
       <PhoneLeadSection />
